@@ -1,0 +1,2659 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ローソク足＆チャート探検隊 📈 〜10分でわかる株チャート超入門〜</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: M PLUS Rounded 1c & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"M PLUS Rounded 1c"', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              dark: '#0b0f19',
+              card: '#131b2e',
+              border: '#233252',
+              bull: '#ff4d4d',    // 陽線・買い（赤）
+              bear: '#38bdf8',    // 陰線・売り（青）
+              gold: '#fbbf24',
+              accent: '#10b981',
+            }
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-8px)' },
+            },
+            pulseSlow: {
+              '0%, 100%': { opacity: '1' },
+              '50%': { opacity: '0.6' },
+            }
+          },
+          animation: {
+            float: 'float 3s ease-in-out infinite',
+            'pulse-slow': 'pulseSlow 2.5s ease-in-out infinite',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* カスタムスクロールバー */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0f19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #233252;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3b82f6;
+    }
+    .glow-red {
+      box-shadow: 0 0 25px rgba(255, 77, 77, 0.35);
+    }
+    .glow-blue {
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+    }
+    .glow-gold {
+      box-shadow: 0 0 25px rgba(251, 191, 36, 0.35);
+    }
+  </style>
+</head>
+<body class="bg-brand-dark text-slate-100 font-sans antialiased selection:bg-rose-500 selection:text-white">
+
+  <!-- ===============================
+       ヘッダー & ナビゲーション
+  =============================== -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-brand-dark/85 border-b border-brand-border transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-amber-400 flex items-center justify-center text-white shadow-lg shadow-rose-500/20 group-hover:scale-105 transition-transform">
+          <i data-lucide="trending-up" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-xs font-bold tracking-wider text-rose-400 block">中学生でも10分でわかる！</span>
+          <span class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-1.5">
+            ローソク足＆チャート探検隊 <span class="hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">超入門</span>
+          </span>
+        </div>
+      </a>
+
+      <!-- デスクトップナビ -->
+      <nav class="hidden lg:flex items-center gap-1 text-sm font-bold text-slate-300">
+        <a href="#step1" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-slate-800 transition">①基本</a>
+        <a href="#step2" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-slate-800 transition">②最強6選</a>
+        <a href="#step3" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-slate-800 transition">③床と天井</a>
+        <a href="#step4" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-slate-800 transition">④出来高</a>
+        <a href="#step5" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-slate-800 transition">⑤時間帯</a>
+        <a href="#step6" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-slate-800 transition">⑥実例分析</a>
+        <a href="#step7" class="px-2.5 py-1.5 rounded-lg text-emerald-400 hover:text-white hover:bg-emerald-950/40 transition">⑦資金管理★</a>
+      </nav>
+
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <a href="#simulator" class="flex items-center gap-1 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-extrabold text-[11px] sm:text-sm px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl shadow-md transition transform hover:-translate-y-0.5 shrink-0">
+          <i data-lucide="sliders" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+          <span>シミュレーター</span>
+        </a>
+        <a href="#quiz" class="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-300 font-extrabold text-[11px] sm:text-sm px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition shrink-0">
+          <i data-lucide="help-circle" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+          <span>クイズ</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===============================
+       ヒーローセクション
+  =============================== -->
+  <section class="relative overflow-hidden pt-12 pb-20 border-b border-brand-border bg-gradient-to-b from-brand-card/40 via-brand-dark to-brand-dark">
+    <!-- 装飾背景光 -->
+    <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-rose-500/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-48 right-10 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-amber-300 text-xs sm:text-sm font-bold mb-6">
+          <span class="flex h-2 w-2 rounded-full bg-amber-400 animate-ping"></span>
+          予備知識ゼロ・数学が苦手でも100%楽しめる！
+        </div>
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
+          株のチャートは、<br class="hidden sm:inline">
+          世界中の大人たちの<br>
+          <span class="bg-gradient-to-r from-rose-400 via-amber-300 to-sky-400 bg-clip-text text-transparent">「心の綱引きドラマ」</span>だ！
+        </h1>
+        <p class="mt-6 text-base sm:text-lg text-slate-300 leading-relaxed">
+          難しそうな専門用語は一切なし！<br class="hidden sm:inline">
+          1本の「ローソク足」に秘められた<strong class="text-white underline decoration-rose-400 decoration-2">買い手と売り手の心理戦</strong>をマスターすれば、
+          「いま買うべきか」「逃げるべきか」が漫画のように直感で見えてくるぞ！
+        </p>
+
+        <!-- CTAボタン群 -->
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <a href="#step1" class="px-6 py-3.5 rounded-2xl bg-rose-500 hover:bg-rose-600 text-white font-black text-base shadow-lg shadow-rose-500/30 flex items-center gap-2 transition transform hover:scale-105">
+            <i data-lucide="book-open" class="w-5 h-5"></i>
+            10分スピード授業をはじめる
+          </a>
+          <a href="#simulator" class="px-6 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-bold text-base flex items-center gap-2 transition hover:text-white">
+            <i data-lucide="play-circle" class="w-5 h-5 text-amber-400"></i>
+            ローソク足を作って遊ぶ
+          </a>
+        </div>
+
+        <!-- 3つの約束バッジ -->
+        <div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+          <div class="p-4 rounded-2xl bg-brand-card/90 border border-brand-border flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
+              <i data-lucide="zap" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 font-bold">たとえ話でスッキリ</div>
+              <div class="text-sm font-extrabold text-white">綱引き＆気温で即理解</div>
+            </div>
+          </div>
+          <div class="p-4 rounded-2xl bg-brand-card/90 border border-brand-border flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+              <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 font-bold">動かして覚える</div>
+              <div class="text-sm font-extrabold text-white">直感シミュレーター付き</div>
+            </div>
+          </div>
+          <div class="p-4 rounded-2xl bg-brand-card/90 border border-brand-border flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
+              <i data-lucide="shield-check" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 font-bold">実践で大怪我しない</div>
+              <div class="text-sm font-extrabold text-white">鉄則「損切りルール」伝授</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       【ステップ1】ローソク足ってなに？
+  =============================== -->
+  <section id="step1" class="py-16 border-b border-brand-border">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- セクション見出し -->
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="inline-block px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-xs font-black tracking-wider uppercase mb-2">Step 1</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">ローソク足ってなに？<br><span class="text-rose-400">1本の棒に隠された激闘のドラマ</span></h2>
+        <p class="mt-3 text-slate-400 text-sm sm:text-base">
+          ローソク足は、朝9:00から夕方15:30（※東証は15:30終了・昼休み11:30〜12:30）までの「買いチーム」と「売りチーム」の綱引きの記録なんだ！
+        </p>
+        <div class="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-400">
+          <span>🌍 豆知識：日本では「赤＝買い勝ち」ですが、海外ツールやYouTube（TradingView等）では「緑＝買い勝ち・赤＝売り勝ち」が多いよ！</span>
+        </div>
+      </div>
+
+      <!-- たとえ話解説カード -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12">
+        <!-- 陽線（赤）カード -->
+        <div class="bg-brand-card rounded-3xl p-6 sm:p-8 border border-rose-500/40 relative overflow-hidden glow-red">
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-rose-500 text-white text-xs font-black">
+            買いチームの圧勝！
+          </div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-3xl">🔴</span>
+            <h3 class="text-xl sm:text-2xl font-black text-rose-400">陽線（ようせん・赤）</h3>
+          </div>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+            朝始まった値段（<span class="text-white font-bold">始値</span>）よりも、夕方終わった値段（<span class="text-white font-bold">終値</span>）のほうが<strong>高くなった！</strong><br>
+            「買いたい人」がどんどん押し寄せて値段を釣り上げた、エネルギーに満ちた状態だよ！
+          </p>
+
+          <!-- 陽線の解体ビジュアル図 -->
+          <div class="bg-slate-950/70 rounded-2xl p-6 flex justify-around items-center border border-slate-800">
+            <!-- 視覚図 -->
+            <div class="flex flex-col items-center">
+              <span class="text-xs text-slate-400 mb-1">一番高い値段（高値）</span>
+              <div class="w-1 h-6 bg-slate-400"></div>
+              <div class="w-14 h-24 bg-rose-500 rounded border-2 border-rose-300 flex flex-col justify-between items-center py-1 shadow-lg shadow-rose-500/50">
+                <span class="text-[10px] font-black text-white bg-black/40 px-1 rounded">終値</span>
+                <span class="text-xs font-black text-white">実体</span>
+                <span class="text-[10px] font-black text-white bg-black/40 px-1 rounded">始値</span>
+              </div>
+              <div class="w-1 h-6 bg-slate-400"></div>
+              <span class="text-xs text-slate-400 mt-1">一番安い値段（安値）</span>
+            </div>
+
+            <div class="text-xs sm:text-sm space-y-3">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                <span><strong>上ヒゲ</strong>：一瞬高くなったけど押し戻された</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                <span><strong>実体（赤）</strong>：朝より高く終わった証！</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                <span><strong>下ヒゲ</strong>：安く落とされたけど跳ね返した</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 陰線（青）カード -->
+        <div class="bg-brand-card rounded-3xl p-6 sm:p-8 border border-sky-500/40 relative overflow-hidden glow-blue">
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-sky-500 text-white text-xs font-black">
+            売りチームの猛威！
+          </div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-3xl">🔵</span>
+            <h3 class="text-xl sm:text-2xl font-black text-sky-400">陰線（いんせん・青）</h3>
+          </div>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+            朝始まった値段（<span class="text-white font-bold">始値</span>）よりも、夕方終わった値段（<span class="text-white font-bold">終値</span>）のほうが<strong>安くなってしまった…</strong><br>
+            「手放したい人」が投げ売りして値段が下がった、弱気な状態だよ。
+          </p>
+
+          <!-- 陰線の解体ビジュアル図 -->
+          <div class="bg-slate-950/70 rounded-2xl p-6 flex justify-around items-center border border-slate-800">
+            <!-- 視覚図 -->
+            <div class="flex flex-col items-center">
+              <span class="text-xs text-slate-400 mb-1">一番高い値段（高値）</span>
+              <div class="w-1 h-6 bg-slate-400"></div>
+              <div class="w-14 h-24 bg-sky-500 rounded border-2 border-sky-300 flex flex-col justify-between items-center py-1 shadow-lg shadow-sky-500/50">
+                <span class="text-[10px] font-black text-white bg-black/40 px-1 rounded">始値</span>
+                <span class="text-xs font-black text-white">実体</span>
+                <span class="text-[10px] font-black text-white bg-black/40 px-1 rounded">終値</span>
+              </div>
+              <div class="w-1 h-6 bg-slate-400"></div>
+              <span class="text-xs text-slate-400 mt-1">一番安い値段（安値）</span>
+            </div>
+
+            <div class="text-xs sm:text-sm space-y-3">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                <span><strong>上ヒゲ</strong>：高値に挑戦したが跳ね返された</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
+                <span><strong>実体（青）</strong>：朝より下がって力尽きた証</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                <span><strong>下ヒゲ</strong>：一番底まで叩き落とされた痕跡</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ヒゲ（綱引き）の超重要ポイント -->
+      <div class="p-6 sm:p-8 rounded-3xl bg-slate-900 border border-amber-500/30 flex flex-col sm:flex-row items-center gap-6">
+        <div class="w-16 h-16 rounded-2xl bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0 text-3xl">
+          💡
+        </div>
+        <div>
+          <h4 class="text-lg font-black text-amber-300">ここがテストに出る重要ポイント！「ヒゲは押し戻された証拠」</h4>
+          <p class="mt-2 text-slate-300 text-sm leading-relaxed">
+            ヒゲの長さは、<strong>「一度はそこまで行ったけど、相手チームの強烈な反撃を喰らって押し戻された距離」</strong>を表しているんだ。<br>
+            特に<strong>「長い下ヒゲ」</strong>は、「売り手が深海まで沈めようとしたのに、買い手が猛烈に引きずり上げた」という大逆転のサインになるぞ！
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       【ステップ2】最強パターン6選
+  =============================== -->
+  <section id="step2" class="py-16 border-b border-brand-border bg-slate-950/50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="inline-block px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-black tracking-wider uppercase mb-2">Step 2</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">これだけ覚えればOK！<br><span class="text-amber-400">最強のローソク足パターン6選</span></h2>
+        <p class="mt-3 text-slate-400 text-sm sm:text-base">
+          形を見れば、投資家たちの「心の叫び」が聞こえてくる！
+        </p>
+      </div>
+
+      <!-- 6大パターン グリッド -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- 1. 大陽線 -->
+        <div class="bg-brand-card rounded-2xl p-5 border border-brand-border hover:border-rose-500/60 transition group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 text-xs font-black">超強気・買いサイン</span>
+              <span class="text-xs text-slate-400">信頼度 ★★★★★</span>
+            </div>
+            <div class="h-32 bg-slate-950 rounded-xl flex items-center justify-center mb-4 relative overflow-hidden">
+              <!-- 大陽線グラフィック -->
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-2 bg-slate-400"></div>
+                <div class="w-12 h-20 bg-rose-500 rounded-sm shadow-md shadow-rose-500/40"></div>
+                <div class="w-1 h-2 bg-slate-400"></div>
+              </div>
+              <span class="absolute bottom-2 right-2 text-2xl group-hover:scale-125 transition-transform">🚀</span>
+            </div>
+            <h3 class="text-lg font-black text-white">① 大陽線（スーパーレッド）</h3>
+            <div class="mt-2 p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-rose-300">
+              🗣️「買いたい人が殺到！明日もまだ上がるぞー！」
+            </div>
+            <p class="mt-3 text-xs text-slate-400 leading-relaxed">
+              ほとんどヒゲがなく、胴体がズドンと長い形。朝から夕方まで買いが途切れず、圧倒的な人気が集まっている証拠！
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. 大陰線 -->
+        <div class="bg-brand-card rounded-2xl p-5 border border-brand-border hover:border-sky-500/60 transition group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 text-xs font-black">超弱気・逃げサイン</span>
+              <span class="text-xs text-slate-400">危険度 ★★★★★</span>
+            </div>
+            <div class="h-32 bg-slate-950 rounded-xl flex items-center justify-center mb-4 relative overflow-hidden">
+              <!-- 大陰線グラフィック -->
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-2 bg-slate-400"></div>
+                <div class="w-12 h-20 bg-sky-500 rounded-sm shadow-md shadow-sky-500/40"></div>
+                <div class="w-1 h-2 bg-slate-400"></div>
+              </div>
+              <span class="absolute bottom-2 right-2 text-2xl group-hover:scale-125 transition-transform">😱</span>
+            </div>
+            <h3 class="text-lg font-black text-white">② 大陰線（スーパーブルー）</h3>
+            <div class="mt-2 p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-sky-300">
+              🗣️「パニック売り発生！いま近づくと大火傷！」
+            </div>
+            <p class="mt-3 text-xs text-slate-400 leading-relaxed">
+              上から下まで青一色。誰も買い支えられず、みんなが一斉に逃げ出している状態。「落ちてくるナイフは拾うな」の合図！
+            </p>
+          </div>
+        </div>
+
+        <!-- 3. 下ヒゲピンバー（ハンマー） -->
+        <div class="bg-brand-card rounded-2xl p-5 border border-brand-border hover:border-amber-500/60 transition group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 text-xs font-black">反発狙い・底打ち合図</span>
+              <span class="text-xs text-slate-400">人気度 ★★★★★</span>
+            </div>
+            <div class="h-32 bg-slate-950 rounded-xl flex items-center justify-center mb-4 relative overflow-hidden">
+              <!-- 下ヒゲピンバー -->
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-1 bg-slate-400"></div>
+                <div class="w-10 h-7 bg-rose-500 rounded-sm"></div>
+                <div class="w-1 h-16 bg-slate-300 shadow-sm shadow-white"></div>
+              </div>
+              <span class="absolute bottom-2 right-2 text-2xl group-hover:scale-125 transition-transform">🔨</span>
+            </div>
+            <h3 class="text-lg font-black text-white">③ 下ヒゲピンバー（ハンマー／カラカサ）</h3>
+            <div class="mt-2 p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-amber-300">
+              🗣️「底まで落ちたけど、猛烈な買い戻しで跳ね返した！」
+            </div>
+            <p class="mt-3 text-xs text-slate-400 leading-relaxed">
+              下ヒゲが実体の2〜3倍以上長い形。底値圏で出ると「これ以上は下がらない！」と買いが殺到した転換シグナル！
+            </p>
+          </div>
+        </div>
+
+        <!-- 4. 上ヒゲピンバー（流れ星） -->
+        <div class="bg-brand-card rounded-2xl p-5 border border-brand-border hover:border-purple-500/60 transition group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 text-xs font-black">天井サイン・利確逃げ</span>
+              <span class="text-xs text-slate-400">警戒度 ★★★★☆</span>
+            </div>
+            <div class="h-32 bg-slate-950 rounded-xl flex items-center justify-center mb-4 relative overflow-hidden">
+              <!-- 上ヒゲピンバー -->
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-16 bg-slate-300 shadow-sm shadow-white"></div>
+                <div class="w-10 h-7 bg-sky-500 rounded-sm"></div>
+                <div class="w-1 h-1 bg-slate-400"></div>
+              </div>
+              <span class="absolute bottom-2 right-2 text-2xl group-hover:scale-125 transition-transform">🌠</span>
+            </div>
+            <h3 class="text-lg font-black text-white">④ 上ヒゲピンバー（流れ星／トンカチ）</h3>
+            <div class="mt-2 p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-purple-300">
+              🗣️「高く上がったけど、売り叩かれて力尽きた…」
+            </div>
+            <p class="mt-3 text-xs text-slate-400 leading-relaxed">
+              一度は急上昇したものの、大口の売りや利益確定で激しく押し戻された形。高値圏で出たらそろそろ下落の危険大！
+            </p>
+          </div>
+        </div>
+
+        <!-- 5. 十字線（クロス） -->
+        <div class="bg-brand-card rounded-2xl p-5 border border-brand-border hover:border-slate-400/60 transition group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2 py-0.5 rounded bg-slate-500/20 text-slate-300 text-xs font-black">迷い・嵐の前の静けさ</span>
+              <span class="text-xs text-slate-400">注目度 ★★★★☆</span>
+            </div>
+            <div class="h-32 bg-slate-950 rounded-xl flex items-center justify-center mb-4 relative overflow-hidden">
+              <!-- 十字線 -->
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-10 bg-slate-300"></div>
+                <div class="w-10 h-1 bg-amber-400 shadow-sm shadow-amber-300"></div>
+                <div class="w-1 h-10 bg-slate-300"></div>
+              </div>
+              <span class="absolute bottom-2 right-2 text-2xl group-hover:scale-125 transition-transform">⚖️</span>
+            </div>
+            <h3 class="text-lg font-black text-white">⑤ 十字線（クロス/寄引同事線）</h3>
+            <div class="mt-2 p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300">
+              🗣️「買いと売りが完全に互角！どっちに抜ける？」
+            </div>
+            <p class="mt-3 text-xs text-slate-400 leading-relaxed">
+              始値と終値がほぼピッタリ同じ。激しい綱引きの末、力関係が拮抗している状態。次に飛び出した方向に大きく動く！
+            </p>
+          </div>
+        </div>
+
+        <!-- 6. 包み足（ツツミ足） -->
+        <div class="bg-brand-card rounded-2xl p-5 border border-brand-border hover:border-emerald-500/60 transition group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-xs font-black">大逆転シグナル</span>
+              <span class="text-xs text-slate-400">大注目 ★★★★★</span>
+            </div>
+            <div class="h-32 bg-slate-950 rounded-xl flex items-center justify-center gap-3 mb-4 relative overflow-hidden">
+              <!-- 前日の小さな陰線 -->
+              <div class="flex flex-col items-center">
+                <div class="w-0.5 h-2 bg-slate-500"></div>
+                <div class="w-6 h-8 bg-sky-500/70 rounded-xs"></div>
+                <div class="w-0.5 h-2 bg-slate-500"></div>
+              </div>
+              <!-- 当日の巨大な陽線 -->
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-2 bg-slate-300"></div>
+                <div class="w-10 h-20 bg-rose-500 rounded-sm shadow-md shadow-rose-500/50"></div>
+                <div class="w-1 h-2 bg-slate-300"></div>
+              </div>
+              <span class="absolute bottom-2 right-2 text-2xl group-hover:scale-125 transition-transform">🔄</span>
+            </div>
+            <h3 class="text-lg font-black text-white">⑥ 包み足（ツツミ足/抱き線）</h3>
+            <div class="mt-2 p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-emerald-300">
+              🗣️「前日の下落を丸ごと飲み込む大逆転劇！」
+            </div>
+            <p class="mt-3 text-xs text-slate-400 leading-relaxed">
+              前日の小さなローソク足を、当日の巨大な反対色の足がスッポリ包み込む形。トレンドがガラリと入れ替わる超強力サイン！
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       【ステップ3】チャートの波を読む
+  =============================== -->
+  <section id="step3" class="py-16 border-b border-brand-border">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="inline-block px-3 py-1 rounded-full bg-sky-500/20 text-sky-400 text-xs font-black tracking-wider uppercase mb-2">Step 3</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">チャートの波を読む<br><span class="text-sky-400">「床と天井」の絶対法則</span></h2>
+        <p class="mt-3 text-slate-400 text-sm sm:text-base">
+          株価はエレベーターみたいに一直線には動かない！「階段」のようにジグザグに進むんだ。
+        </p>
+      </div>
+
+      <!-- インタラクティブ解説カード -->
+      <div class="bg-brand-card rounded-3xl p-6 sm:p-10 border border-brand-border mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <!-- SVG図解パーツ -->
+          <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 relative">
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
+                <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i> 波とラインの図解
+              </span>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-amber-300 font-mono">Support & Resistance</span>
+            </div>
+
+            <!-- SVGチャート図 -->
+            <svg viewBox="0 0 500 240" class="w-full h-auto text-slate-300">
+              <!-- グリッド背景線 -->
+              <line x1="20" y1="50" x2="480" y2="50" stroke="#1e293b" stroke-dasharray="4"/>
+              <line x1="20" y1="120" x2="480" y2="120" stroke="#1e293b" stroke-dasharray="4"/>
+              <line x1="20" y1="190" x2="480" y2="190" stroke="#1e293b" stroke-dasharray="4"/>
+
+              <!-- 天井（レジスタンス）ライン -->
+              <line x1="40" y1="80" x2="330" y2="80" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="6"/>
+              <text x="50" y="72" fill="#f87171" font-size="11" font-weight="bold">🛑 天井（レジスタンス）「これ以上は高い！」</text>
+
+              <!-- 床（サポート）ライン -->
+              <line x1="40" y1="170" x2="460" y2="170" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="6"/>
+              <text x="50" y="188" fill="#38bdf8" font-size="11" font-weight="bold">🛡️ 床（サポート）「ここが底値だ！買い！」</text>
+
+              <!-- 進化した床（ロールリバーサル）ライン -->
+              <line x1="330" y1="80" x2="480" y2="80" stroke="#10b981" stroke-width="3"/>
+              <text x="350" y="65" fill="#34d399" font-size="11" font-weight="bold">✨ 新しい「床」に進化！</text>
+
+              <!-- ジグザグの株価波形パス -->
+              <path d="M 50,165 Q 90,85 130,85 T 200,165 T 270,85 T 310,140 T 360,40 T 410,80 T 470,30" 
+                    fill="none" stroke="#fbbf24" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+              <!-- 反発マーカー -->
+              <circle cx="130" cy="85" r="5" fill="#ef4444"/>
+              <circle cx="200" cy="165" r="5" fill="#38bdf8"/>
+              <circle cx="270" cy="85" r="5" fill="#ef4444"/>
+              <circle cx="310" cy="140" r="5" fill="#38bdf8"/>
+              
+              <!-- ブレイクアウト点 -->
+              <circle cx="350" cy="60" r="7" fill="#10b981" class="animate-ping"/>
+              <circle cx="350" cy="60" r="5" fill="#10b981"/>
+              <text x="325" y="30" fill="#34d399" font-size="12" font-weight="900">💥 ブレイクアウト！</text>
+
+              <!-- ロールリバーサル押し目買い点 -->
+              <circle cx="410" cy="80" r="6" fill="#fbbf24"/>
+              <text x="385" y="115" fill="#fbbf24" font-size="11" font-weight="bold">🎯 絶好の買い場！</text>
+            </svg>
+
+            <div class="mt-4 p-3 rounded-xl bg-slate-900 text-xs text-slate-400 flex items-center justify-between">
+              <span>🟡 黄色い線：株価の動き</span>
+              <span>🟢 緑色の星：天井突破の瞬間</span>
+            </div>
+          </div>
+
+          <!-- 解説テキスト -->
+          <div class="lg:col-span-5 space-y-4">
+            <div class="p-4 rounded-2xl bg-slate-900 border border-brand-border">
+              <h4 class="text-base font-black text-sky-400 flex items-center gap-2">
+                <i data-lucide="shield" class="w-4 h-4"></i> サポートライン（床）
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                「これ以上安くなったらお買い得！」とみんなが待ち構えるバリア。床にぶつかるとボールのように跳ね返りやすい！
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-900 border border-brand-border">
+              <h4 class="text-base font-black text-rose-400 flex items-center gap-2">
+                <i data-lucide="ban" class="w-4 h-4"></i> レジスタンスライン（天井）
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                「このへんで利益確定しよう」「前回ここで損したから売りたい」という売り手の壁。何度も頭をぶつけて押し戻される！
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/40">
+              <h4 class="text-base font-black text-emerald-400 flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-4 h-4"></i> 天井が「床」に進化する魔法！
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                激しい戦いの末に天井をブチ破ることを<strong>ブレイクアウト</strong>と呼ぶよ。突破された天井は、今度は強力な「新しい床」になって株価を支えてくれるんだ！（ロールリバーサル）
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       【ステップ4】移動平均線と出来高
+  =============================== -->
+  <section id="step4" class="py-16 border-b border-brand-border bg-slate-950/50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-black tracking-wider uppercase mb-2">Step 4</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">移動平均線と出来高<br><span class="text-emerald-400">大口投資家の「本気度」を見破る！</span></h2>
+        <p class="mt-3 text-slate-400 text-sm sm:text-base">
+          ローソク足の形だけでなく、「みんなの平均」と「人気の熱気」を足すと勝率が跳ね上がる！
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- 移動平均線 -->
+        <div class="bg-brand-card rounded-3xl p-6 sm:p-8 border border-brand-border relative">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-6">
+            <i data-lucide="git-commit" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-black text-white">移動平均線（MA）＝「みんなの平均点」</h3>
+          <p class="mt-3 text-slate-300 text-sm leading-relaxed">
+            過去25日間（または75日間）に買われた値段の平均をつなげた線だよ。
+          </p>
+          <div class="mt-6 space-y-3">
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-emerald-500/30 flex items-start gap-3">
+              <span class="text-emerald-400 font-black text-lg">📈</span>
+              <div>
+                <strong class="text-sm text-white">株価が線より上にある時：</strong>
+                <p class="text-xs text-slate-400 mt-0.5">最近買った人のほとんどがプラス利益！みんなハッピーで強気だから、さらに上がりやすい。</p>
+              </div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-rose-500/30 flex items-start gap-3">
+              <span class="text-rose-400 font-black text-lg">📉</span>
+              <div>
+                <strong class="text-sm text-white">株価が線より下にある時：</strong>
+                <p class="text-xs text-slate-400 mt-0.5">買ったみんなが含み損で青ざめている…！少し上がると「やれやれ、助かった」と売り逃げが降ってくる。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 出来高（ボリューム） -->
+        <div class="bg-brand-card rounded-3xl p-6 sm:p-8 border border-brand-border relative">
+          <div class="w-12 h-12 rounded-2xl bg-sky-500/20 text-sky-400 flex items-center justify-center mb-6">
+            <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-black text-white">出来高＝「人気投票の熱気」</h3>
+          <p class="mt-3 text-slate-300 text-sm leading-relaxed">
+            その日に取引された株の合計数。ウソの上昇か、本物の上昇かを暴くウソ発見器！
+          </p>
+          <div class="mt-6 space-y-3">
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 flex items-start gap-3">
+              <span class="text-amber-400 font-black text-lg">⚠️</span>
+              <div>
+                <strong class="text-sm text-white">出来高が少ない上昇 ＝「ニセモノ（騙し）」</strong>
+                <p class="text-xs text-slate-400 mt-0.5">少人数が買い上げているだけ。すぐに力尽きて急降下しやすい！</p>
+              </div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-emerald-500/30 flex items-start gap-3">
+              <span class="text-emerald-400 font-black text-lg">🐋</span>
+              <div>
+                <strong class="text-sm text-white">出来高を伴う大陽線 ＝「本物！」</strong>
+                <p class="text-xs text-slate-400 mt-0.5">大金を持ったクジラ（プロの機関投資家）が本気で買い集めた証！ビッグウェーブに乗るチャンス！</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       【ステップ5】日足・週足・5分足
+  =============================== -->
+  <section id="step5" class="py-16 border-b border-brand-border">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="inline-block px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-black tracking-wider uppercase mb-2">Step 5</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">日足・週足・5分足の使い分け<br><span class="text-purple-400">「虫の目」と「鳥の目」を切り替えろ</span></h2>
+        <p class="mt-3 text-slate-400 text-sm sm:text-base">
+          足の長さによって見える景色が全然違う！プロは必ず両方をチェックしているぞ。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- 週足 -->
+        <div class="bg-brand-card rounded-2xl p-6 border border-brand-border flex flex-col justify-between">
+          <div>
+            <div class="text-3xl mb-3">🦅</div>
+            <span class="text-xs font-bold text-sky-400">鳥の目（長期トレンド）</span>
+            <h3 class="text-xl font-black text-white mt-1">週足（しゅうあし）</h3>
+            <p class="mt-2 text-xs font-semibold text-slate-400">「太平洋の大きな潮の流れ」</p>
+            <p class="mt-4 text-xs text-slate-300 leading-relaxed">
+              1本のローソク足が1週間分。数ヶ月〜数年の大きな流れを把握。「海が満ち潮か引き潮か」を知るために一番最初に見るべきチャート！
+            </p>
+          </div>
+          <div class="mt-4 p-2.5 rounded-xl bg-slate-900 text-xs text-amber-300 font-bold">
+            用途：全体の方向性チェック
+          </div>
+        </div>
+
+        <!-- 日足 -->
+        <div class="bg-brand-card rounded-2xl p-6 border border-brand-border flex flex-col justify-between ring-2 ring-purple-500/40">
+          <div>
+            <div class="text-3xl mb-3">🚶</div>
+            <span class="text-xs font-bold text-purple-400">人の目（中期スイング）</span>
+            <h3 class="text-xl font-black text-white mt-1">日足（ひあし）★基準！</h3>
+            <p class="mt-2 text-xs font-semibold text-slate-400">「今週の天気予報」</p>
+            <p class="mt-4 text-xs text-slate-300 leading-relaxed">
+              1本のローソク足が1日分。一番多くの投資家が見ている標準チャート！床や天井、主要な移動平均線は日足で引くのが超基本。
+            </p>
+          </div>
+          <div class="mt-4 p-2.5 rounded-xl bg-purple-950/60 border border-purple-500/30 text-xs text-purple-200 font-bold">
+            用途：エントリー判断・目標決め
+          </div>
+        </div>
+
+        <!-- 5分足 -->
+        <div class="bg-brand-card rounded-2xl p-6 border border-brand-border flex flex-col justify-between">
+          <div>
+            <div class="text-3xl mb-3">🐜</div>
+            <span class="text-xs font-bold text-rose-400">虫の目（デイトレード）</span>
+            <h3 class="text-xl font-black text-white mt-1">5分足（ごふんあし）</h3>
+            <p class="mt-2 text-xs font-semibold text-slate-400">「足元の小さな水たまり」</p>
+            <p class="mt-4 text-xs text-slate-300 leading-relaxed">
+              1本のローソク足がわずか5分間！今まさに買いが勝っているか、売りが勝っているかのリアルタイム激突を見るスコープ。
+            </p>
+          </div>
+          <div class="mt-4 p-2.5 rounded-xl bg-slate-900 text-xs text-rose-300 font-bold">
+            用途：注文を出す瞬間のタイミング
+          </div>
+        </div>
+      </div>
+
+      <!-- 初心者トラップ警告 -->
+      <div class="mt-8 p-6 rounded-2xl bg-rose-950/30 border border-rose-500/30 flex items-start gap-4">
+        <i data-lucide="alert-triangle" class="w-6 h-6 text-rose-400 shrink-0 mt-0.5"></i>
+        <div>
+          <h4 class="text-sm font-black text-rose-300">初心者がハマる一番の罠：「5分足だけ見て飛びつくこと！」</h4>
+          <p class="mt-1 text-xs sm:text-sm text-slate-300">
+            5分足で「大陽線が出た！買おう！」と飛びついても、日足や週足が「巨大な下落トレンド」だと、すぐに呑み込まれて大損してしまうぞ。<br>
+            <strong>「週足で風向きを見て、日足で床を確認し、5分足で乗る」</strong>のが勝ち組の呼吸法だ！
+          </p>
+        </div>
+      </div>
+
+      <!-- プロ直伝：1日の危険時間帯マップ -->
+      <div class="mt-8 p-6 sm:p-8 rounded-3xl bg-brand-card border border-brand-border">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-xs font-black">プロの実戦タイムスケジュール</span>
+          <h4 class="text-lg font-black text-white">日本株「1日の魔の時間帯マップ」⏰</h4>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-300 mb-6">
+          同じローソク足でも、「何時に出たか」で意味が180度変わる！プロが絶対に避ける時間帯を知っておこう。
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
+          <!-- 9:00-9:30 -->
+          <div class="p-3.5 rounded-2xl bg-rose-950/40 border border-rose-500/40 flex flex-col justify-between">
+            <div>
+              <span class="text-rose-400 font-mono font-bold block">09:00 〜 09:30</span>
+              <strong class="text-white text-sm block mt-1">🔴 魔の寄り付き乱高下</strong>
+              <p class="text-slate-400 text-[11px] mt-1.5 leading-relaxed">
+                前日のNY市場やニュースを受けた大口やAIの殴り合い！ヒゲだらけのダマシ多発。<strong>初心者は見送りが鉄則！</strong>
+              </p>
+            </div>
+            <span class="mt-3 px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-black text-[10px] w-fit">飛びつき超危険</span>
+          </div>
+
+          <!-- 9:30-11:30 -->
+          <div class="p-3.5 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 flex flex-col justify-between">
+            <div>
+              <span class="text-emerald-400 font-mono font-bold block">09:30 〜 11:30</span>
+              <strong class="text-white text-sm block mt-1">🟢 本命トレンドタイム</strong>
+              <p class="text-slate-400 text-[11px] mt-1.5 leading-relaxed">
+                激しい乱高下が落ち着き、その日の素直な方向性（上昇・下降）が出る！<strong>一番勝ちやすいゴールデンタイム！</strong>
+              </p>
+            </div>
+            <span class="mt-3 px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-black text-[10px] w-fit">エントリー本命</span>
+          </div>
+
+          <!-- 11:30-12:30 -->
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+            <div>
+              <span class="text-slate-400 font-mono font-bold block">11:30 〜 12:30</span>
+              <strong class="text-white text-sm block mt-1">⚪ お昼休み（休場）</strong>
+              <p class="text-slate-400 text-[11px] mt-1.5 leading-relaxed">
+                東証の売買は完全ストップ。昼休みのニュースや海外先物の動きで、後場寄り付きの値段が飛ぶことがあるぞ。
+              </p>
+            </div>
+            <span class="mt-3 px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-black text-[10px] w-fit">ごはん・休憩</span>
+          </div>
+
+          <!-- 12:30-14:30 -->
+          <div class="p-3.5 rounded-2xl bg-amber-950/30 border border-amber-500/30 flex flex-col justify-between">
+            <div>
+              <span class="text-amber-400 font-mono font-bold block">12:30 〜 14:30</span>
+              <strong class="text-white text-sm block mt-1">🟡 後場前半の閑散罠</strong>
+              <p class="text-slate-400 text-[11px] mt-1.5 leading-relaxed">
+                取引量が減って相場が眠くなる時間。スカスカな板でブレイクしても力尽きやすく、ダマシに遭いやすい。
+              </p>
+            </div>
+            <span class="mt-3 px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-black text-[10px] w-fit">様子見推奨</span>
+          </div>
+
+          <!-- 14:30-15:30 -->
+          <div class="p-3.5 rounded-2xl bg-sky-950/40 border border-sky-500/40 flex flex-col justify-between">
+            <div>
+              <span class="text-sky-400 font-mono font-bold block">14:30 〜 15:30</span>
+              <strong class="text-white text-sm block mt-1">🔵 大引け＆日足確定</strong>
+              <p class="text-slate-400 text-[11px] mt-1.5 leading-relaxed">
+                1日の総決算！15:25〜15:30は板寄せ。<strong>15:30の終了ゴングが鳴って初めて日足の形が「確定」するぞ！</strong>
+              </p>
+            </div>
+            <span class="mt-3 px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-black text-[10px] w-fit">足の確定を見届ける</span>
+          </div>
+        </div>
+
+        <div class="mt-4 p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-amber-300 flex items-center gap-2">
+          <span>⚠️</span>
+          <span><strong>「足が確定する前に飛びつくな！」の鉄則：</strong> 午前9時15分に「大陽線だ！」と買っても、15時30分には長い上ヒゲ陰線に化けて大損することがあります。プロは終値（確定値）を最重要視します！</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       【ステップ6】YouTube直伝！チャート分析ケーススタディスタジオ
+  =============================== -->
+  <section id="step6" class="py-16 border-b border-brand-border bg-slate-950/60 relative overflow-hidden">
+    <!-- 装飾背景光 -->
+    <div class="absolute top-1/4 -left-32 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-10 -right-32 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- セクションヘッダー -->
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-300 text-xs font-black tracking-wider uppercase mb-3">
+          <i data-lucide="video" class="w-3.5 h-3.5 text-rose-400"></i>
+          YouTube解説直伝！実戦ケースバイケース分析
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">
+          実戦チャートで学ぶ！<br>
+          <span class="bg-gradient-to-r from-rose-400 via-amber-300 to-sky-400 bg-clip-text text-transparent">
+            「株価が動いた決定的瞬間」6選
+          </span>
+        </h2>
+        <p class="mt-3 text-slate-300 text-xs sm:text-sm leading-relaxed">
+          「なぜここで急騰したのか？」「なぜ一瞬で暴落したのか？」<br class="hidden sm:inline">
+          大人気投資系YouTube動画で必ず取り上げられる、プロの思考ロジック・投資家たちの心理戦を完全解剖！
+        </p>
+      </div>
+
+      <!-- 6大局面セレクタータブ -->
+      <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mb-8">
+        <button onclick="switchCaseStudy(0)" id="case-tab-0" class="case-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 bg-rose-500 text-white shadow-lg shadow-rose-500/30 border border-rose-400">
+          <span>🚀</span>
+          <span>① 三角保ち合いブレイク</span>
+        </button>
+        <button onclick="switchCaseStudy(1)" id="case-tab-1" class="case-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800">
+          <span>🔄</span>
+          <span>② 鉄板ダブルボトム</span>
+        </button>
+        <button onclick="switchCaseStudy(2)" id="case-tab-2" class="case-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800">
+          <span>📈</span>
+          <span>③ 25日線タッチ押し目</span>
+        </button>
+        <button onclick="switchCaseStudy(3)" id="case-tab-3" class="case-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800">
+          <span>🛑</span>
+          <span>④ 三尊天井（大暴落）</span>
+        </button>
+        <button onclick="switchCaseStudy(4)" id="case-tab-4" class="case-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800">
+          <span>⚠️</span>
+          <span>⑤ ダマシのブレイク</span>
+        </button>
+        <button onclick="switchCaseStudy(5)" id="case-tab-5" class="case-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800">
+          <span>💥</span>
+          <span>⑥ セリングクライマックス</span>
+        </button>
+      </div>
+
+      <!-- ケーススタディ表示コンテナ（JSで動的切り替え） -->
+      <div id="case-study-display" class="bg-brand-card rounded-3xl p-6 sm:p-10 border border-brand-border shadow-2xl transition-all">
+        <!-- 動的コンテンツが挿入されます -->
+      </div>
+
+      <!-- プロの鉄則：損切りルール（常時表示カード） -->
+      <div class="mt-10 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-rose-950/50 via-brand-card to-amber-950/40 border-2 border-rose-500/60 shadow-xl">
+        <div class="flex flex-col sm:flex-row items-center gap-6">
+          <div class="w-16 h-16 rounded-2xl bg-rose-500 text-white flex items-center justify-center text-3xl font-black shrink-0 shadow-lg shadow-rose-500/40">
+            ⚠️
+          </div>
+          <div>
+            <h3 class="text-xl font-black text-white flex items-center gap-2">
+              <span>プロが命より大切にする鉄則：「損切りライン」を先に決めろ！</span>
+            </h3>
+            <p class="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
+              勝てる専業トレーダーは、株を買うときに「いくら儲かるか」ではなく、<strong>「もし予想が外れてここまで下がったら、迷わず売って逃げる（損切りする）」</strong>という防衛ラインを買う前に100%決めています。<br>
+              損切りは負けではありません！「次の試合でホームランを打つための、かすり傷で済ませる知恵（命のシートベルト）」なのです！
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===============================
+       【ステップ7】プロが生き残る「資金管理と期待値の絶対法則」
+  =============================== -->
+  <section id="step7" class="py-16 border-b border-brand-border bg-slate-950/40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- セクション見出し -->
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-black tracking-wider uppercase mb-2">Step 7 ★ プロの最強の命綱</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">
+          勝率40%で億を稼ぐプロと、<br>
+          <span class="text-rose-400">勝率90%で全財産を失う素人</span>
+        </h2>
+        <p class="mt-3 text-slate-300 text-xs sm:text-sm leading-relaxed">
+          学校のテストで90点を目指す中学生ほど、株で破産しやすい！？<br class="hidden sm:inline">
+          世界最高峰のトレーダーたちが一番大切にする「資金管理（2%ルール）」と「期待値」の数学を大公開！
+        </p>
+      </div>
+
+      <!-- 3つのプロの絶対原則カード -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        
+        <!-- 原則1：期待値の真実 -->
+        <div class="bg-brand-card rounded-3xl p-6 border border-brand-border flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-2xl mb-4">
+              ⚖️
+            </div>
+            <span class="text-xs font-bold text-amber-400">学校のテストと真逆の真実</span>
+            <h3 class="text-lg font-black text-white mt-1">「勝率90%」より「利大損小」</h3>
+            <p class="mt-3 text-xs text-slate-300 leading-relaxed">
+              9回勝って毎回1,000円儲かっても（+9,000円）、1回の負けで損切りできずに-20,000円喰らったらトータルは大赤字（これが<strong>コツコツドカン</strong>の恐怖！）。<br>
+              逆にプロは<strong>「勝率は40%（10回中6回負け）」でも、勝つ時に+3,000円、負ける時に-1,000円で逃げるから、資産が爆発的に増え続ける</strong>んだ！
+            </p>
+          </div>
+          <div class="mt-4 p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-[11px] font-bold text-emerald-300">
+            💡 期待値 ＝ (勝率 × 平均勝ち額) − (負け率 × 平均負け額)
+          </div>
+        </div>
+
+        <!-- 原則2：2%ルール -->
+        <div class="bg-brand-card rounded-3xl p-6 border border-emerald-500/40 relative glow-green flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mb-4">
+              🛡️
+            </div>
+            <span class="text-xs font-bold text-emerald-400">ヘッジファンドの絶対聖書</span>
+            <h3 class="text-lg font-black text-white mt-1">資金管理「2%ルール」</h3>
+            <p class="mt-3 text-xs text-slate-300 leading-relaxed">
+              <strong>「1回のトレードで失っていい損失は、全財産の2%まで！」</strong><br>
+              例えば、元手10万円なら1回の最大損失は2,000円まで。元手30万円なら6,000円まで。<br>
+              このルールを守っていれば、たとえ相場が悪くて<strong>10連敗しても資金は8割以上残り</strong>、絶対に市場から退場しない！
+            </p>
+          </div>
+          <div class="mt-4 p-2.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-[11px] font-bold text-white">
+            🎯 買える株数 ＝ 許容リスク(資産の2%) ÷ (買値 − 損切り値)
+          </div>
+        </div>
+
+        <!-- 原則3：板とチャートの関係 -->
+        <div class="bg-brand-card rounded-3xl p-6 border border-brand-border flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-2xl mb-4">
+              📋
+            </div>
+            <span class="text-xs font-bold text-sky-400">チャートの裏の正体</span>
+            <h3 class="text-lg font-black text-white mt-1">板（オーダーブック）と流動性</h3>
+            <p class="mt-3 text-xs text-slate-300 leading-relaxed">
+              チャートは「すでに成立した過去の足跡」。床や天井が機能する本当の理由は、<strong>「板（気配値）に大量の指値注文が並んでいるから」</strong>なんだ！<br>
+              取引が少ない「スカスカの板」の銘柄でトレードすると、大暴落した時に買い手がいなくて<strong>自分の損切り注文すら通らずに大爆死</strong>する（流動性リスク）ぞ！
+            </p>
+          </div>
+          <div class="mt-4 p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-[11px] font-bold text-amber-300">
+            ⚠️ 初心者は出来高の多い人気銘柄だけ触るのが鉄則！
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 期待値＆コツコツドカン実験ラボ（シミュレーション・ウィジェット） -->
+      <div class="bg-brand-card rounded-3xl p-6 sm:p-10 border border-brand-border shadow-2xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-brand-border">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-xs font-black">Interactive Lab</span>
+            <h3 class="text-xl sm:text-2xl font-black text-white mt-1">
+              期待値＆コツコツドカン実験ラボ 🧪
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">
+              「勝率85%のコツコツドカン君」と「勝率40%の利大損小プロ」が50回トレードしたらどうなる？
+            </p>
+          </div>
+          <button onclick="runExpectancySim()" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-sky-500 hover:from-emerald-600 hover:to-sky-600 text-white font-black text-xs sm:text-sm shadow-lg shadow-emerald-500/30 flex items-center gap-2 transition transform hover:scale-105 shrink-0">
+            <i data-lucide="play" class="w-4 h-4"></i>
+            50回トレード実験スタート！ 🚀
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- A君：勝率85%のコツコツドカン -->
+          <div class="p-5 rounded-2xl bg-slate-950 border border-rose-500/40 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-rose-400">素人代表：A君（テストは90点）</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold">勝率 85%</span>
+              </div>
+              <h4 class="text-base font-black text-white">高勝率コツコツドカン型</h4>
+              <div class="mt-2 text-xs text-slate-400 space-y-1">
+                <div>・勝ちトレード：毎回 <span class="text-emerald-400 font-bold">+1,000円</span> でチキン利食い</div>
+                <div>・負けトレード：損切りできず放置し <span class="text-rose-400 font-bold">-10,000円</span> のドカン！</div>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-900">
+              <span class="text-[11px] text-slate-500">50回トレード後の最終資産（元手10万円）</span>
+              <div id="sim-res-a" class="text-2xl font-black text-rose-400 font-mono mt-0.5">--- 円</div>
+              <div id="sim-status-a" class="text-xs text-slate-400 mt-0.5">※ボタンを押して実験開始</div>
+            </div>
+          </div>
+
+          <!-- Bさん：勝率40%の利大損小プロ -->
+          <div class="p-5 rounded-2xl bg-slate-950 border border-emerald-500/40 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-emerald-400">プロ代表：Bさん（勝率4割）</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">勝率 40%</span>
+              </div>
+              <h4 class="text-base font-black text-white">利大損小・期待値追求型</h4>
+              <div class="mt-2 text-xs text-slate-400 space-y-1">
+                <div>・勝ちトレード：トレンドに乗って <span class="text-emerald-400 font-bold">+3,500円</span> まで伸ばす！</div>
+                <div>・負けトレード：決めたラインで即座に <span class="text-rose-400 font-bold">-1,000円</span> で損切り！</div>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-900">
+              <span class="text-[11px] text-slate-500">50回トレード後の最終資産（元手10万円）</span>
+              <div id="sim-res-b" class="text-2xl font-black text-emerald-400 font-mono mt-0.5">--- 円</div>
+              <div id="sim-status-b" class="text-xs text-slate-400 mt-0.5">※ボタンを押して実験開始</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div id="sim-conclusion" class="hidden mt-6 p-4 rounded-2xl bg-slate-900 border border-amber-500/40 text-xs sm:text-sm text-slate-200 leading-relaxed animate-fade-in">
+          <!-- JSで解説が表示されます -->
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===============================
+       【機能1】ローソク足クリエイター（シミュレーター）
+  =============================== -->
+  <section id="simulator" class="py-16 border-b border-brand-border">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="inline-block px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-xs font-black tracking-wider uppercase mb-2">Interactive Tool 1</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">ローソク足クリエイター 🎮<br><span class="text-amber-400">スライダーを動かして形を作ってみよう！</span></h2>
+        <p class="mt-3 text-slate-400 text-sm sm:text-base">
+          スライダーをいじるとローソク足がリアルタイムに変形！どんなサインかAIが即座に判定するぞ！
+        </p>
+      </div>
+
+      <!-- プリセットボタン -->
+      <div class="flex flex-wrap justify-center gap-2 mb-8">
+        <span class="text-xs text-slate-400 flex items-center mr-2">おすすめ形セット:</span>
+        <button onclick="setCandlePreset(100, 160, 95, 155)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-rose-400 border border-slate-700">🚀 大陽線</button>
+        <button onclick="setCandlePreset(150, 155, 90, 95)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-sky-400 border border-slate-700">😱 大陰線</button>
+        <button onclick="setCandlePreset(115, 120, 60, 118)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-amber-400 border border-slate-700">🔨 下ヒゲピンバー</button>
+        <button onclick="setCandlePreset(110, 170, 105, 108)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-purple-400 border border-slate-700">🌠 上ヒゲピンバー</button>
+        <button onclick="setCandlePreset(120, 160, 80, 120)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 border border-slate-700">⚖️ 十字線</button>
+      </div>
+
+      <div class="bg-brand-card rounded-3xl p-6 sm:p-10 border border-brand-border">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <!-- スライダー操作パネル -->
+          <div class="lg:col-span-5 space-y-6">
+            <div>
+              <div class="flex justify-between text-sm font-bold mb-2">
+                <span class="text-slate-300">始値（朝9時の値段）</span>
+                <span id="val-open" class="text-amber-400 font-mono">100円</span>
+              </div>
+              <input type="range" id="input-open" min="50" max="200" value="100" class="w-full accent-amber-400 bg-slate-800 h-2 rounded-lg cursor-pointer">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-sm font-bold mb-2">
+                <span class="text-slate-300">高値（今日一番高かった値段）</span>
+                <span id="val-high" class="text-rose-400 font-mono">160円</span>
+              </div>
+              <input type="range" id="input-high" min="50" max="200" value="160" class="w-full accent-rose-500 bg-slate-800 h-2 rounded-lg cursor-pointer">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-sm font-bold mb-2">
+                <span class="text-slate-300">安値（今日一番安かった値段）</span>
+                <span id="val-low" class="text-sky-400 font-mono">95円</span>
+              </div>
+              <input type="range" id="input-low" min="50" max="200" value="95" class="w-full accent-sky-400 bg-slate-800 h-2 rounded-lg cursor-pointer">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-sm font-bold mb-2">
+                <span class="text-slate-300">終値（夕方15時の値段）</span>
+                <span id="val-close" class="text-emerald-400 font-mono">155円</span>
+              </div>
+              <input type="range" id="input-close" min="50" max="200" value="155" class="w-full accent-emerald-400 bg-slate-800 h-2 rounded-lg cursor-pointer">
+            </div>
+
+            <!-- 買いチーム vs 売りチーム戦況バー -->
+            <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+              <div class="flex justify-between text-xs font-black mb-1.5">
+                <span class="text-rose-400">買い手パワー <span id="power-bull">70%</span></span>
+                <span class="text-sky-400">売り手パワー <span id="power-bear">30%</span></span>
+              </div>
+              <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden flex">
+                <div id="bar-bull" class="bg-rose-500 transition-all duration-300" style="width: 70%;"></div>
+                <div id="bar-bear" class="bg-sky-400 transition-all duration-300" style="width: 30%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- キャンバス描画プレビュー & 判定 -->
+          <div class="lg:col-span-7 flex flex-col items-center">
+            <div class="w-full max-w-md bg-slate-950 p-6 rounded-3xl border border-slate-800 flex flex-col items-center shadow-inner relative">
+              <span class="absolute top-4 left-4 text-xs font-mono text-slate-500">CANVAS SIMULATOR</span>
+              
+              <!-- Canvas描画エリア -->
+              <canvas id="candleCanvas" width="280" height="260" class="rounded-xl"></canvas>
+
+              <!-- 判定結果ボックス -->
+              <div id="candle-result-card" class="mt-4 w-full p-4 rounded-2xl bg-slate-900 border border-rose-500/40 text-center transition-all">
+                <div id="candle-tag" class="inline-block px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-400 mb-1">
+                  陽線（買いの勝ち）
+                </div>
+                <h4 id="candle-title" class="text-lg font-black text-white">大陽線（スーパーレッド）</h4>
+                <p id="candle-desc" class="text-xs text-slate-300 mt-2 leading-relaxed">
+                  朝から買いが殺到してほぼ高値引け！買いチームの圧倒的な力強さを示しています。
+                </p>
+                <div id="candle-action" class="mt-3 text-xs font-bold text-amber-300 bg-amber-400/10 py-1.5 px-3 rounded-lg border border-amber-400/20">
+                  💡 アクション：上昇トレンド継続！押し目を狙って買い検討！
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       【機能2】チャートクイズ（全5問）
+  =============================== -->
+  <section id="quiz" class="py-16 border-b border-brand-border bg-slate-950/50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="inline-block px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-black tracking-wider uppercase mb-2">Interactive Tool 2</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">チャート実戦クイズ 🎯<br><span class="text-amber-400">君ならここでどう判断する？（全5問）</span></h2>
+        <p class="mt-3 text-slate-400 text-sm sm:text-base">
+          図を見て「買い」「売り」「様子見」を直感で選んでみよう！
+        </p>
+      </div>
+
+      <!-- クイズコンテナ -->
+      <div class="bg-brand-card rounded-3xl p-6 sm:p-10 border border-brand-border shadow-2xl relative">
+        
+        <!-- プログレスバー -->
+        <div class="flex items-center justify-between text-xs font-bold text-slate-400 mb-3">
+          <span>進行度: <span id="quiz-progress-text" class="text-white">第1問 / 5問</span></span>
+          <span>スコア: <span id="quiz-score-text" class="text-amber-400">0点</span></span>
+        </div>
+        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-8">
+          <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-amber-400 to-rose-500 transition-all duration-300" style="width: 20%;"></div>
+        </div>
+
+        <!-- クイズ中身 -->
+        <div id="quiz-card-content">
+          <!-- JSで動的に書き換え -->
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       【機能3】プロ直伝 2%ルール＆ポジションサイジング計算機
+  =============================== -->
+  <section id="calc" class="py-16 border-b border-brand-border">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-black tracking-wider uppercase mb-2">Interactive Tool 3</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">プロ直伝 2%ルール資金管理チェッカー 🛡️<br><span class="text-emerald-400">「買っていい安全な株数」を逆算しよう！</span></h2>
+        <p class="mt-3 text-slate-400 text-sm sm:text-base">
+          プロは「何株買うか」を勘で決めない！損切り幅と資産の2%から買っていい最大株数を逆算するぞ！
+        </p>
+      </div>
+
+      <div class="bg-brand-card rounded-3xl p-6 sm:p-10 border border-brand-border">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          
+          <!-- 入力側 -->
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-400 mb-1">① あなたの総資産・元手資金（円）</label>
+              <div class="relative">
+                <input type="number" id="calc-total-capital" value="300000" step="10000" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-base focus:outline-none focus:border-emerald-400">
+                <span class="absolute right-4 top-2.5 text-slate-400 text-sm">円</span>
+              </div>
+              <span class="text-[11px] text-emerald-400 mt-0.5 block">🛡️ 許容リスク（資産の2%）：<strong id="calc-allowed-risk">6,000円</strong>まで</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-400 mb-1">② 買いたい株価</label>
+                <div class="relative">
+                  <input type="number" id="calc-entry-price" value="2000" step="10" class="w-full px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-base focus:outline-none focus:border-emerald-400">
+                  <span class="absolute right-3 top-2.5 text-slate-400 text-xs">円</span>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-rose-400 mb-1">③ 損切りライン</label>
+                <div class="relative">
+                  <input type="number" id="calc-stop-price" value="1940" step="10" class="w-full px-3 py-2.5 rounded-xl bg-slate-900 border border-rose-500/50 text-rose-300 font-mono text-base focus:outline-none focus:border-rose-400">
+                  <span class="absolute right-3 top-2.5 text-slate-400 text-xs">円</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-bold text-slate-400 mb-1">
+                <span>④ 買いたい予定株数</span>
+                <span id="calc-shares-display" class="text-white font-mono font-bold">100 株</span>
+              </div>
+              <input type="range" id="calc-shares-slider" min="100" max="1000" step="100" value="100" class="w-full accent-emerald-400 bg-slate-800 h-2 rounded-lg cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-500 mt-0.5">
+                <span>100株</span>
+                <span>500株</span>
+                <span>1,000株</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 計算結果＆プロ判定側 -->
+          <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4">
+            <div>
+              <span class="text-xs text-slate-400">プロが許可する「最大安全購入株数」</span>
+              <div id="res-safe-shares" class="text-3xl font-black text-emerald-400 font-mono mt-0.5">100 株 まで</div>
+              <span class="text-[11px] text-slate-500">（1株リスク 60円 × 100株 ＝ 損失6,000円で2%ピタリ）</span>
+            </div>
+
+            <div id="res-risk-verdict-box" class="p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/50">
+              <div class="flex items-center gap-2">
+                <span id="res-verdict-icon" class="text-xl">✅</span>
+                <h5 id="res-verdict-title" class="text-sm font-black text-emerald-300">安全！プロの資金管理合格！</h5>
+              </div>
+              <p id="res-verdict-desc" class="text-xs text-slate-300 mt-1 leading-relaxed">
+                もし損切りされても損失は-6,000円（資産の2.0%）。次のチャンスで十分取り返せるかすり傷です！
+              </p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-xs">
+              <span class="text-slate-400">必要購入資金：</span>
+              <span id="res-need-fund" class="text-white font-mono font-bold">200,000 円</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       【機能4】用語かんたん辞書
+  =============================== -->
+  <section id="glossary" class="py-16 border-b border-brand-border bg-slate-950/50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="inline-block px-3 py-1 rounded-full bg-slate-500/20 text-slate-300 text-xs font-black tracking-wider uppercase mb-2">Interactive Tool 4</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">用語かんたん辞書 📖<br><span class="text-slate-400">大人の専門用語を中学生語に翻訳！</span></h2>
+      </div>
+
+      <!-- 検索バー -->
+      <div class="relative mb-6">
+        <input type="text" id="glossary-search" placeholder="用語を検索（例: 始値、ヒゲ、出来高、損切り...）" class="w-full px-5 py-3.5 pl-12 rounded-2xl bg-brand-card border border-brand-border text-white text-sm focus:outline-none focus:border-amber-400">
+        <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-4 top-4"></i>
+      </div>
+
+      <!-- アコーディオン用語集 -->
+      <div id="glossary-list" class="space-y-3">
+        <!-- JSでアコーディオン展開 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       フッター
+  =============================== -->
+  <footer class="py-12 bg-brand-dark border-t border-brand-border text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+      <div class="flex items-center justify-center gap-2 text-slate-400 font-bold">
+        <i data-lucide="award" class="w-4 h-4 text-amber-400"></i>
+        <span>ローソク足＆チャート探検隊 〜世界一わかりやすい投資教育プログラム〜</span>
+      </div>
+      <p class="max-w-xl mx-auto leading-relaxed">
+        ※本サイトは中学生から大人まで金融チャートとローソク足の仕組みを楽しく学ぶための教育シミュレーターです。実際の株式投資は元本割れのリスクを伴います。投資判断は自己責任で行ってください。
+      </p>
+      <div class="pt-4 text-slate-600">
+        &copy; 2026 Candlestick Masterclass Interactive. Made with ❤️ for beginners.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===============================
+       JavaScriptロジック
+  =============================== -->
+  <script>
+    // Lucide Icons初期化
+    lucide.createIcons();
+
+    /* ===================================================
+       1. ローソク足クリエイター（シミュレーター）
+    =================================================== */
+    const inOpen = document.getElementById('input-open');
+    const inHigh = document.getElementById('input-high');
+    const inLow = document.getElementById('input-low');
+    const inClose = document.getElementById('input-close');
+
+    const valOpen = document.getElementById('val-open');
+    const valHigh = document.getElementById('val-high');
+    const valLow = document.getElementById('val-low');
+    const valClose = document.getElementById('val-close');
+
+    const canvas = document.getElementById('candleCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const candleTag = document.getElementById('candle-tag');
+    const candleTitle = document.getElementById('candle-title');
+    const candleDesc = document.getElementById('candle-desc');
+    const candleAction = document.getElementById('candle-action');
+    const cardResult = document.getElementById('candle-result-card');
+
+    const barBull = document.getElementById('bar-bull');
+    const barBear = document.getElementById('bar-bear');
+    const powerBull = document.getElementById('power-bull');
+    const powerBear = document.getElementById('power-bear');
+
+    function updateCandleSim() {
+      let open = parseInt(inOpen.value);
+      let high = parseInt(inHigh.value);
+      let low = parseInt(inLow.value);
+      let close = parseInt(inClose.value);
+
+      // 整合性チェック（高値は最大、安値は最小）
+      if (high < Math.max(open, close)) {
+        high = Math.max(open, close);
+        inHigh.value = high;
+      }
+      if (low > Math.min(open, close)) {
+        low = Math.min(open, close);
+        inLow.value = low;
+      }
+
+      valOpen.innerText = open + '円';
+      valHigh.innerText = high + '円';
+      valLow.innerText = low + '円';
+      valClose.innerText = close + '円';
+
+      // Canvas描画 (座標系マッピング: 50円〜200円を Y: 230 〜 30 に変換)
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const mapY = (val) => {
+        const minY = 230;
+        const maxY = 30;
+        return minY - ((val - 50) / 150) * (minY - maxY);
+      };
+
+      const yHigh = mapY(high);
+      const yLow = mapY(low);
+      const yOpen = mapY(open);
+      const yClose = mapY(close);
+      const centerX = canvas.width / 2;
+
+      const isBull = close > open;
+      const isDoji = Math.abs(close - open) <= 2;
+      const color = isDoji ? '#fbbf24' : (isBull ? '#ff4d4d' : '#38bdf8');
+
+      // ヒゲ描画
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(centerX, yHigh);
+      ctx.lineTo(centerX, yLow);
+      ctx.stroke();
+
+      // 実体描画
+      const bodyTop = Math.min(yOpen, yClose);
+      let bodyHeight = Math.abs(yClose - yOpen);
+      if (bodyHeight < 4) bodyHeight = 4;
+
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 12;
+      ctx.fillRect(centerX - 35, bodyTop, 70, bodyHeight);
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(centerX - 35, bodyTop, 70, bodyHeight);
+      ctx.shadowBlur = 0; // リセット
+
+      // ラベルテキスト描画
+      ctx.font = 'bold 11px sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText(`高値: ${high}円`, centerX + 45, yHigh + 4);
+      ctx.fillText(`安値: ${low}円`, centerX + 45, yLow + 4);
+
+      let openLabelY = yOpen + 4;
+      let closeLabelY = yClose + 4;
+      if (Math.abs(closeLabelY - openLabelY) < 16) {
+        if (closeLabelY <= openLabelY) {
+          closeLabelY -= 7;
+          openLabelY += 7;
+        } else {
+          closeLabelY += 7;
+          openLabelY -= 7;
+        }
+      }
+      ctx.fillStyle = isBull ? '#ff4d4d' : '#38bdf8';
+      ctx.fillText(`終値: ${close}円`, centerX - 120, closeLabelY);
+      ctx.fillStyle = '#fbbf24';
+      ctx.fillText(`始値: ${open}円`, centerX - 120, openLabelY);
+
+      // パターン判定ロジック
+      const bodyLen = Math.abs(close - open);
+      const upperWick = high - Math.max(open, close);
+      const lowerWick = Math.min(open, close) - low;
+      const totalRange = high - low || 1;
+
+      let bullRate = 50;
+
+      if (isDoji) {
+        bullRate = 50;
+        candleTag.className = "inline-block px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-300 mb-1";
+        candleTag.innerText = "⚖️ 拮抗（引き分け）";
+        candleTitle.innerText = "十字線（クロス / 嵐の前の静けさ）";
+        candleDesc.innerText = "買い手と売り手の力が完全に同じ！どちらも譲らない膠着状態です。次に大きく動く前兆になります。";
+        candleAction.innerText = "💡 アクション：様子見推奨！上か下に抜けた方に素直についていこう！";
+        cardResult.className = "mt-4 w-full p-4 rounded-2xl bg-slate-900 border border-amber-500/40 text-center";
+      } else if (lowerWick >= bodyLen * 2 && lowerWick > upperWick * 2) {
+        // 下ヒゲピンバー
+        bullRate = 75;
+        candleTag.className = "inline-block px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-300 mb-1";
+        candleTag.innerText = "🔨 底打ち反発シグナル";
+        candleTitle.innerText = "下ヒゲピンバー（ハンマー / トンカチ）";
+        candleDesc.innerText = "売り手が一度底まで叩き落としましたが、強烈な買い手が引き上げてきました！下げ止まりの典型サインです。";
+        candleAction.innerText = "💡 アクション：底値圏なら絶好の買い場！下ヒゲの下を損切りラインに設定してエントリー！";
+        cardResult.className = "mt-4 w-full p-4 rounded-2xl bg-slate-900 border border-amber-500/50 text-center glow-gold";
+      } else if (upperWick >= bodyLen * 2 && upperWick > lowerWick * 2) {
+        // 上ヒゲピンバー
+        bullRate = 25;
+        candleTag.className = "inline-block px-3 py-1 rounded-full text-xs font-black bg-purple-500/20 text-purple-300 mb-1";
+        candleTag.innerText = "🌠 天井・失速シグナル";
+        candleTitle.innerText = "上ヒゲピンバー（流れ星 / シューティングスター）";
+        candleDesc.innerText = "高く打ち上がったものの、強烈な売りを浴びせられて撃沈しました。買い手の力尽きを示しています。";
+        candleAction.innerText = "💡 アクション：高値圏なら利確・逃げ推奨！ここからの買い飛びつきは超危険！";
+        cardResult.className = "mt-4 w-full p-4 rounded-2xl bg-slate-900 border border-purple-500/50 text-center";
+      } else if (isBull) {
+        if (bodyLen >= 45 && upperWick < 15 && lowerWick < 15) {
+          bullRate = 90;
+          candleTag.className = "inline-block px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-400 mb-1";
+          candleTag.innerText = "🚀 圧倒的買い";
+          candleTitle.innerText = "大陽線（スーパーレッド）";
+          candleDesc.innerText = "朝から夕方まで買いが殺到し、ほぼヒゲのない大勝利の形！買いチームのエネルギーが充満しています。";
+          candleAction.innerText = "💡 アクション：トレンド継続！押し目を待って買いを狙おう！";
+          cardResult.className = "mt-4 w-full p-4 rounded-2xl bg-slate-900 border border-rose-500/60 text-center glow-red";
+        } else {
+          bullRate = 65;
+          candleTag.className = "inline-block px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-400 mb-1";
+          candleTag.innerText = "🔴 買い優勢";
+          candleTitle.innerText = "陽線（通常の上昇）";
+          candleDesc.innerText = "朝よりも高い値段で引けました。買い手が有利に試合を進めています。";
+          candleAction.innerText = "💡 アクション：全体の流れ（日足や出来高）と合わせて順張りを検討！";
+          cardResult.className = "mt-4 w-full p-4 rounded-2xl bg-slate-900 border border-rose-500/30 text-center";
+        }
+      } else {
+        // 陰線
+        if (bodyLen >= 45 && upperWick < 15 && lowerWick < 15) {
+          bullRate = 10;
+          candleTag.className = "inline-block px-3 py-1 rounded-full text-xs font-black bg-sky-500/20 text-sky-400 mb-1";
+          candleTag.innerText = "😱 パニック売り";
+          candleTitle.innerText = "大陰線（スーパーブルー）";
+          candleDesc.innerText = "朝から手放したい人が殺到し、下げ止まらずに終わった形。売りチームの猛威が吹き荒れています。";
+          candleAction.innerText = "💡 アクション：絶対に買ってはいけない！落ちてくるナイフが刺さるぞ！逃げの一手！";
+          cardResult.className = "mt-4 w-full p-4 rounded-2xl bg-slate-900 border border-sky-500/60 text-center glow-blue";
+        } else {
+          bullRate = 35;
+          candleTag.className = "inline-block px-3 py-1 rounded-full text-xs font-black bg-sky-500/20 text-sky-400 mb-1";
+          candleTag.innerText = "🔵 売り優勢";
+          candleTitle.innerText = "陰線（通常の下落）";
+          candleDesc.innerText = "朝よりも安い値段で引けました。売り手が優勢な展開です。";
+          candleAction.innerText = "💡 アクション：下値支持線（床）で止まるか見守るのが賢明。";
+          cardResult.className = "mt-4 w-full p-4 rounded-2xl bg-slate-900 border border-sky-500/30 text-center";
+        }
+      }
+
+      const bearRate = 100 - bullRate;
+      powerBull.innerText = bullRate + '%';
+      powerBear.innerText = bearRate + '%';
+      barBull.style.width = bullRate + '%';
+      barBear.style.width = bearRate + '%';
+    }
+
+    function setCandlePreset(o, h, l, c) {
+      inOpen.value = o;
+      inHigh.value = h;
+      inLow.value = l;
+      inClose.value = c;
+      updateCandleSim();
+    }
+
+    [inOpen, inHigh, inLow, inClose].forEach(slider => {
+      slider.addEventListener('input', updateCandleSim);
+    });
+
+    /* ===================================================
+       2. チャートクイズ（全5問）
+    =================================================== */
+    const quizData = [
+      {
+        qNum: 1,
+        title: "第1問：床の近くで出現した「この形」！君ならどうする？",
+        situation: "下落が続いていた株が、過去に何度も反発した『サポートライン（床）』に到達。そこで写真のような『長い下ヒゲピンバー（ハンマー）』が出現しました！",
+        graphicType: "hammer",
+        choices: [
+          { text: "A: 猛反発の合図！「買い」を狙う！", isCorrect: true, reason: "正解！床（サポート）と下ヒゲの組み合わせは、買い手が売り手を圧倒した最強の反発サイン！下ヒゲの最安値に損切りラインを置いて買うのが定石です。" },
+          { text: "B: まだ下がりそうだから「売り」で勝負！", isCorrect: false, reason: "不正解…！下ヒゲは『売り手が力尽きて買い手に猛烈に押し戻された』証拠。ここで売ると大火傷します！" },
+          { text: "C: 危険だから株をやめて寝る", isCorrect: false, reason: "不正解…！気持ちはわかりますが、ここはチャート分析上、最も勝率が高いチャンスゾーンです！" }
+        ]
+      },
+      {
+        qNum: 2,
+        title: "第2問：天井にぶつかって「長い上ヒゲ」が出た！",
+        situation: "ぐんぐん上がっていた株価が、過去に何度も押し戻された『レジスタンスライン（天井）』に激突！そこで『長い上ヒゲピンバー（流れ星）』が出現しました。",
+        graphicType: "shooting-star",
+        choices: [
+          { text: "A: まだまだ上がるぞ！強気で「全力買い」！", isCorrect: false, reason: "不正解…！天井での上ヒゲは、大口投資家が売り抜けて力尽きたサイン。ここでの買い飛びつきは一番カモにされます！" },
+          { text: "B: 天井で力尽きたサイン！「利確して逃げる」！", isCorrect: true, reason: "正解！一度高値をつけたものの、激しい売り浴びせで押し戻された形。利益を確定して一度逃げるのが超一流の判断です！" },
+          { text: "C: 上ヒゲは長いほど縁起が良いので買い増し", isCorrect: false, reason: "不正解…！ヒゲは縁起物ではありません！押し戻された敗北の跡です！" }
+        ]
+      },
+      {
+        qNum: 3,
+        title: "第3問：移動平均線の下で、出来高のない小さな陽線が出た！",
+        situation: "25日移動平均線よりずっと下で株価が低迷中。今日、小さな赤い陽線が出ましたが、出来高（取引量）は普段の半分以下でスカスカです。",
+        graphicType: "fake-bull",
+        choices: [
+          { text: "A: 赤い陽線だから絶対上がる！買い！", isCorrect: false, reason: "不正解…！出来高が少ない上昇は『騙し（ニセモノ）』の可能性大。参加者が少ないため、すぐに崩れてしまいます。" },
+          { text: "B: 出来高のない上昇はニセモノの罠！「様子見」！", isCorrect: true, reason: "正解！出来高を伴わない上昇は、プロが買っていない証拠。さらに移動平均線の下にいるため、焦って買わずに様子見が正解です！" },
+          { text: "C: 出来高は関係ないのでサイコロで決める", isCorrect: false, reason: "不正解…！出来高はプロの本気度を暴くウソ発見器です！必ずチェックしましょう！" }
+        ]
+      },
+      {
+        qNum: 4,
+        title: "第4問：天井を「出来高爆発の大陽線」で突き破った！",
+        situation: "何ヶ月も突破できなかった強固な天井（レジスタンス）を、いつもの3倍の出来高を伴う『巨大な大陽線』でドカンと突き破りました（ブレイクアウト）！",
+        graphicType: "breakout",
+        choices: [
+          { text: "A: 天井突破！新しいステージへ！「買いで乗る」！", isCorrect: true, reason: "正解！出来高を伴う天井突破（ブレイクアウト）は本物のサイン！かつての天井が新しい「床」となり、さらなる上昇が期待できます！" },
+          { text: "B: 高くなったから危険！すぐ売り向かう！", isCorrect: false, reason: "不正解…！出来高急増ブレイクはクジラ（大口機関）が本気で買い集めた証。逆張りで売ると担ぎ上げられて大損します！" },
+          { text: "C: 何もせず画面を見つめる", isCorrect: false, reason: "不正解…！トレンドに乗る絶好のチャンス場面です！" }
+        ]
+      },
+      {
+        qNum: 5,
+        title: "第5問：買った後、あらかじめ決めた「損切りライン」に落ちてきた！",
+        situation: "2,000円で買った株。『1,950円まで下がったら損切りする』と決めていたのに、今日株価が1,940円になってしまいました。あなたの行動は？",
+        graphicType: "cut-loss",
+        choices: [
+          { text: "A: 「いつか戻るはず…」と祈りながら放置する", isCorrect: false, reason: "大不正解！！塩漬け（放置）は退場への片道切符！1,900円、1,500円と泥沼にハマる一番ダメな行動です。" },
+          { text: "B: 悔しいけどルール通り即座に「損切り実行」！", isCorrect: true, reason: "大正解！！これこそが億を稼ぐプロの規律！決めたラインを割ったら即座に逃げる。損切りは次の勝ちを掴むための「入場料」です！" },
+          { text: "C: もっと下がったら困るのでパソコンの電源を切る", isCorrect: false, reason: "不正解…！現実逃避しても株価は容赦なく動きます！ルールを徹底しましょう！" }
+        ]
+      }
+    ];
+
+    let currentQIndex = 0;
+    let quizScore = 0;
+
+    function renderQuiz() {
+      const container = document.getElementById('quiz-card-content');
+      const progressText = document.getElementById('quiz-progress-text');
+      const progressBar = document.getElementById('quiz-progress-bar');
+      const scoreText = document.getElementById('quiz-score-text');
+
+      if (currentQIndex >= quizData.length) {
+        // 結果発表画面
+        let rankTitle = "株式ルーキー 🌱";
+        let rankDesc = "まずは基本を何回も復習して、ローソク足の形に慣れよう！";
+        if (quizScore === 5) {
+          rankTitle = "天才チャートマスター 👑";
+          rankDesc = "完璧！プロ並みの心理分析力です！中学生にして投資の神童レベル！";
+        } else if (quizScore >= 3) {
+          rankTitle = "有望なジュニアトレーダー 🚀";
+          rankDesc = "素晴らしい！床と天井、損切りの基礎がしっかり身についています！";
+        }
+
+        container.innerHTML = `
+          <div class="text-center py-8">
+            <span class="text-6xl animate-bounce inline-block mb-4">🏆</span>
+            <div class="inline-block px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-300 text-sm font-black mb-3">
+              クイズ全問クリア！
+            </div>
+            <h3 class="text-3xl font-black text-white mb-2">${rankTitle}</h3>
+            <p class="text-slate-300 text-sm max-w-md mx-auto mb-6">${rankDesc}</p>
+            <div class="text-4xl font-black text-amber-400 font-mono mb-8">スコア: ${quizScore} / 5 点</div>
+            <button onclick="restartQuiz()" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-rose-500 to-amber-500 text-white font-black text-sm shadow-lg hover:scale-105 transition transform">
+              もう一度挑戦する 🔄
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      const q = quizData[currentQIndex];
+      progressText.innerText = `第${currentQIndex + 1}問 / ${quizData.length}問`;
+      progressBar.style.width = `${((currentQIndex + 1) / quizData.length) * 100}%`;
+      scoreText.innerText = `${quizScore}点`;
+
+      // 視覚グラフィックパーツの生成（全問SVG完備）
+      let graphicHtml = "";
+      if (q.graphicType === "hammer") {
+        graphicHtml = `
+          <div class="h-32 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-around px-6 my-4">
+            <div class="text-xs text-sky-400 font-bold border-b-2 border-sky-400 pb-1">🛡️ サポートライン（床）</div>
+            <div class="flex flex-col items-center">
+              <div class="w-10 h-7 bg-rose-500 rounded-xs shadow-md shadow-rose-500/50"></div>
+              <div class="w-1.5 h-16 bg-slate-300"></div>
+            </div>
+            <span class="text-xs font-mono text-amber-300">強烈な下ヒゲ！</span>
+          </div>
+        `;
+      } else if (q.graphicType === "shooting-star") {
+        graphicHtml = `
+          <div class="h-32 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-around px-6 my-4">
+            <div class="text-xs text-rose-400 font-bold border-t-2 border-rose-400 pt-1">🛑 レジスタンスライン（天井）</div>
+            <div class="flex flex-col items-center">
+              <div class="w-1.5 h-16 bg-slate-300"></div>
+              <div class="w-10 h-7 bg-sky-500 rounded-xs"></div>
+            </div>
+            <span class="text-xs font-mono text-purple-300">長い上ヒゲで失速！</span>
+          </div>
+        `;
+      } else if (q.graphicType === "fake-bull") {
+        graphicHtml = `
+          <div class="h-32 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-around px-6 my-4">
+            <div class="text-xs text-amber-400 font-bold">📉 25日線（下向き）</div>
+            <div class="flex flex-col items-center">
+              <div class="w-0.5 h-3 bg-slate-400"></div>
+              <div class="w-6 h-8 bg-rose-500 rounded-xs"></div>
+              <div class="w-0.5 h-3 bg-slate-400"></div>
+              <span class="text-[10px] text-slate-400 mt-1">小陽線</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="w-4 h-3 bg-amber-400/80 rounded-xs"></div>
+              <span class="text-[10px] text-amber-300 font-bold mt-1">出来高スカスカ！</span>
+            </div>
+          </div>
+        `;
+      } else if (q.graphicType === "breakout") {
+        graphicHtml = `
+          <div class="h-32 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-around px-6 my-4">
+            <div class="text-xs text-rose-400 font-bold border-t-2 border-dashed border-rose-400 pt-1">🛑 天井（レジスタンス）</div>
+            <div class="flex flex-col items-center">
+              <div class="w-1 h-3 bg-slate-400"></div>
+              <div class="w-12 h-20 bg-rose-500 rounded-xs shadow-lg shadow-rose-500/50"></div>
+              <div class="w-1 h-3 bg-slate-400"></div>
+              <span class="text-[10px] text-emerald-400 font-bold mt-0.5">大陽線ブレイク！</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="w-6 h-16 bg-rose-500 rounded-xs animate-pulse"></div>
+              <span class="text-[10px] text-rose-300 font-bold mt-1">出来高3倍爆発！</span>
+            </div>
+          </div>
+        `;
+      } else if (q.graphicType === "cut-loss") {
+        graphicHtml = `
+          <div class="h-32 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-around px-6 my-4">
+            <div class="text-xs text-slate-400">
+              <div>買値: 2,000円</div>
+              <div class="text-rose-400 font-bold border-b border-rose-500/50 pb-0.5 mt-1">🛑 損切り防衛線: 1,950円</div>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="w-1.5 h-4 bg-slate-400"></div>
+              <div class="w-10 h-16 bg-sky-500 rounded-xs shadow-md shadow-sky-500/50"></div>
+              <div class="w-1.5 h-4 bg-slate-400"></div>
+            </div>
+            <span class="text-xs font-mono font-bold text-rose-400 bg-rose-950/60 px-2.5 py-1.5 rounded-lg border border-rose-500/40">
+              現在値: 1,940円<br>(ライン割れ！)
+            </span>
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <div>
+          <h3 class="text-xl sm:text-2xl font-black text-white mb-2">${q.title}</h3>
+          <p class="text-slate-300 text-sm leading-relaxed">${q.situation}</p>
+          ${graphicHtml}
+          
+          <!-- 選択肢 -->
+          <div id="quiz-choices-box" class="space-y-3 mt-6">
+            ${q.choices.map((c, i) => `
+              <button onclick="handleChoice(${i})" class="quiz-choice-btn w-full text-left p-4 rounded-2xl bg-slate-900 border border-slate-800 hover:border-amber-400 hover:bg-slate-850 text-slate-200 text-sm font-bold transition flex items-center justify-between group">
+                <span>${c.text}</span>
+                <i data-lucide="chevron-right" class="w-5 h-5 text-slate-500 group-hover:text-amber-400 transition"></i>
+              </button>
+            `).join('')}
+          </div>
+
+          <!-- フィードバックポップアップエリア -->
+          <div id="quiz-feedback" class="hidden mt-6 p-5 rounded-2xl"></div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+    function handleChoice(index) {
+      // 連打バグ防止：回答ボタンをすべて無効化
+      const choiceButtons = document.querySelectorAll('.quiz-choice-btn');
+      choiceButtons.forEach(btn => {
+        btn.disabled = true;
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+      });
+
+      const q = quizData[currentQIndex];
+      const choice = q.choices[index];
+      const feedback = document.getElementById('quiz-feedback');
+
+      if (choice.isCorrect) {
+        quizScore++;
+        feedback.className = "mt-6 p-5 rounded-2xl bg-emerald-950/60 border border-emerald-500/60 block animate-fade-in";
+        feedback.innerHTML = `
+          <div class="flex items-center gap-2 text-emerald-400 font-black text-lg mb-1">
+            <span>🎉 大正解！</span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">${choice.reason}</p>
+          <button onclick="nextQuestion()" class="mt-4 px-5 py-2.5 rounded-xl bg-emerald-500 text-white font-black text-xs hover:bg-emerald-600 transition">
+            次の問題へ進む ➔
+          </button>
+        `;
+      } else {
+        feedback.className = "mt-6 p-5 rounded-2xl bg-rose-950/60 border border-rose-500/60 block animate-fade-in";
+        feedback.innerHTML = `
+          <div class="flex items-center gap-2 text-rose-400 font-black text-lg mb-1">
+            <span>❌ ざんねん…！</span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">${choice.reason}</p>
+          <button onclick="nextQuestion()" class="mt-4 px-5 py-2.5 rounded-xl bg-slate-800 text-slate-200 border border-slate-700 font-black text-xs hover:bg-slate-700 transition">
+            解説を読んで次へ進む ➔
+          </button>
+        `;
+      }
+    }
+
+    function nextQuestion() {
+      currentQIndex++;
+      renderQuiz();
+    }
+
+    function restartQuiz() {
+      currentQIndex = 0;
+      quizScore = 0;
+      renderQuiz();
+    }
+
+    /* ===================================================
+       3. 期待値＆コツコツドカン実験ラボ（シミュレーター）
+    =================================================== */
+    function runExpectancySim() {
+      const resA = document.getElementById('sim-res-a');
+      const resB = document.getElementById('sim-res-b');
+      const statusA = document.getElementById('sim-status-a');
+      const statusB = document.getElementById('sim-status-b');
+      const conclusion = document.getElementById('sim-conclusion');
+
+      let capitalA = 100000;
+      let capitalB = 100000;
+      let winsA = 0, lossesA = 0;
+      let winsB = 0, lossesB = 0;
+
+      // 50回のトレードをシミュレート
+      for (let i = 0; i < 50; i++) {
+        // A君：勝率85%（+1,000円 / -10,000円）
+        if (Math.random() < 0.85) {
+          capitalA += 1000;
+          winsA++;
+        } else {
+          capitalA -= 10000;
+          lossesA++;
+        }
+
+        // Bさん：勝率40%（+3,500円 / -1,000円）
+        if (Math.random() < 0.40) {
+          capitalB += 3500;
+          winsB++;
+        } else {
+          capitalB -= 1000;
+          lossesB++;
+        }
+      }
+
+      resA.innerText = capitalA.toLocaleString() + ' 円';
+      resB.innerText = capitalB.toLocaleString() + ' 円';
+
+      const diffA = capitalA - 100000;
+      const diffB = capitalB - 100000;
+
+      statusA.innerHTML = `${winsA}勝 ${lossesA}敗 (${diffA >= 0 ? '+' : ''}${diffA.toLocaleString()}円)<br><span class="text-rose-400 font-bold">${capitalA < 100000 ? '⚠️ 高勝率なのに資産激減・破産寸前！' : '辛うじてプラスだがリスク極大'}</span>`;
+      statusB.innerHTML = `${winsB}勝 ${lossesB}敗 (${diffB >= 0 ? '+' : ''}${diffB.toLocaleString()}円)<br><span class="text-emerald-400 font-bold">🎉 半分以上負けたのに大儲け！</span>`;
+
+      conclusion.classList.remove('hidden');
+      conclusion.innerHTML = `
+        <div class="flex items-center gap-2 text-amber-300 font-black text-sm mb-1.5">
+          <span>🧠 実験結果からわかる衝撃の真実：</span>
+        </div>
+        <p>
+          テストで毎回85点を取るA君は、たった数回のドカン負け（-10,000円×${lossesA}回）でコツコツ貯めた利益をすべて吹き飛ばしました。<br>
+          一方、テストで40点しか取れないBさんは、<strong>「小さく負けて（-1,000円）、勝つときは大きく伸ばす（+3,500円）」</strong>という期待値のルールを徹底したため、${lossesB}回も負けたのに資産は<strong>+${diffB.toLocaleString()}円</strong>も増えました！<br>
+          <strong>「勝率の高さ」は罠。「利大損小」こそがプロの絶対法則です！</strong>
+        </p>
+      `;
+    }
+
+    /* ===================================================
+       4. プロ直伝 2%ルール＆ポジションサイジング計算機
+    =================================================== */
+    const inTotalCapital = document.getElementById('calc-total-capital');
+    const inEntryPrice = document.getElementById('calc-entry-price');
+    const inStopPrice = document.getElementById('calc-stop-price');
+    const inSharesSlider = document.getElementById('calc-shares-slider');
+
+    const outAllowedRisk = document.getElementById('calc-allowed-risk');
+    const outSharesDisplay = document.getElementById('calc-shares-display');
+    const outSafeShares = document.getElementById('res-safe-shares');
+    const outNeedFund = document.getElementById('res-need-fund');
+
+    const verdictBox = document.getElementById('res-risk-verdict-box');
+    const verdictIcon = document.getElementById('res-verdict-icon');
+    const verdictTitle = document.getElementById('res-verdict-title');
+    const verdictDesc = document.getElementById('res-verdict-desc');
+
+    function updateCapitalCalculator() {
+      const totalCapital = parseFloat(inTotalCapital.value) || 0;
+      const entryPrice = parseFloat(inEntryPrice.value) || 0;
+      const stopPrice = parseFloat(inStopPrice.value) || 0;
+      const plannedShares = parseInt(inSharesSlider.value) || 100;
+
+      outSharesDisplay.innerText = plannedShares + ' 株';
+
+      // 許容リスク（資産の2%）
+      const allowedRisk = Math.floor(totalCapital * 0.02);
+      outAllowedRisk.innerText = allowedRisk.toLocaleString() + ' 円';
+
+      // 1株あたりの損切り幅（リスク）
+      const perShareRisk = Math.max(1, entryPrice - stopPrice);
+
+      // 安全な最大購入株数（100株単位で切り捨て）
+      let maxSafeShares = Math.floor(allowedRisk / perShareRisk / 100) * 100;
+      if (maxSafeShares < 100) maxSafeShares = 100; // 最低100株
+
+      outSafeShares.innerText = maxSafeShares.toLocaleString() + ' 株 まで';
+
+      // 必要資金
+      const needFund = entryPrice * plannedShares;
+      outNeedFund.innerText = needFund.toLocaleString() + ' 円';
+
+      // 実際の予定損失額
+      const plannedLoss = perShareRisk * plannedShares;
+      const plannedLossRate = totalCapital > 0 ? ((plannedLoss / totalCapital) * 100).toFixed(1) : 0;
+
+      if (plannedShares > maxSafeShares) {
+        // 危険判定（オーバートレード）
+        verdictBox.className = "p-4 rounded-xl bg-rose-950/60 border border-rose-500/60 animate-shake";
+        verdictIcon.innerText = "⚠️";
+        verdictTitle.className = "text-sm font-black text-rose-300";
+        verdictTitle.innerText = "危険！オーバートレード（破産リスク）警報！";
+        verdictDesc.className = "text-xs text-rose-200 mt-1 leading-relaxed";
+        verdictDesc.innerHTML = `もし損切りされた場合、損失額は<strong>-${plannedLoss.toLocaleString()}円（資産の${plannedLossRate}%）</strong>に達し、プロの2%ルールを大幅に超過します！株数を<strong>${maxSafeShares}株以下</strong>に減らしてください！`;
+      } else {
+        // 安全判定
+        verdictBox.className = "p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/50";
+        verdictIcon.innerText = "🛡️";
+        verdictTitle.className = "text-sm font-black text-emerald-300";
+        verdictTitle.innerText = "安全！プロの資金管理合格！";
+        verdictDesc.className = "text-xs text-slate-300 mt-1 leading-relaxed";
+        verdictDesc.innerHTML = `もし損切りされても損失は<strong>-${plannedLoss.toLocaleString()}円（資産の${plannedLossRate}%）</strong>にとどまります。10回連続で負けてもびくともしない健全なリスク水準です！`;
+      }
+    }
+
+    [inTotalCapital, inEntryPrice, inStopPrice, inSharesSlider].forEach(el => {
+      el.addEventListener('input', updateCapitalCalculator);
+    });
+
+    /* ===================================================
+       5. 用語かんたん辞書
+    =================================================== */
+    const glossaryData = [
+      { term: "始値（はじめね）", kana: "はじ値", desc: "朝9時に取引がスタートした最初の値段。「今日の試合開始ゴングの鳴った位置」！" },
+      { term: "終値（おわりね）", kana: "おわり値", desc: "夕方15時30分に試合が終わった最後の確定値段。投資家が最も重要視する一番信頼できる値段！" },
+      { term: "高値・安値（たかね・やすね）", kana: "たかね やすね", desc: "その日のうちに一度でも到達した、一番高い値段と一番安い値段。「突撃した限界点」！" },
+      { term: "陽線（ようせん）", kana: "赤のローソク足", desc: "朝の値段より夕方の値段が高くなって終わった足（日本は赤、海外は緑）。買いチームの大勝利！" },
+      { term: "陰線（いんせん）", kana: "青のローソク足", desc: "朝の値段より夕方の値段が安くなって終わった足（日本は青、海外は赤）。売りチームの猛攻！" },
+      { term: "資金管理2%ルール", kana: "にパーセントルール", desc: "「1回のトレードで失っていいのは全資産の2%まで」というヘッジファンドの絶対ルール。破産を防ぐ命の盾。" },
+      { term: "期待値（きたいち）", kana: "きたいち", desc: "1回のトレードで平均して何円儲かるかという数学の計算。勝率が4割でも利大損小なら億万長者になれる。" },
+      { term: "板・気配値（いた・けはいね）", kana: "オーダーブック", desc: "今現在、誰がいくらで何株買いたい・売りたいと並べている注文の行列。チャートの壁の正体。" },
+      { term: "移動平均線（MA）", kana: "いどうへいきんせん", desc: "過去25日間などの終値の平均を結んだ折れ線グラフ。「みんなの平均購入価格」。" },
+      { term: "出来高（できだか）", kana: "ボリューム", desc: "その日に売買された株の合計数。人気投票の熱気であり、大口投資家の本気度を見抜くウソ発見器。" },
+      { term: "サポートライン（床）", kana: "下値支持線", desc: "「これ以上安くなったらお買い得だ！」と買い手が待ち構えて反発しやすい防衛線。" },
+      { term: "レジスタンスライン（天井）", kana: "上値抵抗線", desc: "「ここまで来たら一度利益を確定しよう」と売り手が待ち構えて押し戻されやすい壁。" },
+      { term: "ブレイクアウト", kana: "天井突破", desc: "何回も跳ね返された天井を、出来高を伴って一気に突き破ること。新しい上昇トレンドの合図！" },
+      { term: "損切り（ロスカット）", kana: "そんぎり", desc: "予想が外れたとき、小さな赤字のうちに売って逃げること。プロが一番大切にする命のシートベルト！" },
+      { term: "利確（利益確定）", kana: "りかく", desc: "含み益が出ている株を売って、現金の利益として自分の財布に確定させること。" },
+      { term: "ボラティリティ", kana: "ねうごきのはば", desc: "株価が激しく上下に動く度合い（振れ幅）。高いと儲けも損も大きく、低いと穏やかになる。" },
+      { term: "空売り（からうり）", kana: "ショート", desc: "証券会社から株を借りて先に売り、下がったところで買い戻して利益を出すプロの逆張り手法。" },
+      { term: "パーフェクトオーダー", kana: "かんぺきなならび", desc: "株価 > 短期線 > 中期線 > 長期線とすべて同じ上向きで並んでいる状態。最強の上昇トレンド！" },
+      { term: "ボックス相場（レンジ）", kana: "レンジそうば", desc: "床と天井の間をピンポンのように行ったり来たりしている状態。ブレイクするまで方向感がない。" }
+    ];
+
+    function renderGlossary(filter = "") {
+      const list = document.getElementById('glossary-list');
+      const filtered = glossaryData.filter(item => 
+        item.term.toLowerCase().includes(filter.toLowerCase()) || 
+        item.kana.toLowerCase().includes(filter.toLowerCase()) ||
+        item.desc.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        list.innerHTML = `<div class="text-center py-6 text-slate-500 text-sm">見つかりませんでした</div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map((item, idx) => `
+        <div class="rounded-2xl bg-brand-card border border-brand-border overflow-hidden transition">
+          <button onclick="toggleAccordion(${idx})" class="w-full p-4 text-left font-black text-white text-sm flex items-center justify-between hover:bg-slate-800/50">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <span>${item.term}</span>
+              <span class="text-[11px] font-normal text-slate-400">(${item.kana})</span>
+            </div>
+            <i id="acc-icon-${idx}" data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform"></i>
+          </button>
+          <div id="acc-content-${idx}" class="hidden p-4 pt-0 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-slate-800/60 bg-slate-950/40">
+            ${item.desc}
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function toggleAccordion(idx) {
+      const content = document.getElementById(`acc-content-${idx}`);
+      const icon = document.getElementById(`acc-icon-${idx}`);
+      if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        icon.classList.add('rotate-180');
+      } else {
+        content.classList.add('hidden');
+        icon.classList.remove('rotate-180');
+      }
+    }
+
+    document.getElementById('glossary-search').addEventListener('input', (e) => {
+      renderGlossary(e.target.value);
+    });
+
+    /* ===================================================
+       5. YouTube直伝！チャート分析ケーススタディスタジオ
+    =================================================== */
+    const caseStudiesData = [
+      {
+        id: 0,
+        tabName: "① 三角保ち合いブレイク",
+        tag: "急騰シグナル ★★★★★",
+        tagColor: "bg-rose-500/20 text-rose-300 border-rose-500/30",
+        title: "三角保ち合い（アセンディング・トライアングル）上放れ",
+        subtitle: "売り手と買い手のエネルギーが極限まで凝縮されたあとの「ロケット発射」！",
+        modelStock: "半導体急騰株（レーザーテック、アドバンテスト等のブレイク時）",
+        youtubeQuote: "「見てください！天井は平らなのに、安値がどんどん切り上がっていますね！これは買い手が焦っている決定的な証拠です！」",
+        chartSvg: `
+          <svg viewBox="0 0 650 260" class="w-full h-auto text-slate-300">
+            <!-- グリッド背景 -->
+            <line x1="30" y1="50" x2="620" y2="50" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="120" x2="620" y2="120" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="180" x2="620" y2="180" stroke="#1e293b" stroke-dasharray="4"/>
+            <!-- 出来高境界線 -->
+            <line x1="30" y1="210" x2="620" y2="210" stroke="#334155" stroke-width="1"/>
+            <text x="35" y="223" fill="#64748b" font-size="10" font-weight="bold">出来高（取引量）</text>
+
+            <!-- 水平天井ライン（レジスタンス） -->
+            <line x1="50" y1="85" x2="490" y2="85" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="6"/>
+            <text x="55" y="78" fill="#f87171" font-size="11" font-weight="bold">🛑 天井（2,000円の強固な壁）</text>
+
+            <!-- 切り上がる斜めサポートライン -->
+            <line x1="80" y1="175" x2="480" y2="95" stroke="#38bdf8" stroke-width="2.5"/>
+            <text x="180" y="165" fill="#38bdf8" font-size="11" font-weight="bold">🛡️ 安値切り上げライン（買い手が焦って買い支え！）</text>
+
+            <!-- ローソク足群（保ち合い収縮） -->
+            <!-- 1本目: 陰線 -->
+            <line x1="90" y1="80" x2="90" y2="175" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="83" y="90" width="14" height="75" fill="#38bdf8" rx="1"/>
+            <!-- 2本目: 陽線反発 -->
+            <line x1="130" y1="110" x2="130" y2="170" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="123" y="115" width="14" height="45" fill="#ff4d4d" rx="1"/>
+            <!-- 3本目: 天井トライ陽線 -->
+            <line x1="170" y1="85" x2="170" y2="140" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="163" y="90" width="14" height="40" fill="#ff4d4d" rx="1"/>
+            <!-- 4本目: 押し戻され陰線（安値150でストップ） -->
+            <line x1="220" y1="85" x2="220" y2="150" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="213" y="95" width="14" height="45" fill="#38bdf8" rx="1"/>
+            <!-- 5本目: 切り上げ陽線 -->
+            <line x1="270" y1="90" x2="270" y2="145" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="263" y="95" width="14" height="40" fill="#ff4d4d" rx="1"/>
+            <!-- 6本目: 小さな陰線（安値130でストップ） -->
+            <line x1="320" y1="90" x2="320" y2="135" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="313" y="95" width="14" height="30" fill="#38bdf8" rx="1"/>
+            <!-- 7本目: 十字線（煮詰まり） -->
+            <line x1="370" y1="88" x2="370" y2="120" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="363" y="98" width="14" height="4" fill="#fbbf24" rx="1"/>
+            <!-- 8本目: 切り上げ小陽線 -->
+            <line x1="420" y1="87" x2="420" y2="115" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="413" y="90" width="14" height="20" fill="#ff4d4d" rx="1"/>
+
+            <!-- 9本目: 💥 出来高爆発の天井ブレイク大陽線！ -->
+            <line x1="480" y1="40" x2="480" y2="95" stroke="#ff4d4d" stroke-width="2"/>
+            <rect x="471" y="45" width="18" height="45" fill="#ff4d4d" stroke="#ffffff" stroke-width="1.5" rx="2" class="glow-red"/>
+
+            <!-- 10本目: 追撃大陽線 -->
+            <line x1="530" y1="20" x2="530" y2="55" stroke="#ff4d4d" stroke-width="2"/>
+            <rect x="521" y="25" width="18" height="25" fill="#ff4d4d" rx="2"/>
+
+            <!-- 出来高ヒストグラム -->
+            <rect x="83" y="235" width="14" height="20" fill="#64748b"/>
+            <rect x="123" y="238" width="14" height="17" fill="#64748b"/>
+            <rect x="163" y="230" width="14" height="25" fill="#64748b"/>
+            <rect x="213" y="242" width="14" height="13" fill="#64748b"/>
+            <rect x="263" y="245" width="14" height="10" fill="#64748b"/>
+            <rect x="313" y="248" width="14" height="7" fill="#64748b"/>
+            <rect x="363" y="250" width="14" height="5" fill="#fbbf24"/>
+            <rect x="413" y="246" width="14" height="9" fill="#64748b"/>
+            <!-- ブレイク日の爆発出来高 -->
+            <rect x="471" y="215" width="18" height="40" fill="#ff4d4d" class="animate-pulse"/>
+            <rect x="521" y="220" width="18" height="35" fill="#ff4d4d"/>
+
+            <!-- マーカーピン -->
+            <!-- エントリー -->
+            <circle cx="480" cy="45" r="5" fill="#10b981"/>
+            <text x="495" y="48" fill="#34d399" font-size="11" font-weight="900">🎯 買いエントリー (2,010円)</text>
+            <!-- 損切り -->
+            <circle cx="420" cy="115" r="4" fill="#ef4444"/>
+            <text x="360" y="145" fill="#f87171" font-size="10" font-weight="bold">🛑 損切りライン (1,940円)</text>
+            <!-- 利確目標 -->
+            <circle cx="530" cy="25" r="5" fill="#fbbf24"/>
+            <text x="500" y="15" fill="#fbbf24" font-size="11" font-weight="900">🏆 目標利確 (2,200円)</text>
+          </svg>
+        `,
+        logics: [
+          {
+            title: "① 売り手の壁は一定なのに、買い手が焦っている！",
+            desc: "2,000円では売り指値が並んでいますが、株価が下がるたびに「早く買いたい！」という買い手が前の安値（1,850円→1,900円→1,950円）より高い位置で買い支えています。"
+          },
+          {
+            title: "② ボラティリティ（振れ幅）の極限収縮",
+            desc: "上下の隙間がどんどん狭まり、出来高が一旦枯渇します。これは『買いと売りのエネルギーがバネのように限界まで圧縮された状態』です。"
+          },
+          {
+            title: "③ 天井突破の瞬間、空売りのロスカットを巻き込んで爆発！",
+            desc: "2,000円を抜けた瞬間、『ここで下がると思って売っていた空売り勢の買い戻し』と『ブレイクを見て飛び乗った順張り勢の買い』が合流し、一気に大陽線でロケット発射します！"
+          }
+        ],
+        tradePlan: {
+          entry: "2,010円（天井2,000円を出来高急増で上に抜けた瞬間）",
+          stopLoss: "1,940円（直近の切り上がった安値を割ったら即撤退。リスク: -70円）",
+          takeProfit: "2,200円（保ち合いの値幅分を上に伸ばした目標。リワード: +190円）",
+          riskReward: "1 : 2.7 （負けは小さく、勝ちは大きく取れる理想的比率！）"
+        },
+        proTips: "出来高を伴わないブレイクは『ダマシ』の危険があります！必ず下の出来高バーが前日比2倍以上にピョンと跳ね上がっていることを確認するのがプロの流儀です。"
+      },
+      {
+        id: 1,
+        tabName: "② 鉄板ダブルボトム",
+        tag: "大底反転 ★★★★★",
+        tagColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+        title: "鉄板ダブルボトム（二番底）＋ネックライン突破",
+        subtitle: "「もうこれ以上安く売る人はいない！」下落相場が完全に終わる反転の王道！",
+        modelStock: "大底からの反転主力株（ソニー、トヨタ、三菱UFJなどの底打ち時）",
+        youtubeQuote: "「1回目の底で焦って買ってはいけません！2回目の底で『安値を切り上げた』のを確認し、真ん中のネックラインを抜けたところで入るのが最も安全です！」",
+        chartSvg: `
+          <svg viewBox="0 0 650 260" class="w-full h-auto text-slate-300">
+            <line x1="30" y1="60" x2="620" y2="60" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="120" x2="620" y2="120" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="180" x2="620" y2="180" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="210" x2="620" y2="210" stroke="#334155" stroke-width="1"/>
+            <text x="35" y="223" fill="#64748b" font-size="10" font-weight="bold">出来高（売り枯れ確認）</text>
+
+            <!-- ネックライン（水平線） -->
+            <line x1="160" y1="115" x2="520" y2="115" stroke="#fbbf24" stroke-width="2.5" stroke-dasharray="6"/>
+            <text x="170" y="90" fill="#fbbf24" font-size="11" font-weight="bold">🔑 ネックライン（1,650円・運命の分水嶺）</text>
+
+            <!-- 1番底・2番底の床ライン -->
+            <line x1="80" y1="185" x2="360" y2="185" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4"/>
+
+            <!-- ローソク足（Wの形成） -->
+            <!-- 1番底への下落 -->
+            <line x1="80" y1="80" x2="80" y2="160" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="73" y="90" width="14" height="65" fill="#38bdf8" rx="1"/>
+            <!-- 1番底（長い下ヒゲ） -->
+            <line x1="120" y1="140" x2="120" y2="190" stroke="#94a3b8" stroke-width="2"/>
+            <rect x="113" y="145" width="14" height="25" fill="#ff4d4d" rx="1"/>
+            <text x="95" y="205" fill="#38bdf8" font-size="10" font-weight="bold">① 1番底 (1,500円)</text>
+
+            <!-- 中間反発（ネックラインへ） -->
+            <line x1="170" y1="115" x2="170" y2="160" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="163" y="120" width="14" height="35" fill="#ff4d4d" rx="1"/>
+            <!-- 再び下落（2番底へ） -->
+            <line x1="220" y1="120" x2="220" y2="170" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="213" y="125" width="14" height="35" fill="#38bdf8" rx="1"/>
+
+            <!-- 2番底（1番底より高い！安値切り上げ） -->
+            <line x1="270" y1="145" x2="270" y2="175" stroke="#94a3b8" stroke-width="2"/>
+            <rect x="263" y="148" width="14" height="20" fill="#ff4d4d" rx="1"/>
+            <text x="250" y="195" fill="#34d399" font-size="10" font-weight="bold">② 2番底 (1,530円★切上げ)</text>
+
+            <!-- 上昇開始 -->
+            <line x1="330" y1="125" x2="330" y2="165" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="323" y="130" width="14" height="30" fill="#ff4d4d" rx="1"/>
+
+            <!-- 💥 ネックライン突破の大陽線！ -->
+            <line x1="390" y1="85" x2="390" y2="135" stroke="#ff4d4d" stroke-width="2"/>
+            <rect x="381" y="90" width="18" height="38" fill="#ff4d4d" stroke="#ffffff" stroke-width="1.5" rx="2" class="glow-red"/>
+
+            <!-- 追撃大陽線 -->
+            <line x1="450" y1="55" x2="450" y2="100" stroke="#ff4d4d" stroke-width="2"/>
+            <rect x="441" y="60" width="18" height="35" fill="#ff4d4d" rx="2"/>
+
+            <!-- 出来高ヒストグラム -->
+            <rect x="113" y="225" width="14" height="30" fill="#64748b"/>
+            <rect x="163" y="235" width="14" height="20" fill="#64748b"/>
+            <rect x="213" y="245" width="14" height="10" fill="#38bdf8"/>
+            <rect x="263" y="248" width="14" height="7" fill="#34d399"/>
+            <rect x="323" y="240" width="14" height="15" fill="#64748b"/>
+            <rect x="381" y="215" width="18" height="40" fill="#ff4d4d" class="animate-pulse"/>
+            <rect x="441" y="220" width="18" height="35" fill="#ff4d4d"/>
+
+            <!-- マーカーピン -->
+            <circle cx="390" cy="90" r="5" fill="#10b981"/>
+            <text x="405" y="85" fill="#34d399" font-size="11" font-weight="900">🎯 買いエントリー (1,660円)</text>
+            <circle cx="270" cy="175" r="4" fill="#ef4444"/>
+            <text x="140" y="180" fill="#f87171" font-size="10" font-weight="bold">🛑 損切り (1,520円)</text>
+            <circle cx="450" cy="55" r="5" fill="#fbbf24"/>
+            <text x="465" y="50" fill="#fbbf24" font-size="11" font-weight="900">🏆 利確目標 (1,900円)</text>
+          </svg>
+        `,
+        logics: [
+          {
+            title: "① 2番目の底で「売り枯れ」を確認！",
+            desc: "1番底（1,500円）で投げ売りが出尽くしたあと、再び下がったものの1番底まで届かずに1,530円で止まりました。この時出来高が細っているのは『もう誰も安く投げ売りたくない』という決定的な合図です。"
+          },
+          {
+            title: "② ダウ理論のトレンド転換（安値切り上げ）",
+            desc: "安値が1,500円→1,530円と切り上がったことで、それまでの『下落トレンド（安値更新の連続）』のルールが崩れ去りました。"
+          },
+          {
+            title: "③ ネックライン突破で買いが一斉に合流！",
+            desc: "真ん中の山であるネックライン（1,650円）を大陽線で抜いた瞬間、待機していた機関投資家や順張りトレーダーが『底打ち完了！』と一斉に買い注文を浴びせます。"
+          }
+        ],
+        tradePlan: {
+          entry: "1,660円（ネックライン1,650円を上に抜けて確定した瞬間）",
+          stopLoss: "1,520円（2番底1,530円を割り込んだらシナリオ崩壊で即損切り。リスク: -140円）",
+          takeProfit: "1,900円（底からネックラインの値幅150円を、さらにネックラインから上に足した目標。リワード: +240円）",
+          riskReward: "1 : 1.7 （勝率が非常に高い、教科書通りの鉄板トレード！）"
+        },
+        proTips: "1番底で買うのはただの『落ちてくるナイフを拾うギャンブル』です。プロは必ず2番底で反発し、ネックラインを超えたのを確認してから冷静に乗ります。"
+      },
+      {
+        id: 2,
+        tabName: "③ 25日線タッチ押し目",
+        tag: "順張り王道 ★★★★★",
+        tagColor: "bg-sky-500/20 text-sky-300 border-sky-500/30",
+        title: "パーフェクトオーダー中の25日移動平均線タッチ反発",
+        subtitle: "強い上昇相場では「下がったところを拾う」のが最強！グランビルの法則！",
+        modelStock: "業績好調な大型主役株（三菱重工、日立、商社株などの上昇トレンド中）",
+        youtubeQuote: "「株価がグングン上がっている時に慌てて高値掴みしてはいけません！25日線まで下がってくるのをじっと待って、タッチして下ヒゲが出た瞬間を狙うのです！」",
+        chartSvg: `
+          <svg viewBox="0 0 650 260" class="w-full h-auto text-slate-300">
+            <line x1="30" y1="50" x2="620" y2="50" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="120" x2="620" y2="120" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="180" x2="620" y2="180" stroke="#1e293b" stroke-dasharray="4"/>
+
+            <!-- 上向きの25日移動平均線（なだらかな曲線） -->
+            <path d="M 40,190 Q 200,160 350,125 T 600,60" fill="none" stroke="#fbbf24" stroke-width="3"/>
+            <text x="450" y="90" fill="#fbbf24" font-size="11" font-weight="bold">📈 25日移動平均線（みんなの平均点）</text>
+
+            <!-- 上向きの75日長期線 -->
+            <path d="M 40,210 Q 250,190 450,160 T 600,130" fill="none" stroke="#60a5fa" stroke-width="2" stroke-dasharray="4"/>
+            <text x="500" y="145" fill="#60a5fa" font-size="10">75日線（長期サポート）</text>
+
+            <!-- ローソク足群 -->
+            <!-- 強い上昇期 -->
+            <line x1="70" y1="130" x2="70" y2="180" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="63" y="135" width="14" height="40" fill="#ff4d4d" rx="1"/>
+            <line x1="120" y1="100" x2="120" y2="150" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="113" y="105" width="14" height="40" fill="#ff4d4d" rx="1"/>
+            <line x1="170" y1="75" x2="170" y2="120" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="163" y="80" width="14" height="35" fill="#ff4d4d" rx="1"/>
+
+            <!-- 一時的な調整（利確売りで25日線へ下落） -->
+            <line x1="220" y1="80" x2="220" y2="135" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="213" y="85" width="14" height="40" fill="#38bdf8" rx="1"/>
+            <line x1="270" y1="95" x2="270" y2="140" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="263" y="100" width="14" height="35" fill="#38bdf8" rx="1"/>
+
+            <!-- 💥 25日線にタッチ！長い下ヒゲピンバー出現！ -->
+            <line x1="330" y1="110" x2="330" y2="140" stroke="#94a3b8" stroke-width="2"/>
+            <rect x="323" y="112" width="14" height="15" fill="#ff4d4d" stroke="#ffffff" stroke-width="1.5" rx="1" class="glow-gold"/>
+            <text x="250" y="160" fill="#fbbf24" font-size="11" font-weight="bold">🛡️ 25日線で反発下ヒゲ！</text>
+
+            <!-- 翌日：大陽線で反発開始！ -->
+            <line x1="390" y1="70" x2="390" y2="120" stroke="#ff4d4d" stroke-width="2"/>
+            <rect x="381" y="75" width="18" height="40" fill="#ff4d4d" rx="2" class="glow-red"/>
+
+            <!-- 高値更新！ -->
+            <line x1="450" y1="45" x2="450" y2="90" stroke="#ff4d4d" stroke-width="2"/>
+            <rect x="441" y="50" width="18" height="35" fill="#ff4d4d" rx="2"/>
+
+            <!-- マーカーピン -->
+            <circle cx="390" cy="75" r="5" fill="#10b981"/>
+            <text x="405" y="70" fill="#34d399" font-size="11" font-weight="900">🎯 押し目買いエントリー (3,000円)</text>
+            <circle cx="330" cy="140" r="4" fill="#ef4444"/>
+            <text x="250" y="145" fill="#f87171" font-size="10" font-weight="bold">🛑 損切り (2,920円)</text>
+            <circle cx="450" cy="45" r="5" fill="#fbbf24"/>
+            <text x="465" y="40" fill="#fbbf24" font-size="11" font-weight="900">🏆 高値更新利確 (3,250円)</text>
+          </svg>
+        `,
+        logics: [
+          {
+            title: "① パーフェクトオーダーは『追い風100%』の状態",
+            desc: "株価 > 25日線 > 75日線と綺麗に上向きで重なっている時は、市場の買い圧力が売り圧力を圧倒している証拠です。この時は『買い（ロング）』しか考えてはいけません。"
+          },
+          {
+            title: "② 25日線はみんなが狙っている『バーゲン会場』",
+            desc: "高値で買えなかった投資家たちが『25日線まで下がってきたら絶対に買うぞ！』と指値をびっしり並べて待っています。そのため、線に触れた瞬間に反発力が生まれます。"
+          },
+          {
+            title: "③ 下ヒゲピンバーで『売り圧力の終了』が確定",
+            desc: "25日線を一瞬割り込もうと売りが出ましたが、猛烈な買い戻しが入って下ヒゲがつきました。売りが完全に吸収されたため、再び上を目指すエネルギーが爆発します。"
+          }
+        ],
+        tradePlan: {
+          entry: "3,000円（25日線タッチ後の下ヒゲを確認し、翌日陽線で反発した朝）",
+          stopLoss: "2,920円（下ヒゲの最安値または25日線を終値で明確に割ったら損切り。リスク: -80円）",
+          takeProfit: "3,250円（直近最高値を超えてさらに伸びるターゲット。リワード: +250円）",
+          riskReward: "1 : 3.1 （トレンドフォローの極意！負けが小さく勝ちがでかい！）"
+        },
+        proTips: "もし25日線を『長い陰線』でズドンと下回ってしまった場合は、絶対に押し目買いしてはいけません！それは調整ではなく『トレンド崩壊』の合図です。"
+      },
+      {
+        id: 3,
+        tabName: "④ 三尊天井（大暴落）",
+        tag: "大暴落危険 🛑🛑🛑🛑🛑",
+        tagColor: "bg-purple-500/20 text-purple-300 border-purple-500/30",
+        title: "三尊天井（ヘッド＆ショルダーズ・トップ）＋ネックライン割れ",
+        subtitle: "「もうこれ以上買える人がいない…」バブル相場が音を立てて崩壊する天井サイン！",
+        modelStock: "急騰しすぎた新興バイオ・仕手株・ハイテク株のピークアウト時",
+        youtubeQuote: "「真ん中の頭で最高値をつけた後、右の山が高値を超えられませんでしたね。この時点で買い手は力尽きています。下のラインを割ったら全員脱出してください！」",
+        chartSvg: `
+          <svg viewBox="0 0 650 260" class="w-full h-auto text-slate-300">
+            <line x1="30" y1="50" x2="620" y2="50" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="120" x2="620" y2="120" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="180" x2="620" y2="180" stroke="#1e293b" stroke-dasharray="4"/>
+
+            <!-- ネックライン（最後の砦の床） -->
+            <line x1="70" y1="130" x2="520" y2="130" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="6"/>
+            <text x="80" y="145" fill="#f87171" font-size="11" font-weight="bold">🛑 ネックライン（3,800円・ここを割ったら大暴落）</text>
+
+            <!-- ① 左肩 -->
+            <line x1="120" y1="90" x2="120" y2="135" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="113" y="95" width="14" height="35" fill="#ff4d4d" rx="1"/>
+            <text x="100" y="80" fill="#cbd5e1" font-size="10" font-weight="bold">左肩 (4,000円)</text>
+
+            <!-- 一旦下落 -->
+            <line x1="170" y1="110" x2="170" y2="135" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="163" y="115" width="14" height="18" fill="#38bdf8" rx="1"/>
+
+            <!-- ② 頭（最高値・大口の売り抜け） -->
+            <line x1="240" y1="45" x2="240" y2="120" stroke="#94a3b8" stroke-width="2"/>
+            <rect x="231" y="50" width="18" height="35" fill="#ff4d4d" rx="2"/>
+            <text x="215" y="38" fill="#fbbf24" font-size="11" font-weight="900">👑 頭 (最高値 4,500円)</text>
+
+            <!-- 一旦ネックラインへ急落 -->
+            <line x1="310" y1="75" x2="310" y2="135" stroke="#94a3b8" stroke-width="2"/>
+            <rect x="303" y="85" width="14" height="45" fill="#38bdf8" rx="1"/>
+
+            <!-- ③ 右肩（高値更新できず失速・上ヒゲ） -->
+            <line x1="370" y1="85" x2="370" y2="130" stroke="#94a3b8" stroke-width="2"/>
+            <rect x="363" y="95" width="14" height="25" fill="#38bdf8" rx="1"/>
+            <text x="350" y="80" fill="#f87171" font-size="10" font-weight="bold">右肩 (4,100円失速)</text>
+
+            <!-- 💥 ネックラインを突き破る大陰線！パニック売り開始 -->
+            <line x1="430" y1="120" x2="430" y2="185" stroke="#38bdf8" stroke-width="2"/>
+            <rect x="421" y="128" width="18" height="52" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5" rx="2" class="glow-blue"/>
+
+            <!-- 翌日ストップ安級の暴落 -->
+            <line x1="490" y1="180" x2="490" y2="235" stroke="#38bdf8" stroke-width="2"/>
+            <rect x="481" y="185" width="18" height="45" fill="#38bdf8" rx="2"/>
+
+            <!-- マーカーピン -->
+            <circle cx="430" cy="130" r="5" fill="#ef4444"/>
+            <text x="445" y="125" fill="#f87171" font-size="11" font-weight="900">🚨 全員即時脱出！ (3,800円割れ)</text>
+            <circle cx="490" cy="230" r="4" fill="#38bdf8"/>
+            <text x="440" y="248" fill="#38bdf8" font-size="10" font-weight="bold">ナイアガラの滝暴落へ…</text>
+          </svg>
+        `,
+        logics: [
+          {
+            title: "① 頭（4,500円）で大口が売り逃げた",
+            desc: "最高値をつけた日に出来高が急増しているのに上ヒゲが出ました。これは大口投資家が『個人の熱狂買いにぶつけて手持ち株をすべて売り抜けた』証拠です。"
+          },
+          {
+            title: "② 右肩で買い手が『燃料切れ』を起こした",
+            desc: "もう一度上がろうとしましたが、4,100円で力尽き、最高値（4,500円）に全く届きませんでした。『もうこの高値で買う人は市場に誰もいない』ことが全員にバレてしまった瞬間です。"
+          },
+          {
+            title: "③ ネックライン（3,800円）割れで全員が含み損に転落！",
+            desc: "最後の防衛線だった床（3,800円）を割り込んだ瞬間、高値圏で買った人全員が一瞬にして含み損になり、パニック売りと追証（借金）の強制ロスカットが雪崩を打って連鎖します。"
+          }
+        ],
+        tradePlan: {
+          entry: "3,800円割れで【即座に売り逃げ（保有株の全決済）】、または【空売りエントリー（3,780円）】",
+          stopLoss: "4,120円（右肩の高値を超えたら三尊天井シナリオ否定で損切り）",
+          takeProfit: "3,300円（頭からネックラインの幅700円分がそっくりそのまま下に落ちる目標）",
+          riskReward: "1 : 2.5 （買い手にとっては地獄、空売り勢にとっては大儲けの局面！）"
+        },
+        proTips: "三尊天井の右肩で『まだ上がるはず…』とお祈りしてはいけません。ネックラインを割ったら理由を問わず一目散に逃げるのが資産を守る絶対ルールです。"
+      },
+      {
+        id: 4,
+        tabName: "⑤ ダマシのブレイク",
+        tag: "罠・トラップ注意 ⚠️⚠️⚠️⚠️",
+        tagColor: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+        title: "ダマシのブレイクアウト（ブルトラップ）からの包み足",
+        subtitle: "天井を抜けたフリをして個人をハメ込む！翌日の巨大陰線で即死する恐怖パターン！",
+        modelStock: "出来高の少ない中小型株・材料株のイナゴタワー崩壊",
+        youtubeQuote: "「新高値を更新したのに、出来高が普段の半分しかありません！これは大口が個人をハメ込むための罠（おとり）です！翌日の包み足を見たら即座に逃げてください！」",
+        chartSvg: `
+          <svg viewBox="0 0 650 260" class="w-full h-auto text-slate-300">
+            <line x1="30" y1="60" x2="620" y2="60" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="120" x2="620" y2="120" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="180" x2="620" y2="180" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="210" x2="620" y2="210" stroke="#334155" stroke-width="1"/>
+            <text x="35" y="223" fill="#64748b" font-size="10" font-weight="bold">出来高（スカスカの罠を見破れ！）</text>
+
+            <!-- 天井ライン（5,000円） -->
+            <line x1="50" y1="95" x2="520" y2="95" stroke="#ef4444" stroke-width="2" stroke-dasharray="6"/>
+            <text x="60" y="85" fill="#f87171" font-size="11" font-weight="bold">🛑 天井（5,000円のレジスタンス）</text>
+
+            <!-- 通常の推移 -->
+            <line x1="90" y1="110" x2="90" y2="160" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="83" y="115" width="14" height="35" fill="#ff4d4d" rx="1"/>
+            <line x1="150" y1="95" x2="150" y2="140" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="143" y="100" width="14" height="35" fill="#38bdf8" rx="1"/>
+            <line x1="210" y1="95" x2="210" y2="150" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="203" y="105" width="14" height="35" fill="#ff4d4d" rx="1"/>
+
+            <!-- ⚠️ ダマシのブレイク陽線（出来高が少ないのに天井を上抜け！） -->
+            <line x1="280" y1="65" x2="280" y2="105" stroke="#ff4d4d" stroke-width="2"/>
+            <rect x="271" y="70" width="18" height="30" fill="#ff4d4d" rx="2"/>
+            <text x="250" y="55" fill="#fbbf24" font-size="11" font-weight="bold">⚠️ ニセの突破 (5,050円)</text>
+
+            <!-- 💥 翌日：前日を丸ごと包み込む超巨大大陰線（包み足！） -->
+            <line x1="350" y1="60" x2="350" y2="175" stroke="#38bdf8" stroke-width="2"/>
+            <rect x="339" y="65" width="22" height="95" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5" rx="2" class="glow-blue"/>
+            <text x="370" y="110" fill="#38bdf8" font-size="11" font-weight="bold">😱 巨大な包み陰線！</text>
+
+            <!-- さらなる急降下 -->
+            <line x1="430" y1="160" x2="430" y2="200" stroke="#38bdf8" stroke-width="1.5"/>
+            <rect x="421" y="165" width="18" height="30" fill="#38bdf8" rx="2"/>
+
+            <!-- 出来高ヒストグラム -->
+            <rect x="83" y="235" width="14" height="20" fill="#64748b"/>
+            <rect x="143" y="230" width="14" height="25" fill="#64748b"/>
+            <rect x="203" y="238" width="14" height="17" fill="#64748b"/>
+            <!-- ダマシ日の出来高はなんと半分以下！ -->
+            <rect x="271" y="248" width="18" height="7" fill="#fbbf24"/>
+            <text x="255" y="245" fill="#fbbf24" font-size="9">スカスカ！</text>
+            <!-- 翌日包み足で出来高激増（パニック売り） -->
+            <rect x="339" y="215" width="22" height="40" fill="#38bdf8" class="animate-pulse"/>
+            <rect x="421" y="225" width="18" height="30" fill="#64748b"/>
+
+            <!-- マーカーピン -->
+            <circle cx="350" cy="115" r="5" fill="#ef4444"/>
+            <text x="370" y="130" fill="#f87171" font-size="11" font-weight="900">🛑 即座に損切り・逃げ！ (4,950円)</text>
+          </svg>
+        `,
+        logics: [
+          {
+            title: "① 出来高のないブレイクは『ウソ』の確率90%！",
+            desc: "本物のブレイクは機関投資家の巨額資金が入るため、出来高が2倍〜3倍に跳ね上がります。出来高が増えていないブレイクは、個人を釣るための『おとり（ダマシ）』です。"
+          },
+          {
+            title: "② 包み足（抱き線）は大逆転の最凶シグナル",
+            desc: "前日の陽線を上からも下からもスッポリ飲み込む大陰線が出現しました。これは『前日買った買い手のパワーが完全にへし折られ、売り手に完全制圧された』動かぬ証拠です。"
+          },
+          {
+            title: "③ 飛びついた個人投資家が全員捕まり、雪崩を打つ",
+            desc: "『新高値ブレイクだ！』と飛びついた個人の買い玉がすべて含み損になり、耐えきれなくなった投げ売りが翌日以降も続いて急降下します。"
+          }
+        ],
+        tradePlan: {
+          entry: "ブレイク時に出来高がないのを見たら【絶対に買わないで見送り】！",
+          stopLoss: "もし買ってしまっていたら、包み足の出現で【4,950円ですぐ損切り】！",
+          takeProfit: "なし（買ってはいけない警戒局面）",
+          riskReward: "手を出さないことが最大の利益を守る防衛術！"
+        },
+        proTips: "YouTubeのプロ動画でも『ブレイク時は必ず出来高を見ろ！出来高の伴わない新高値は悪魔の罠！』と口酸っぱく言われます。"
+      },
+      {
+        id: 5,
+        tabName: "⑥ セリングクライマックス",
+        tag: "大逆転リバウンド ★★★★★",
+        tagColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+        title: "セリング・クライマックス（セリクラ）超ロング下ヒゲ",
+        subtitle: "連日の大暴落で市場が絶望したその日、超巨大出来高とともにV字急騰が始まる！",
+        modelStock: "ショック相場（コロナショック、利上げショックなどの大暴落最終日）",
+        youtubeQuote: "「市場が恐怖でパニックになり、全員が絶望して投げ売りした瞬間こそが『本当の大底』です！普段の5倍の出来高で長い下ヒゲが出たら、そこが最高の買い場になります！」",
+        chartSvg: `
+          <svg viewBox="0 0 650 260" class="w-full h-auto text-slate-300">
+            <line x1="30" y1="50" x2="620" y2="50" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="120" x2="620" y2="120" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="180" x2="620" y2="180" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="210" x2="620" y2="210" stroke="#334155" stroke-width="1"/>
+            <text x="35" y="223" fill="#64748b" font-size="10" font-weight="bold">出来高（歴史的超ド級の大商い！）</text>
+
+            <!-- 暴落の連鎖 -->
+            <line x1="80" y1="50" x2="80" y2="95" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="73" y="55" width="14" height="35" fill="#38bdf8" rx="1"/>
+            <line x1="140" y1="80" x2="140" y2="135" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="133" y="85" width="14" height="45" fill="#38bdf8" rx="1"/>
+            <line x1="200" y1="120" x2="200" y2="170" stroke="#94a3b8" stroke-width="1.5"/>
+            <rect x="193" y="125" width="14" height="40" fill="#38bdf8" rx="1"/>
+
+            <!-- 💥 セリクラ当日：超ロング下ヒゲハンマー！ -->
+            <line x1="280" y1="130" x2="280" y2="205" stroke="#ffffff" stroke-width="2.5"/>
+            <rect x="270" y="132" width="20" height="20" fill="#ff4d4d" stroke="#ffffff" stroke-width="1.5" rx="2" class="glow-gold"/>
+            <text x="210" y="120" fill="#34d399" font-size="11" font-weight="900">🔨 超ロング下ヒゲ！(終値2,350円)</text>
+            <text x="220" y="200" fill="#38bdf8" font-size="10" font-weight="bold">最安値 1,800円 (深海からの生還)</text>
+
+            <!-- 翌日：窓開け反発大陽線！ -->
+            <line x1="360" y1="85" x2="360" y2="130" stroke="#ff4d4d" stroke-width="2"/>
+            <rect x="351" y="90" width="18" height="35" fill="#ff4d4d" rx="2" class="glow-red"/>
+            <!-- 翌々日：連続大陽線で急上昇！ -->
+            <line x1="430" y1="50" x2="430" y2="90" stroke="#ff4d4d" stroke-width="2"/>
+            <rect x="421" y="55" width="18" height="30" fill="#ff4d4d" rx="2"/>
+
+            <!-- 出来高ヒストグラム -->
+            <rect x="73" y="240" width="14" height="15" fill="#64748b"/>
+            <rect x="133" y="235" width="14" height="20" fill="#64748b"/>
+            <rect x="193" y="225" width="14" height="30" fill="#38bdf8"/>
+            <!-- セリクラ当日は枠を突き抜けるほどの超巨大出来高！ -->
+            <rect x="270" y="212" width="20" height="43" fill="#fbbf24" stroke="#ffffff" stroke-width="1" class="animate-pulse"/>
+            <text x="295" y="228" fill="#fbbf24" font-size="10" font-weight="bold">普段の5倍！</text>
+            <rect x="351" y="220" width="18" height="35" fill="#ff4d4d"/>
+            <rect x="421" y="230" width="18" height="25" fill="#ff4d4d"/>
+
+            <!-- マーカーピン -->
+            <circle cx="360" cy="90" r="5" fill="#10b981"/>
+            <text x="375" y="85" fill="#34d399" font-size="11" font-weight="900">🎯 翌朝反発エントリー (2,400円)</text>
+            <circle cx="280" cy="205" r="4" fill="#ef4444"/>
+            <text x="300" y="200" fill="#f87171" font-size="10" font-weight="bold">🛑 損切り (1,780円)</text>
+            <circle cx="430" cy="50" r="5" fill="#fbbf24"/>
+            <text x="445" y="45" fill="#fbbf24" font-size="11" font-weight="900">🏆 リバウンド利確 (3,000円)</text>
+          </svg>
+        `,
+        logics: [
+          {
+            title: "① 個人のパニック投げ売りが極限に達した",
+            desc: "連日のストップ安や悪材料で『もう耐えられない、全財産が無くなる！』と恐怖に駆られた個人投資家が、成行売りで一斉に投げて退場しました。"
+          },
+          {
+            title: "② クジラ（大口機関投資家）が底値で全量を買い叩いた！",
+            desc: "個人が投げた大量の株を、待ち構えていたプロの大口投資家がバーゲンセール価格でごっそり買い占めました。だからこそ『歴史的な超巨大出来高』が発生したのです。"
+          },
+          {
+            title: "③ 売り手が市場から消え、上値が真空地帯になった",
+            desc: "売りたい人が全員投げ終わったため、売り注文の壁が完全に消滅しました。わずかな買いが入るだけで株価がロケットのように跳ね上がります（V字回復）。"
+          }
+        ],
+        tradePlan: {
+          entry: "2,400円（超ロング下ヒゲの翌朝、前日終値より高く始まったのを確認して買い）",
+          stopLoss: "1,780円（セリクラ当日の最安値1,800円を割ったら損切り。リスクは大きいので株数を抑えて入る）",
+          takeProfit: "3,000円（急落前の元の水準まで一気に戻すリバウンド。リワード: +600円）",
+          riskReward: "1 : 1.5 （リバウンドのスピードが圧倒的に速い短期トレード！）"
+        },
+        proTips: "セリクラ当日の真っ最中に飛び込むのは危険です。必ず『超ロング下ヒゲをつけて引けた翌日』に反発を確認してからエントリーするのがプロの規律です。"
+      }
+    ];
+
+    function switchCaseStudy(index) {
+      const data = caseStudiesData[index];
+      if (!data) return;
+
+      // タブボタンスタイル更新
+      document.querySelectorAll('.case-tab').forEach((btn, idx) => {
+        if (idx === index) {
+          btn.className = "case-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 bg-rose-500 text-white shadow-lg shadow-rose-500/30 border border-rose-400 scale-105";
+        } else {
+          btn.className = "case-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 scale-100";
+        }
+      });
+
+      // コンテナレンダリング
+      const container = document.getElementById('case-study-display');
+      container.innerHTML = `
+        <div class="space-y-8 animate-fade-in">
+          
+          <!-- ケースヘッダー情報 -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-brand-border pb-6">
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-black border ${data.tagColor}">
+                  ${data.tag}
+                </span>
+                <span class="text-xs font-bold text-slate-400">ケース ${index + 1} / 6</span>
+              </div>
+              <h3 class="text-xl sm:text-3xl font-black text-white tracking-tight">${data.title}</h3>
+              <p class="text-slate-300 text-xs sm:text-sm mt-1.5 font-medium">${data.subtitle}</p>
+            </div>
+            <div class="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 shrink-0">
+              <span class="text-[10px] text-slate-400 block font-bold">典型的な銘柄モデル</span>
+              <span class="text-xs font-black text-amber-300 flex items-center gap-1 mt-0.5">
+                <i data-lucide="tag" class="w-3.5 h-3.5 text-amber-400"></i>
+                ${data.modelStock}
+              </span>
+            </div>
+          </div>
+
+          <!-- YouTube動画風テロップボックス -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-rose-950/40 via-brand-dark to-slate-900 border border-rose-500/40 flex items-start gap-3.5 shadow-inner">
+            <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-rose-500/40 font-black text-xl">
+              🎬
+            </div>
+            <div>
+              <span class="text-[11px] font-black tracking-wider text-rose-400 block uppercase">YouTubeチャート解説動画ならここを叫ぶ！</span>
+              <p class="text-xs sm:text-sm font-extrabold text-white mt-1 leading-relaxed">
+                ${data.youtubeQuote}
+              </p>
+            </div>
+          </div>
+
+          <!-- リアルSVGチャート描画パネル -->
+          <div class="bg-slate-950 p-4 sm:p-6 rounded-3xl border border-slate-800 shadow-inner relative overflow-hidden">
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+              <span class="font-mono flex items-center gap-1.5">
+                <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i> 実戦チャート・時系列シミュレーション
+              </span>
+              <span class="text-[11px] text-slate-500 hidden sm:inline">※ローソク足・ライン・出来高・売買ポイント連動</span>
+            </div>
+            ${data.chartSvg}
+            <div class="mt-3 flex flex-wrap items-center justify-between text-[11px] text-slate-400 gap-2 border-t border-slate-900 pt-2.5">
+              <span class="flex items-center gap-1 text-emerald-400 font-bold">🎯 エントリー（買い/売り）</span>
+              <span class="flex items-center gap-1 text-rose-400 font-bold">🛑 損切りライン（防衛線）</span>
+              <span class="flex items-center gap-1 text-amber-300 font-bold">🏆 利確ターゲット（目標値）</span>
+            </div>
+          </div>
+
+          <!-- なぜ上がった/下がった？（3つの心理ロジック解剖） -->
+          <div>
+            <h4 class="text-base sm:text-lg font-black text-white flex items-center gap-2 mb-4">
+              <i data-lucide="brain" class="w-5 h-5 text-amber-400"></i>
+              なぜこの局面で動いたのか？（裏に潜む3つの心理ロジック）
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              ${data.logics.map((log, lIdx) => `
+                <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between">
+                  <div>
+                    <h5 class="text-xs sm:text-sm font-black text-amber-300 mb-1.5">${log.title}</h5>
+                    <p class="text-xs text-slate-300 leading-relaxed">${log.desc}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- トレード戦略カード & プロの注意点 -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            <div class="lg:col-span-7 p-5 rounded-2xl bg-slate-900 border border-emerald-500/30 space-y-2.5">
+              <h5 class="text-xs sm:text-sm font-black text-emerald-400 flex items-center gap-2">
+                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                勝率を最大化するエントリー＆決済ルール
+              </h5>
+              <div class="text-xs space-y-1.5 text-slate-300">
+                <div><strong>🎯 エントリー位置：</strong> ${data.tradePlan.entry}</div>
+                <div><strong>🛑 損切り（ロスカット）：</strong> <span class="text-rose-400 font-bold">${data.tradePlan.stopLoss}</span></div>
+                <div><strong>🏆 利確（利食い目標）：</strong> <span class="text-amber-300 font-bold">${data.tradePlan.takeProfit}</span></div>
+                <div class="pt-1 text-[11px] text-slate-400 border-t border-slate-800">
+                  <strong>リスクリワード比：</strong> <span class="text-emerald-400 font-mono font-bold">${data.tradePlan.riskReward}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 p-5 rounded-2xl bg-slate-900 border border-amber-500/30 flex flex-col justify-between">
+              <div>
+                <h5 class="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-2 mb-2">
+                  <i data-lucide="lightbulb" class="w-4 h-4 text-amber-400"></i>
+                  プロ直伝のワンポイント助言
+                </h5>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  ${data.proTips}
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      `;
+
+      lucide.createIcons();
+    }
+
+    // 初期化処理呼び出し
+    updateCandleSim();
+    renderQuiz();
+    updateCapitalCalculator();
+    renderGlossary();
+    switchCaseStudy(0);
+  </script>
+</body>
+</html>
