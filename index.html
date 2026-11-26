@@ -74,6 +74,24 @@
     .glow-gold {
       box-shadow: 0 0 25px rgba(251, 191, 36, 0.35);
     }
+    .glow-green {
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.45);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .animate-shake {
+      animation: shake 0.4s ease-in-out;
+    }
   </style>
 </head>
 <body class="bg-brand-dark text-slate-100 font-sans antialiased selection:bg-rose-500 selection:text-white">
@@ -96,24 +114,31 @@
       </a>
 
       <!-- デスクトップナビ -->
-      <nav class="hidden lg:flex items-center gap-1 text-sm font-bold text-slate-300">
-        <a href="#step1" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-slate-800 transition">①基本</a>
-        <a href="#step2" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-slate-800 transition">②最強6選</a>
-        <a href="#step3" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-slate-800 transition">③床と天井</a>
-        <a href="#step4" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-slate-800 transition">④出来高</a>
-        <a href="#step5" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-slate-800 transition">⑤時間帯</a>
-        <a href="#step6" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-slate-800 transition">⑥実例分析</a>
-        <a href="#step7" class="px-2.5 py-1.5 rounded-lg text-emerald-400 hover:text-white hover:bg-emerald-950/40 transition">⑦資金管理★</a>
+      <nav class="hidden xl:flex items-center gap-1 text-xs font-bold text-slate-300">
+        <a href="#step1" class="px-2 py-1 rounded-lg hover:text-white hover:bg-slate-800 transition">①基本</a>
+        <a href="#step2" class="px-2 py-1 rounded-lg hover:text-white hover:bg-slate-800 transition">②最強6選</a>
+        <a href="#step3" class="px-2 py-1 rounded-lg hover:text-white hover:bg-slate-800 transition">③床と天井</a>
+        <a href="#step4" class="px-2 py-1 rounded-lg hover:text-white hover:bg-slate-800 transition">④出来高</a>
+        <a href="#step5" class="px-2 py-1 rounded-lg hover:text-white hover:bg-slate-800 transition">⑤時間帯</a>
+        <a href="#mtf-lens" class="px-2 py-1 rounded-lg text-sky-400 hover:text-white hover:bg-sky-950/40 transition">🔍MTF解剖</a>
+        <a href="#step6" class="px-2 py-1 rounded-lg hover:text-white hover:bg-slate-800 transition">⑥実例分析</a>
+        <a href="#orderbook-lab" class="px-2 py-1 rounded-lg text-amber-300 hover:text-white hover:bg-amber-950/40 transition">📖板読みラボ</a>
+        <a href="#dojo" class="px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-500 hover:text-white transition">🥋実践道場★</a>
+        <a href="#checklist" class="px-2 py-1 rounded-lg text-emerald-400 hover:text-white hover:bg-emerald-950/40 transition">✈️許可証</a>
       </nav>
 
       <div class="flex items-center gap-1.5 sm:gap-2">
-        <a href="#simulator" class="flex items-center gap-1 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-extrabold text-[11px] sm:text-sm px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl shadow-md transition transform hover:-translate-y-0.5 shrink-0">
-          <i data-lucide="sliders" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
-          <span>シミュレーター</span>
+        <button id="sound-toggle-btn" onclick="SoundFX.toggleMute()" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-700 bg-slate-800/80 text-amber-300 hover:bg-slate-700 transition text-xs font-bold shrink-0" title="効果音 ON/OFF">
+          <i data-lucide="volume-2" id="sound-icon" class="w-4 h-4 text-amber-400"></i>
+          <span id="sound-text" class="hidden sm:inline">SOUND</span>
+        </button>
+        <a href="#dojo" class="flex items-center gap-1 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-extrabold text-[11px] sm:text-xs px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl shadow-md transition transform hover:-translate-y-0.5 shrink-0">
+          <i data-lucide="swords" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+          <span>実践道場</span>
         </a>
-        <a href="#quiz" class="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-300 font-extrabold text-[11px] sm:text-sm px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition shrink-0">
-          <i data-lucide="help-circle" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
-          <span>クイズ</span>
+        <a href="#simulator" class="hidden sm:flex items-center gap-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-extrabold text-xs px-2.5 py-1.5 rounded-xl transition shrink-0">
+          <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
+          <span>ツール</span>
         </a>
       </div>
     </div>
@@ -835,6 +860,111 @@
     </div>
   </section>
 
+
+  <!-- ===============================
+       【新機能】日足 ⇄ 5分足 ズームイン解剖（MTFレンズ）
+  =============================== -->
+  <section id="mtf-lens" class="py-16 border-b border-brand-border bg-slate-950/80 relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- セクションタイトル -->
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 border border-sky-500/30 text-sky-300 text-xs font-black tracking-wider uppercase mb-3">
+          <i data-lucide="microscope" class="w-4 h-4 text-sky-400"></i>
+          Pro Feature: Multi-Timeframe Lens
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">日足 ⇄ 5分足 ズームイン解剖 🔬<br><span class="text-sky-400">1本の日足を開くと、1日6時間の激闘が見える！</span></h2>
+        <p class="mt-3 text-slate-400 text-sm sm:text-base leading-relaxed">
+          「大陽線に見えたのに、夕方には長い上ヒゲ陰線に化けて大損…」初心者あるあるの悲劇。<br class="hidden sm:inline">
+          タイムラインを動かして、日足が9:00の寄り付きから15:30の大引けにかけて「どう作られていくか」を自分の目で目撃しよう！
+        </p>
+      </div>
+
+      <!-- シナリオ切り替えタブ -->
+      <div class="flex flex-wrap gap-2 justify-center mb-8" id="mtf-tabs-container">
+        <!-- JSでタブを生成 -->
+      </div>
+
+      <!-- メイン解剖ビュー（日足合成モニター × 5分足タイムライン） -->
+      <div class="bg-brand-card rounded-3xl p-6 sm:p-8 border border-brand-border shadow-2xl space-y-6">
+        
+        <!-- 上部：シナリオ解説バナー -->
+        <div id="mtf-scenario-banner" class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-sky-950/50 via-slate-900 to-slate-900 border border-sky-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <!-- JSで動的更新 -->
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          
+          <!-- 左側：リアルタイム合成 日足ローソク足モニター（4カラム） -->
+          <div class="lg:col-span-4 bg-slate-950/90 rounded-2xl p-5 border border-slate-800 flex flex-col items-center justify-between min-h-[360px] relative">
+            <div class="w-full flex items-center justify-between text-xs text-slate-400 border-b border-slate-900 pb-2">
+              <span class="font-bold flex items-center gap-1.5 text-sky-400">
+                <i data-lucide="calendar" class="w-4 h-4"></i> 今日の日足（合成）
+              </span>
+              <span id="mtf-candle-status" class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono text-[11px] font-bold">
+                09:00 時点（未確定）
+              </span>
+            </div>
+
+            <!-- 日足リアルタイムSVG描画エリア -->
+            <div id="mtf-daily-svg-container" class="w-full flex justify-center py-4">
+              <!-- JSで動的にSVG描画 -->
+            </div>
+
+            <!-- 四本値データバッジ -->
+            <div id="mtf-daily-ohlc-panel" class="w-full grid grid-cols-4 gap-1.5 text-center text-[11px] bg-slate-900/90 p-2.5 rounded-xl border border-slate-800/80 font-mono">
+              <!-- JSで動的更新 -->
+            </div>
+          </div>
+
+          <!-- 右側：5分足タイムライン解剖SVG ＆ コントローラー（8カラム） -->
+          <div class="lg:col-span-8 bg-slate-950/90 rounded-2xl p-5 border border-slate-800 flex flex-col justify-between min-h-[360px] space-y-4">
+            
+            <div class="flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2 border-b border-slate-900 pb-2">
+              <span class="font-bold flex items-center gap-1.5 text-emerald-400">
+                <i data-lucide="clock" class="w-4 h-4"></i> 5分足タイムライン（時系列ドラマ）
+              </span>
+              <div class="flex items-center gap-3 text-[11px]">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-rose-500/40 inline-block"></span> 9:00-9:30 魔の寄り付き</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-emerald-500/30 inline-block"></span> 本命トレンド</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-sky-500/30 inline-block"></span> 14:30-15:30 引け</span>
+              </div>
+            </div>
+
+            <!-- 5分足SVG描画エリア -->
+            <div id="mtf-intraday-svg-container" class="w-full overflow-x-auto">
+              <!-- JSで動的SVG描画 -->
+            </div>
+
+            <!-- 再生コントローラー ＆ スライダー -->
+            <div class="space-y-3 bg-slate-900/90 p-3.5 rounded-xl border border-slate-800">
+              <div class="flex items-center gap-3">
+                <button id="mtf-play-btn" onclick="toggleMtfPlay()" class="px-4 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-extrabold text-xs flex items-center gap-1.5 transition shrink-0">
+                  <i data-lucide="play" id="mtf-play-icon" class="w-4 h-4"></i>
+                  <span id="mtf-play-text">1日を再生</span>
+                </button>
+                <div class="flex-1 flex items-center gap-2">
+                  <span class="text-[11px] font-mono text-slate-400 shrink-0">09:00</span>
+                  <input type="range" id="mtf-slider" min="0" max="15" value="0" class="w-full accent-sky-400 cursor-pointer" oninput="onMtfSliderInput(this.value)">
+                  <span class="text-[11px] font-mono text-slate-400 shrink-0">15:30</span>
+                </div>
+              </div>
+
+              <!-- 現在時刻の解説テロップ -->
+              <div id="mtf-event-note" class="p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-bold text-amber-300 flex items-center gap-2">
+                <!-- JSで動的更新 -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
   <!-- ===============================
        【ステップ6】YouTube直伝！チャート分析ケーススタディスタジオ
   =============================== -->
@@ -1067,6 +1197,146 @@
     </div>
   </section>
 
+
+  <!-- ===============================
+       【新機能】板（オーダーブック）とローソク足の連動ミニ解剖
+  =============================== -->
+  <section id="orderbook-lab" class="py-16 border-b border-brand-border bg-slate-950/60 relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- セクションタイトル -->
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-black tracking-wider uppercase mb-3">
+          <i data-lucide="layers" class="w-4 h-4 text-amber-400"></i>
+          Order Book & Candlestick Mechanics
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">板（オーダーブック）× ローソク足 連動ラボ 📖<br><span class="text-amber-400">注文が板を食い尽くすと、ローソク足が1本伸びる！</span></h2>
+        <p class="mt-3 text-slate-400 text-sm sm:text-base leading-relaxed">
+          「なぜ株価は1円動くの？」「板がスカスカの銘柄はなぜ危険？」<br class="hidden sm:inline">
+          成行ボタンを押して指値の壁を食い破ってみよう！ローソク足がリアルタイムに形を変える仕組みが身体でわかるぞ！
+        </p>
+      </div>
+
+      <!-- モード切り替え & リセットバー -->
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6 bg-slate-900/90 p-4 rounded-2xl border border-slate-800">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-slate-400">相場環境モード：</span>
+          <button id="ob-mode-thick" onclick="setOrderBookMode('thick')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition">
+            🐋 厚い板（人気・大型株）
+          </button>
+          <button id="ob-mode-thin" onclick="setOrderBookMode('thin')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition">
+            🏜️ スカスカ板（閑散・危険株）
+          </button>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="toggleOrderBookWall()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 border border-slate-700 text-amber-300 hover:bg-slate-700 transition flex items-center gap-1.5">
+            <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
+            <span id="ob-wall-btn-text">1,005円に大口売り壁を設置</span>
+          </button>
+          <button onclick="resetOrderBookLab()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-400 hover:text-white transition flex items-center gap-1">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> リセット
+          </button>
+        </div>
+      </div>
+
+      <!-- 3ペイン構成（左：板 / 中央：発注司令室＆歩み値 / 右：リアルタイムローソク足） -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- 左ペイン：気配板（オーダーブック・4カラム） -->
+        <div class="lg:col-span-4 bg-brand-card rounded-2xl p-5 border border-brand-border flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold text-slate-400 pb-2 border-b border-slate-800 mb-3">
+              <span>売気配（Ask）</span>
+              <span class="text-white font-mono">株価 / 数量</span>
+              <span>買気配（Bid）</span>
+            </div>
+            <div id="orderbook-table-container" class="space-y-1 font-mono text-xs">
+              <!-- JSで売り板・現在値・買い板を動的描画 -->
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-500">
+            ※成行注文を入れると、最良気配の指値から順に約定（消費）されます。
+          </div>
+        </div>
+
+        <!-- 中ペイン：発注司令室 ＆ 約定歩み値（4カラム） -->
+        <div class="lg:col-span-4 bg-brand-card rounded-2xl p-5 border border-brand-border flex flex-col justify-between space-y-4">
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 mb-3 flex items-center gap-1.5">
+              <i data-lucide="send" class="w-4 h-4 text-emerald-400"></i> 成行注文を発注してみよう！
+            </h4>
+
+            <div class="space-y-3">
+              <!-- 買いボタン群 -->
+              <div>
+                <span class="text-[11px] font-bold text-rose-400 block mb-1.5">買い成行注文（売り板を食い破る！）</span>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="sendMarketOrder('BUY', 100)" class="py-2 px-3 rounded-xl bg-rose-500/20 hover:bg-rose-500 border border-rose-500/40 text-rose-300 hover:text-white text-xs font-bold transition flex items-center justify-center gap-1">
+                    <span>成行買 100株</span>
+                  </button>
+                  <button onclick="sendMarketOrder('BUY', 800)" class="py-2 px-3 rounded-xl bg-gradient-to-r from-rose-600 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white text-xs font-black shadow-md transition flex items-center justify-center gap-1">
+                    <i data-lucide="rocket" class="w-3.5 h-3.5"></i>
+                    <span>大口買 800株！</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 売りボタン群 -->
+              <div>
+                <span class="text-[11px] font-bold text-sky-400 block mb-1.5">売り成行注文（買い板を叩き割る！）</span>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="sendMarketOrder('SELL', 100)" class="py-2 px-3 rounded-xl bg-sky-500/20 hover:bg-sky-500 border border-sky-500/40 text-sky-300 hover:text-white text-xs font-bold transition flex items-center justify-center gap-1">
+                    <span>成行売 100株</span>
+                  </button>
+                  <button onclick="sendMarketOrder('SELL', 800)" class="py-2 px-3 rounded-xl bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-500 hover:to-blue-600 text-white text-xs font-black shadow-md transition flex items-center justify-center gap-1">
+                    <i data-lucide="bomb" class="w-3.5 h-3.5"></i>
+                    <span>大口売 800株！</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 約定歩み値ログ -->
+          <div>
+            <span class="text-[11px] font-bold text-slate-400 block mb-1.5 flex items-center gap-1">
+              <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400"></i> 直近の約定歩み値
+            </span>
+            <div id="ob-tape-container" class="space-y-1 bg-slate-950 p-2.5 rounded-xl border border-slate-800 font-mono text-[11px] min-h-[90px]">
+              <!-- JSで歩み値を追記 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 右ペイン：連動ローソク足リアルタイムSVG（4カラム） -->
+        <div class="lg:col-span-4 bg-brand-card rounded-2xl p-5 border border-brand-border flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold text-slate-400 pb-2 border-b border-slate-800 mb-3">
+              <span class="text-white flex items-center gap-1.5">
+                <i data-lucide="bar-chart-2" class="w-4 h-4 text-amber-400"></i> 連動ローソク足
+              </span>
+              <span id="ob-candle-type" class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold text-[11px]">
+                スタート
+              </span>
+            </div>
+
+            <!-- ローソク足SVG描画 -->
+            <div id="ob-candle-svg-container" class="w-full flex justify-center py-2">
+              <!-- JSでSVG描画 -->
+            </div>
+          </div>
+
+          <!-- 即時解説アラート枠 -->
+          <div id="ob-learning-alert" class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 leading-relaxed">
+            💡 注文ボタンを押してみよう！大口の注文で指値が食い尽くされると、ローソク足が一気に伸びるぞ！
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
   <!-- ===============================
        【機能1】ローソク足クリエイター（シミュレーター）
   =============================== -->
@@ -1204,6 +1474,177 @@
     </div>
   </section>
 
+
+  <!-- ===============================
+       【新機能】未来が見えない！トレード実践道場（シミュレーションゲーム）
+  =============================== -->
+  <section id="dojo" class="py-16 border-b border-brand-border bg-gradient-to-b from-brand-card/40 via-brand-dark to-brand-card/60 relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- セクションタイトル -->
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-300 text-xs font-black tracking-wider uppercase mb-3">
+          <i data-lucide="swords" class="w-4 h-4 text-rose-400"></i>
+          Battle Arena: Real-time Trading Dojo
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">未来が見えない！トレード実践道場 🥋<br><span class="text-rose-400">1本ずつ進む実戦チャート！規律を守って生き残れ！</span></h2>
+        <p class="mt-3 text-slate-400 text-sm sm:text-base leading-relaxed">
+          過去のチャートは誰でも勝てる。だが実戦は「明日がどうなるか見えない世界」だ！<br class="hidden sm:inline">
+          損切りラインを先に決め、飛びつきを我慢し、規律あるトレードで伝説のSランク認定証を勝ち取ろう！
+        </p>
+      </div>
+
+      <!-- シナリオ切り替えタブ ＆ ステータスヘッダー -->
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6 bg-slate-900/90 p-4 rounded-2xl border border-slate-800">
+        <div class="flex flex-wrap gap-2" id="dojo-scenario-tabs">
+          <!-- JSでミッションタブ生成 -->
+        </div>
+
+        <div class="flex items-center gap-4 text-xs font-mono">
+          <div class="text-slate-400">
+            進行：<span id="dojo-day-badge" class="text-white font-bold">Day 10 / 22</span>
+          </div>
+          <div class="text-slate-400">
+            総資産：<span id="dojo-cash-badge" class="text-emerald-400 font-bold font-mono">300,000 円</span>
+          </div>
+          <div class="text-slate-400">
+            損益：<span id="dojo-pnl-badge" class="text-slate-300 font-bold font-mono">±0 円</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 道場メインバトルコンテナ（左8カラム：チャート戦場 / 右4カラム：司令室） -->
+      <div class="bg-brand-card rounded-3xl p-6 sm:p-8 border border-brand-border shadow-2xl space-y-6">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- 左側：動的SVGチャート ＆ 未来フォグ（8カラム） -->
+          <div class="lg:col-span-8 bg-slate-950 rounded-2xl p-4 sm:p-5 border border-slate-800 space-y-3 relative overflow-hidden">
+            
+            <div class="flex items-center justify-between text-xs text-slate-400 border-b border-slate-900 pb-2">
+              <span class="font-bold flex items-center gap-1.5 text-white" id="dojo-stock-title">
+                <i data-lucide="trending-up" class="w-4 h-4 text-rose-400"></i> 探検テック (4001)
+              </span>
+              <span class="text-[11px] text-amber-300 font-bold flex items-center gap-1">
+                <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> 明日の足は霧（フォグ）の向こう
+              </span>
+            </div>
+
+            <!-- チャートSVG描画エリア -->
+            <div id="dojo-chart-container" class="w-full">
+              <!-- JSで動的SVG描画（ローソク足、移動平均線、ライン、未来フォグマスク） -->
+            </div>
+
+            <!-- チャート凡例 -->
+            <div class="flex flex-wrap items-center justify-between text-[11px] text-slate-400 border-t border-slate-900 pt-2 gap-2">
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> 買値ライン</span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></span> 損切りライン (SL)</span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> 利確目標 (TP)</span>
+              <span class="text-slate-500 font-mono">25日移動平均線 (橙)</span>
+            </div>
+          </div>
+
+          <!-- 右側：トレーダー司令室 ＆ 発注パネル（4カラム） -->
+          <div class="lg:col-span-4 bg-slate-950/80 rounded-2xl p-5 border border-slate-800 flex flex-col justify-between space-y-4">
+            
+            <div>
+              <div class="flex items-center justify-between text-xs font-bold text-slate-400 border-b border-slate-800 pb-2 mb-3">
+                <span class="text-white flex items-center gap-1.5">
+                  <i data-lucide="crosshair" class="w-4 h-4 text-rose-400"></i> トレード司令室
+                </span>
+                <span id="dojo-pos-badge" class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 text-[11px] font-bold">
+                  ノーポジ（待機中）
+                </span>
+              </div>
+
+              <!-- ノーポジ時のエントリー設定 -->
+              <div id="dojo-nopos-controls" class="space-y-3">
+                <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-slate-400">現在値（終値）：</span>
+                    <span id="dojo-current-price" class="text-white font-mono font-bold text-sm">1,990 円</span>
+                  </div>
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-rose-400 font-bold">🛑 損切りライン (SL)：</span>
+                    <input type="number" id="dojo-input-sl" class="w-24 px-2 py-1 rounded bg-slate-950 border border-rose-500/40 text-rose-300 font-mono text-xs text-right" value="1940">
+                  </div>
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-amber-400 font-bold">🏆 利確目標 (TP)：</span>
+                    <input type="number" id="dojo-input-tp" class="w-24 px-2 py-1 rounded bg-slate-950 border border-amber-500/40 text-amber-300 font-mono text-xs text-right" value="2120">
+                  </div>
+                  <div class="pt-1 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+                    <span>リスクリワード比：</span>
+                    <span id="dojo-rr-ratio" class="text-emerald-400 font-mono font-bold">1 : 2.6</span>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <button id="dojo-buy-btn" onclick="dojoBuyEntry()" class="py-2.5 px-3 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-black text-xs shadow-md transition flex items-center justify-center gap-1.5">
+                    <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                    <span>買いエントリー</span>
+                  </button>
+                  <button onclick="advanceDojoBar()" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-extrabold text-xs transition flex items-center justify-center gap-1.5">
+                    <i data-lucide="skip-forward" class="w-3.5 h-3.5"></i>
+                    <span>様子見（進む）</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ポジション保有中のコントロール -->
+              <div id="dojo-pos-controls" class="hidden space-y-3">
+                <div class="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/40 space-y-2">
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-slate-400">保有株数：</span>
+                    <span id="dojo-holding-shares" class="text-white font-mono font-bold">100 株</span>
+                  </div>
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-slate-400">平均取得単価：</span>
+                    <span id="dojo-holding-entry" class="text-white font-mono font-bold">1,990 円</span>
+                  </div>
+                  <div class="flex items-center justify-between text-xs border-t border-emerald-500/20 pt-1.5">
+                    <span class="text-slate-300 font-bold">現在含み損益：</span>
+                    <span id="dojo-unrealized-pnl" class="text-emerald-400 font-mono font-black text-base">+6,000 円 (+3.0%)</span>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="dojoExitPosition('TP')" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-md transition flex items-center justify-center gap-1">
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                    <span>利益確定手仕舞</span>
+                  </button>
+                  <button onclick="dojoExitPosition('SL')" class="py-2.5 px-3 rounded-xl bg-rose-600/80 hover:bg-rose-600 text-white font-black text-xs transition flex items-center justify-center gap-1">
+                    <i data-lucide="x-circle" class="w-3.5 h-3.5"></i>
+                    <span>手動ロスカット</span>
+                  </button>
+                </div>
+
+                <button onclick="advanceDojoBar()" class="w-full py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-300 font-extrabold text-xs transition flex items-center justify-center gap-1.5">
+                  <i data-lucide="fast-forward" class="w-3.5 h-3.5"></i>
+                  <span>ポジション維持で1日進む ⏭️</span>
+                </button>
+              </div>
+
+            </div>
+
+            <!-- 実況ログ ＆ プロの喝 -->
+            <div id="dojo-event-log" class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 leading-relaxed min-h-[70px]">
+              📢 2,000円の天井を抜けられるか注目の局面！損切り価格を確認してエントリーか様子見を選ぼう！
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ランク認定証モーダル（シナリオ終了時に表示） -->
+        <div id="dojo-finish-card" class="hidden p-6 sm:p-8 rounded-3xl bg-gradient-to-tr from-slate-950 via-brand-dark to-slate-900 border-2 border-amber-500/60 shadow-2xl animate-fade-in space-y-6">
+          <!-- JSで認定証を動的描画 -->
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
   <!-- ===============================
        【機能3】プロ直伝 2%ルール＆ポジションサイジング計算機
   =============================== -->
@@ -1288,6 +1729,94 @@
 
         </div>
       </div>
+    </div>
+  </section>
+
+
+  <!-- ===============================
+       【新機能】プロの出撃前チェックリスト ＆ 取引許可証発行
+  =============================== -->
+  <section id="checklist" class="py-16 border-b border-brand-border bg-slate-950/70 relative overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- セクションタイトル -->
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-black tracking-wider uppercase mb-3">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+          Flight Pre-Check & Clearance Pass
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">プロの出撃前チェックリスト ✈️<br><span class="text-emerald-400">全問クリアで「本日の取引許可証」を発行！</span></h2>
+        <p class="mt-3 text-slate-400 text-sm sm:text-base leading-relaxed">
+          飛行機のパイロットが離陸前に計器を点検するように、プロトレーダーはエントリー前に必ず自問自答する！<br class="hidden sm:inline">
+          感情や焦りで飛びつきそうになったら、このブレーキを踏んで資産を守れ！
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- 左側：7つの点検チェック項目（7カラム） -->
+        <div class="lg:col-span-7 bg-brand-card rounded-3xl p-6 sm:p-7 border border-brand-border space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <span class="text-xs font-bold text-slate-400">点検項目（タップして確認）</span>
+            <span class="text-xs font-mono font-bold text-emerald-400" id="checklist-progress-text">0 / 7 項目確認済</span>
+          </div>
+
+          <!-- 点検リストアイテム群 -->
+          <div id="checklist-items-container" class="space-y-2.5">
+            <!-- JSで動的生成 -->
+          </div>
+
+          <div class="pt-3 border-t border-slate-800 flex justify-between items-center text-xs">
+            <span class="text-slate-500">※2%ルール項目は上の計算機と連動</span>
+            <button onclick="resetChecklist()" class="text-slate-400 hover:text-white transition flex items-center gap-1">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> 点検リセット
+            </button>
+          </div>
+        </div>
+
+        <!-- 右側：取引許可証（フライトパス風カード・5カラム） -->
+        <div class="lg:col-span-5 bg-gradient-to-b from-brand-card to-slate-950 rounded-3xl p-6 sm:p-7 border border-brand-border shadow-2xl flex flex-col justify-between min-h-[440px]">
+          
+          <div>
+            <div class="flex items-center justify-between text-xs text-slate-400 pb-3 border-b border-slate-800">
+              <span class="flex items-center gap-1.5 font-bold text-white">
+                <i data-lucide="ticket" class="w-4 h-4 text-amber-400"></i> TSE TRADING PASS
+              </span>
+              <span id="pass-serial-id" class="font-mono text-[10px] text-slate-500">SERIAL: ---</span>
+            </div>
+
+            <!-- トレーダー名入力 -->
+            <div class="mt-4">
+              <label class="block text-[11px] font-bold text-slate-400 mb-1">パイロット（トレーダー名）</label>
+              <input type="text" id="pass-pilot-name" class="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-white focus:outline-none focus:border-emerald-500" placeholder="あなたの名前やニックネーム" value="未来の億り人" oninput="updateClearanceStatus()">
+            </div>
+
+            <!-- 許可証本体ステータスパネル -->
+            <div id="clearance-badge-panel" class="mt-6 p-5 rounded-2xl bg-slate-900/90 border border-slate-800 text-center space-y-3 transition-all duration-300">
+              <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mx-auto text-xl" id="clearance-icon">
+                🔒
+              </div>
+              <div>
+                <h4 class="text-sm font-black text-slate-300" id="clearance-title">出撃待機中（点検未完了）</h4>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed" id="clearance-desc">
+                  左の7項目をすべて確認すると、本日の出撃許可証が発行されます。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 誓約フッター -->
+          <div class="mt-6 pt-4 border-t border-slate-800/80 text-[11px] text-slate-400 space-y-1">
+            <div class="flex items-center gap-1.5 text-emerald-400 font-bold">
+              <i data-lucide="award" class="w-3.5 h-3.5"></i> プロの鉄則誓約書
+            </div>
+            <div>「私は損切りを絶対にためらわず、1トレードの損失を総資産の2%以内に抑えることを誓います。」</div>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
   </section>
 
@@ -2648,12 +3177,1333 @@
       lucide.createIcons();
     }
 
+    // 既存機能へのサウンド連携フック拡張
+    const originalSetCandlePreset = typeof setCandlePreset === 'function' ? setCandlePreset : null;
+    if (originalSetCandlePreset) {
+      window.setCandlePreset = function(type) {
+        SoundFX.tick();
+        originalSetCandlePreset(type);
+      };
+    }
+
+    const originalHandleChoice = typeof handleChoice === 'function' ? handleChoice : null;
+    if (originalHandleChoice) {
+      window.handleChoice = function(choice) {
+        const q = quizQuestions[currentQuizIndex];
+        if (choice === q.correct) {
+          SoundFX.profit();
+        } else {
+          SoundFX.stoploss();
+        }
+        originalHandleChoice(choice);
+      };
+    }
+
+    const originalRunExpectancySim = typeof runExpectancySim === 'function' ? runExpectancySim : null;
+    if (originalRunExpectancySim) {
+      window.runExpectancySim = function() {
+        SoundFX.breakout();
+        originalRunExpectancySim();
+      };
+    }
+
+    /* ===================================================
+       6. Web Audio API 音響演出エンジン (SoundFX)
+    =================================================== */
+    const SoundFX = (() => {
+      let ctx = null;
+      let isMuted = localStorage.getItem("candlestick_muted") === "true";
+
+      function ensureContext() {
+        if (isMuted) return null;
+        if (!ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) ctx = new AudioCtx();
+        }
+        if (ctx && ctx.state === "suspended") ctx.resume();
+        return ctx;
+      }
+
+      function playTone(freq, duration, type = "sine", gainVal = 0.08, delay = 0) {
+        try {
+          const audio = ensureContext();
+          if (!audio) return;
+          const now = audio.currentTime + delay;
+          const osc = audio.createOscillator();
+          const gain = audio.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, now);
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.exponentialRampToValueAtTime(gainVal, now + 0.01);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+          osc.connect(gain);
+          gain.connect(audio.destination);
+          osc.start(now);
+          osc.stop(now + duration + 0.02);
+        } catch (e) {
+          // オーディオ非対応環境ではサイレント
+        }
+      }
+
+      return {
+        isMuted: () => isMuted,
+        toggleMute() {
+          isMuted = !isMuted;
+          localStorage.setItem("candlestick_muted", String(isMuted));
+          const icon = document.getElementById("sound-icon");
+          const text = document.getElementById("sound-text");
+          const btn = document.getElementById("sound-toggle-btn");
+          if (icon && btn) {
+            if (isMuted) {
+              icon.setAttribute("data-lucide", "volume-x");
+              btn.className = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-500 hover:bg-slate-800 transition text-xs font-bold shrink-0";
+              if (text) text.innerText = "MUTED";
+            } else {
+              icon.setAttribute("data-lucide", "volume-2");
+              btn.className = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-700 bg-slate-800/80 text-amber-300 hover:bg-slate-700 transition text-xs font-bold shrink-0";
+              if (text) text.innerText = "SOUND";
+              this.tick();
+            }
+            lucide.createIcons();
+          }
+          return isMuted;
+        },
+        tick()      { playTone(660, 0.045, "triangle", 0.05); },
+        order()     { playTone(523.25, 0.08, "sine", 0.07, 0); playTone(783.99, 0.12, "sine", 0.07, 0.06); },
+        breakout()  { [523, 659, 784, 1046].forEach((f, i) => playTone(f, 0.14, "triangle", 0.08, i * 0.05)); },
+        stoploss()  { playTone(392, 0.09, "sawtooth", 0.05, 0); playTone(293.66, 0.16, "sawtooth", 0.05, 0.08); },
+        profit()    { [587, 740, 880, 1174].forEach((f, i) => playTone(f, 0.22, "sine", 0.09, i * 0.07)); },
+        warning()   { playTone(220, 0.12, "square", 0.05, 0); playTone(196, 0.18, "square", 0.05, 0.13); }
+      };
+    })();
+
+    /* ===================================================
+       7. 日足 ⇄ 5分足 ズームイン解剖（MTFレンズ）
+    =================================================== */
+    const mtfData = [
+      {
+        id: "trap-upper-wick",
+        name: "① 寄り天「長い上ヒゲ陰線」の正体",
+        badge: "飛びつき大敗パターン 😱",
+        badgeColor: "bg-rose-500/20 text-rose-300 border-rose-500/30",
+        lesson: "朝9:15時点では『超大陽線』に見えたのに、大口の売り抜けを浴びて15:30には無残な上ヒゲ陰線に！「足が確定するまで飛びついてはいけない」鉄則がここに！",
+        bars: [
+          { time: "09:00", o: 2000, h: 2055, l: 1995, c: 2050, vol: 180, zone: "open", note: "🚀 寄り付き急騰！勢いがあるように見える！" },
+          { time: "09:15", o: 2050, h: 2120, l: 2045, c: 2110, vol: 240, zone: "open", note: "🔥 最高値2,120円到達！この瞬間は超大陽線！初心者が飛びつく！" },
+          { time: "09:30", o: 2110, h: 2115, l: 2060, c: 2065, vol: 210, zone: "prime", note: "⚠️ 魔の時間帯終了。大口が利確売りを浴びせ始める。" },
+          { time: "09:45", o: 2065, h: 2070, l: 2020, c: 2025, vol: 160, zone: "prime", note: "📉 朝の始値2,000円付近まで急降下！含み益が吹き飛ぶ。" },
+          { time: "10:15", o: 2025, h: 2030, l: 1980, c: 1985, vol: 140, zone: "prime", note: "🩸 ついに朝の始値を割り込み陰線転落！" },
+          { time: "11:00", o: 1985, h: 1990, l: 1960, c: 1970, vol: 110, zone: "prime", note: "前場引けにかけてダウントレンド継続。" },
+          { time: "11:30", o: 1970, h: 1975, l: 1965, c: 1970, vol: 50,  zone: "lunch", note: "🍱 前場終了（11:30〜12:30 昼休み休場）" },
+          { time: "12:30", o: 1970, h: 1975, l: 1955, c: 1960, vol: 90,  zone: "pm",    note: "後場寄り。買い手が現れずダラダラ下げ。" },
+          { time: "13:30", o: 1960, h: 1965, l: 1945, c: 1950, vol: 70,  zone: "pm",    note: "後場の閑散時間。投げ売りが続く。" },
+          { time: "14:15", o: 1950, h: 1955, l: 1940, c: 1945, vol: 120, zone: "pm",    note: "最安値1,940円をつける。" },
+          { time: "14:45", o: 1945, h: 1955, l: 1940, c: 1950, vol: 190, zone: "close", note: "大引け前の手仕舞い交錯。" },
+          { time: "15:15", o: 1950, h: 1955, l: 1948, c: 1950, vol: 250, zone: "close", note: "15:25 クロージング・オークション突入！" },
+          { time: "15:30", o: 1950, h: 1950, l: 1950, c: 1950, vol: 400, zone: "close", note: "🏁 15:30大引け確定！日足は見事な『上ヒゲ大陰線』に！" }
+        ]
+      },
+      {
+        id: "v-shape-hammer",
+        name: "② 深海からの生還「下ヒゲハンマー」の正体",
+        badge: "プロが拾う逆転パターン 🔨",
+        badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+        lesson: "朝9:00〜9:30に急落し「もう終わりだ」と投げ売りが出た所を、大口クジラが全部買い支えて猛烈リバウンド！夕方には力強い下ヒゲ陽線へ昇華！",
+        bars: [
+          { time: "09:00", o: 2000, h: 2005, l: 1960, c: 1965, vol: 220, zone: "open", note: "寄り付きから売り気配！パニック売りが走る。" },
+          { time: "09:15", o: 1965, h: 1970, l: 1900, c: 1910, vol: 350, zone: "open", note: "😱 最安値1,900円まで垂直落下！初心者が恐怖で損切り！" },
+          { time: "09:30", o: 1910, h: 1950, l: 1905, c: 1945, vol: 310, zone: "prime", note: "🐳 クジラ（機関投資家）の爆買いが入って下げ止まる！" },
+          { time: "10:00", o: 1945, h: 1980, l: 1940, c: 1975, vol: 230, zone: "prime", note: "下ヒゲを伸ばしながらぐんぐん回復！" },
+          { time: "11:00", o: 1975, h: 2005, l: 1970, c: 2000, vol: 180, zone: "prime", note: "ついに朝の始値2,000円を奪還！" },
+          { time: "11:30", o: 2000, h: 2010, l: 1995, c: 2005, vol: 90,  zone: "lunch", note: "前場引け。プラス圏で昼休みに突入。" },
+          { time: "12:30", o: 2005, h: 2015, l: 2000, c: 2010, vol: 110, zone: "pm",    note: "後場も買い気配が強く高値圏を維持。" },
+          { time: "14:00", o: 2010, h: 2025, l: 2005, c: 2020, vol: 150, zone: "pm",    note: "売り方がたまらず買い戻し（ショートカバー）！" },
+          { time: "15:30", o: 2020, h: 2030, l: 2015, c: 2025, vol: 380, zone: "close", note: "🏁 2,025円高値引け！見事な『下ヒゲ陽線（ハンマー）』完成！" }
+        ]
+      },
+      {
+        id: "late-breakout",
+        name: "③ 昼の退屈を破る「大引け前ブレイク大陽線」",
+        badge: "プロの本命ブレイク 🚀",
+        badgeColor: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+        lesson: "前場は静かな揉み合い。エネルギーを溜め込み、14:00過ぎに出来高激増で高値ブレイク！終値が最高値付近で引ける最強の形！",
+        bars: [
+          { time: "09:00", o: 2000, h: 2010, l: 1995, c: 2005, vol: 100, zone: "open", note: "平穏な寄り付き。方向感を探る静かな立ち上がり。" },
+          { time: "09:30", o: 2005, h: 2015, l: 2000, c: 2008, vol: 90,  zone: "prime", note: "2,015円天井を抜けず揉み合い。" },
+          { time: "11:30", o: 2008, h: 2012, l: 2002, c: 2005, vol: 60,  zone: "lunch", note: "出来高細って前場終了。" },
+          { time: "13:00", o: 2005, h: 2015, l: 2003, c: 2012, vol: 80,  zone: "pm",    note: "後場、安値がじわじわ切り上がってくる（三角保ち合い）。" },
+          { time: "14:00", o: 2012, h: 2035, l: 2010, c: 2030, vol: 260, zone: "pm",    note: "💥 2,015円の天井を出来高3倍で突破！ブレイク発動！" },
+          { time: "14:45", o: 2030, h: 2065, l: 2028, c: 2060, vol: 320, zone: "close", note: "大引けにかけて怒涛の買い上がり！" },
+          { time: "15:30", o: 2060, h: 2085, l: 2058, c: 2080, vol: 450, zone: "close", note: "🏁 2,080円で高値引け！教科書通りの『本物大陽線』確定！" }
+        ]
+      }
+    ];
+
+    let currentMtfIndex = 0;
+    let currentMtfStep = 0;
+    let mtfPlayInterval = null;
+
+    function initMtfLens() {
+      const tabsContainer = document.getElementById("mtf-tabs-container");
+      if (!tabsContainer) return;
+      tabsContainer.innerHTML = mtfData.map((d, i) => `
+        <button onclick="switchMtfSample(${i})" id="mtf-tab-${i}" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${i === 0 ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/20' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'}">
+          <i data-lucide="zoom-in" class="w-3.5 h-3.5"></i>
+          <span>${d.name}</span>
+        </button>
+      `).join('');
+      switchMtfSample(0);
+    }
+
+    function switchMtfSample(idx) {
+      if (mtfPlayInterval) {
+        clearInterval(mtfPlayInterval);
+        mtfPlayInterval = null;
+        updateMtfPlayBtn(false);
+      }
+      currentMtfIndex = idx;
+      currentMtfStep = 0;
+
+      // タブアクティブ更新
+      mtfData.forEach((_, i) => {
+        const btn = document.getElementById(`mtf-tab-${i}`);
+        if (btn) {
+          btn.className = `px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${i === idx ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/20' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'}`;
+        }
+      });
+
+      const d = mtfData[idx];
+      const banner = document.getElementById("mtf-scenario-banner");
+      if (banner) {
+        banner.innerHTML = `
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2.5 py-0.5 rounded-full border text-[10px] font-black uppercase ${d.badgeColor}">${d.badge}</span>
+              <h3 class="text-base font-black text-white">${d.name}</h3>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">${d.lesson}</p>
+          </div>
+          <div class="shrink-0 text-xs font-bold text-sky-400 bg-sky-950/60 px-3 py-1.5 rounded-xl border border-sky-500/30 flex items-center gap-1">
+            <i data-lucide="play-circle" class="w-4 h-4"></i> スライダーを動かして検証！
+          </div>
+        `;
+      }
+
+      const slider = document.getElementById("mtf-slider");
+      if (slider) {
+        slider.max = d.bars.length - 1;
+        slider.value = 0;
+      }
+
+      renderMtfAtStep(0);
+      lucide.createIcons();
+    }
+
+    function onMtfSliderInput(val) {
+      if (mtfPlayInterval) {
+        clearInterval(mtfPlayInterval);
+        mtfPlayInterval = null;
+        updateMtfPlayBtn(false);
+      }
+      currentMtfStep = parseInt(val, 10);
+      renderMtfAtStep(currentMtfStep);
+      SoundFX.tick();
+    }
+
+    function toggleMtfPlay() {
+      if (mtfPlayInterval) {
+        clearInterval(mtfPlayInterval);
+        mtfPlayInterval = null;
+        updateMtfPlayBtn(false);
+      } else {
+        const d = mtfData[currentMtfIndex];
+        if (currentMtfStep >= d.bars.length - 1) {
+          currentMtfStep = 0;
+        }
+        updateMtfPlayBtn(true);
+        mtfPlayInterval = setInterval(() => {
+          currentMtfStep++;
+          if (currentMtfStep >= d.bars.length) {
+            clearInterval(mtfPlayInterval);
+            mtfPlayInterval = null;
+            updateMtfPlayBtn(false);
+            SoundFX.profit();
+            return;
+          }
+          document.getElementById("mtf-slider").value = currentMtfStep;
+          renderMtfAtStep(currentMtfStep);
+          SoundFX.tick();
+        }, 650);
+      }
+    }
+
+    function updateMtfPlayBtn(isPlaying) {
+      const btn = document.getElementById("mtf-play-btn");
+      const icon = document.getElementById("mtf-play-icon");
+      const text = document.getElementById("mtf-play-text");
+      if (!btn) return;
+      if (isPlaying) {
+        btn.className = "px-4 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs flex items-center gap-1.5 transition shrink-0";
+        icon.setAttribute("data-lucide", "pause");
+        text.innerText = "一時停止";
+      } else {
+        btn.className = "px-4 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-extrabold text-xs flex items-center gap-1.5 transition shrink-0";
+        icon.setAttribute("data-lucide", "play");
+        text.innerText = "1日を再生";
+      }
+      lucide.createIcons();
+    }
+
+    function renderMtfAtStep(stepIdx) {
+      const d = mtfData[currentMtfIndex];
+      const bars = d.bars.slice(0, stepIdx + 1);
+      const currentBar = d.bars[stepIdx];
+
+      // 合成日足の計算
+      const aggO = bars[0].o;
+      const aggH = Math.max(...bars.map(b => b.h));
+      const aggL = Math.min(...bars.map(b => b.l));
+      const aggC = bars[bars.length - 1].c;
+      const isFinal = stepIdx === d.bars.length - 1;
+      const isBull = aggC >= aggO;
+
+      // 日足ステータスバッジ
+      const statusBadge = document.getElementById("mtf-candle-status");
+      if (statusBadge) {
+        if (isFinal) {
+          statusBadge.className = "px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-mono text-[11px] font-black border border-sky-500/40";
+          statusBadge.innerText = "15:30 確定日足！";
+        } else {
+          statusBadge.className = `px-2 py-0.5 rounded ${isBull ? 'bg-rose-500/20 text-rose-300' : 'bg-sky-500/20 text-sky-300'} font-mono text-[11px] font-bold`;
+          statusBadge.innerText = `${currentBar.time} 時点（未確定！）`;
+        }
+      }
+
+      // 四本値パネル
+      const ohlcPanel = document.getElementById("mtf-daily-ohlc-panel");
+      if (ohlcPanel) {
+        ohlcPanel.innerHTML = `
+          <div><span class="text-slate-500 block text-[9px]">始値</span><span class="text-slate-200 font-bold">${aggO}</span></div>
+          <div><span class="text-slate-500 block text-[9px]">高値</span><span class="text-amber-400 font-bold">${aggH}</span></div>
+          <div><span class="text-slate-500 block text-[9px]">安値</span><span class="text-sky-400 font-bold">${aggL}</span></div>
+          <div><span class="text-slate-500 block text-[9px]">終値</span><span class="${isBull ? 'text-rose-400' : 'text-sky-400'} font-bold">${aggC}</span></div>
+        `;
+      }
+
+      // イベントテロップ
+      const noteBox = document.getElementById("mtf-event-note");
+      if (noteBox) {
+        noteBox.innerHTML = `
+          <span class="font-mono text-white bg-slate-900 px-2 py-0.5 rounded border border-slate-800">${currentBar.time}</span>
+          <span>${currentBar.note}</span>
+        `;
+      }
+
+      // 左側 日足SVG描画
+      const dailyContainer = document.getElementById("mtf-daily-svg-container");
+      if (dailyContainer) {
+        const svgH = 220;
+        const svgW = 140;
+        const minP = 1880;
+        const maxP = 2140;
+        const toY = (p) => svgH - 20 - ((p - minP) / (maxP - minP)) * (svgH - 40);
+
+        const yO = toY(aggO);
+        const yH = toY(aggH);
+        const yL = toY(aggL);
+        const yC = toY(aggC);
+
+        const topY = Math.min(yO, yC);
+        const bodyH = Math.max(Math.abs(yO - yC), 4);
+        const color = isBull ? "#ff4d4d" : "#38bdf8";
+
+        dailyContainer.innerHTML = `
+          <svg viewBox="0 0 ${svgW} ${svgH}" class="w-36 h-56 overflow-visible">
+            <!-- グリッド破線 -->
+            <line x1="10" y1="${toY(2100)}" x2="130" y2="${toY(2100)}" stroke="#1e293b" stroke-dasharray="2"/>
+            <line x1="10" y1="${toY(2000)}" x2="130" y2="${toY(2000)}" stroke="#334155" stroke-dasharray="2"/>
+            <line x1="10" y1="${toY(1950)}" x2="130" y2="${toY(1950)}" stroke="#1e293b" stroke-dasharray="2"/>
+            <text x="12" y="${toY(2000) - 4}" fill="#64748b" font-size="9" font-mono>基準 2,000円</text>
+
+            <!-- ヒゲ -->
+            <line x1="${svgW/2}" y1="${yH}" x2="${svgW/2}" y2="${yL}" stroke="${color}" stroke-width="3" stroke-linecap="round"/>
+
+            <!-- 実体 -->
+            <rect x="${svgW/2 - 24}" y="${topY}" width="48" height="${bodyH}" rx="3" fill="${color}" stroke="${color}" stroke-width="1.5" class="transition-all duration-200 shadow-lg"/>
+
+            <!-- 現在値ピン -->
+            <circle cx="${svgW/2}" cy="${yC}" r="4" fill="#ffffff" stroke="${color}" stroke-width="2"/>
+            <text x="${svgW/2 + 30}" y="${yC + 4}" fill="#ffffff" font-size="11" font-weight="bold" font-mono>${aggC}円</text>
+          </svg>
+        `;
+      }
+
+      // 右側 5分足タイムラインSVG描画
+      const intradayContainer = document.getElementById("mtf-intraday-svg-container");
+      if (intradayContainer) {
+        const svgW = 680;
+        const svgH = 190;
+        const minP = 1880;
+        const maxP = 2140;
+        const toY = (p) => svgH - 25 - ((p - minP) / (maxP - minP)) * (svgH - 45);
+
+        const totalBars = d.bars.length;
+        const stepW = svgW / totalBars;
+
+        let barsSvg = "";
+        d.bars.forEach((b, i) => {
+          const isPassed = i <= stepIdx;
+          const isCurrent = i === stepIdx;
+          const x = 30 + i * ((svgW - 50) / totalBars);
+          const yO = toY(b.o);
+          const yH = toY(b.h);
+          const yL = toY(b.l);
+          const yC = toY(b.c);
+          const topY = Math.min(yO, yC);
+          const bodyH = Math.max(Math.abs(yO - yC), 3);
+          const isB = b.c >= b.o;
+          const barColor = isB ? "#ff4d4d" : "#38bdf8";
+
+          // 時間帯背景バンド（9:00〜9:30は赤系、引けは青系）
+          let bandBg = "transparent";
+          if (b.zone === "open") bandBg = "rgba(244, 63, 94, 0.12)";
+          if (b.zone === "close") bandBg = "rgba(56, 189, 248, 0.12)";
+
+          barsSvg += `
+            <rect x="${x - 12}" y="10" width="24" height="${svgH - 30}" fill="${bandBg}"/>
+            <line x1="${x}" y1="${yH}" x2="${x}" y2="${yL}" stroke="${barColor}" stroke-width="1.5" opacity="${isPassed ? 1 : 0.2}"/>
+            <rect x="${x - 7}" y="${topY}" width="14" height="${bodyH}" rx="1.5" fill="${barColor}" opacity="${isPassed ? 1 : 0.2}"/>
+            ${isCurrent ? `<circle cx="${x}" cy="${yC}" r="4" fill="#fbbf24" stroke="#ffffff" stroke-width="1.5" class="animate-ping"/>` : ''}
+            <text x="${x}" y="${svgH - 5}" fill="${isCurrent ? '#38bdf8' : '#64748b'}" font-size="9" text-anchor="middle" font-mono font-bold>${b.time}</text>
+          `;
+        });
+
+        intradayContainer.innerHTML = `
+          <svg viewBox="0 0 ${svgW} ${svgH}" class="w-full h-44 overflow-visible">
+            <!-- 基準水平線 -->
+            <line x1="20" y1="${toY(2000)}" x2="${svgW - 10}" y2="${toY(2000)}" stroke="#334155" stroke-dasharray="3"/>
+            <text x="25" y="${toY(2000) - 4}" fill="#64748b" font-size="9" font-mono>始値 2,000円</text>
+            ${barsSvg}
+          </svg>
+        `;
+      }
+    }
+
+    /* ===================================================
+       8. 板（オーダーブック）とローソク足の連動ミニ解剖
+    =================================================== */
+    const orderBookState = {
+      mode: "thick",
+      hasWall: false,
+      lastPrice: 1000,
+      currentCandle: { o: 1000, h: 1000, l: 1000, c: 1000, vol: 0 },
+      asks: [],
+      bids: [],
+      tape: []
+    };
+
+    function initOrderBookLab() {
+      resetOrderBookLab();
+    }
+
+    function resetOrderBookLab() {
+      orderBookState.lastPrice = 1000;
+      orderBookState.hasWall = false;
+      orderBookState.currentCandle = { o: 1000, h: 1000, l: 1000, c: 1000, vol: 0 };
+      orderBookState.tape = [
+        { time: "09:05:12", price: 1000, qty: 100, side: "BUY" },
+        { time: "09:05:04", price: 1000, qty: 200, side: "SELL" }
+      ];
+      setupOrderBookDepths();
+      renderOrderBookUI();
+      const wallBtnText = document.getElementById("ob-wall-btn-text");
+      if (wallBtnText) wallBtnText.innerText = "1,005円に大口売り壁を設置";
+    }
+
+    function setupOrderBookDepths() {
+      const isThick = orderBookState.mode === "thick";
+      if (isThick) {
+        orderBookState.asks = [
+          { price: 1005, qty: orderBookState.hasWall ? 1500 : 800, isWall: orderBookState.hasWall },
+          { price: 1004, qty: 600 },
+          { price: 1003, qty: 500 },
+          { price: 1002, qty: 400 },
+          { price: 1001, qty: 300 }
+        ];
+        orderBookState.bids = [
+          { price: 1000, qty: 400 },
+          { price: 999,  qty: 500 },
+          { price: 998,  qty: 700 },
+          { price: 997,  qty: 800 },
+          { price: 996,  qty: 900 }
+        ];
+      } else {
+        // スカスカ板（閑散株）
+        orderBookState.asks = [
+          { price: 1005, qty: 100 },
+          { price: 1004, qty: 100 },
+          { price: 1003, qty: 100 },
+          { price: 1002, qty: 100 },
+          { price: 1001, qty: 100 }
+        ];
+        orderBookState.bids = [
+          { price: 1000, qty: 100 },
+          { price: 999,  qty: 100 },
+          { price: 998,  qty: 100 },
+          { price: 997,  qty: 100 },
+          { price: 996,  qty: 100 }
+        ];
+      }
+    }
+
+    function setOrderBookMode(mode) {
+      orderBookState.mode = mode;
+      document.getElementById("ob-mode-thick").className = mode === "thick"
+        ? "px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition"
+        : "px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition";
+      document.getElementById("ob-mode-thin").className = mode === "thin"
+        ? "px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition"
+        : "px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition";
+      
+      setupOrderBookDepths();
+      renderOrderBookUI();
+      SoundFX.tick();
+
+      const alertBox = document.getElementById("ob-learning-alert");
+      if (alertBox) {
+        if (mode === "thin") {
+          alertBox.innerHTML = `⚠️ <strong>スカスカ板モード突入！</strong> 指値が100株ずつしか並んでいません！大口成行ボタン（800株）を押すと、一瞬で板が食い尽くされて大暴騰・大暴落する『流動性リスク』を体感してください！`;
+        } else {
+          alertBox.innerHTML = `🐋 <strong>厚い板モード：</strong> 指値がたっぷり並んでいるため、100株買ってもビクともしません。株価を動かすには大口の買いエネルギーが必要です！`;
+        }
+      }
+    }
+
+    function toggleOrderBookWall() {
+      orderBookState.hasWall = !orderBookState.hasWall;
+      setupOrderBookDepths();
+      renderOrderBookUI();
+      SoundFX.tick();
+      const wallBtnText = document.getElementById("ob-wall-btn-text");
+      const alertBox = document.getElementById("ob-learning-alert");
+      if (wallBtnText) {
+        wallBtnText.innerText = orderBookState.hasWall ? "1,005円の大口壁を撤去" : "1,005円に大口売り壁を設置";
+      }
+      if (alertBox) {
+        alertBox.innerHTML = orderBookState.hasWall
+          ? `🧱 <strong>1,005円に大口売り壁（1,500株）が出現！</strong> この壁を成行買いで突き破らないと、株価は1,005円以上へ上がれません（レジスタンスラインの正体）！`
+          : `💨 壁が撤去され、通常の板に戻りました！`;
+      }
+    }
+
+    function sendMarketOrder(side, orderQty) {
+      let remaining = orderQty;
+      let executedTotal = 0;
+      let lastExecPrice = orderBookState.lastPrice;
+      let levelsConsumed = 0;
+
+      const nowStr = new Date().toTimeString().split(' ')[0];
+
+      if (side === "BUY") {
+        for (const ask of orderBookState.asks) {
+          if (remaining <= 0) break;
+          if (ask.qty <= 0) continue;
+          const fill = Math.min(remaining, ask.qty);
+          ask.qty -= fill;
+          remaining -= fill;
+          executedTotal += fill;
+          lastExecPrice = ask.price;
+          if (ask.qty === 0) levelsConsumed++;
+        }
+      } else {
+        for (const bid of orderBookState.bids) {
+          if (remaining <= 0) break;
+          if (bid.qty <= 0) continue;
+          const fill = Math.min(remaining, bid.qty);
+          bid.qty -= fill;
+          remaining -= fill;
+          executedTotal += fill;
+          lastExecPrice = bid.price;
+          if (bid.qty === 0) levelsConsumed++;
+        }
+      }
+
+      // ローソク足更新
+      const c = orderBookState.currentCandle;
+      c.c = lastExecPrice;
+      c.h = Math.max(c.h, lastExecPrice);
+      c.l = Math.min(c.l, lastExecPrice);
+      c.vol += executedTotal;
+      orderBookState.lastPrice = lastExecPrice;
+
+      // 歩み値追加
+      orderBookState.tape.unshift({
+        time: nowStr,
+        price: lastExecPrice,
+        qty: executedTotal,
+        side: side
+      });
+      if (orderBookState.tape.length > 5) orderBookState.tape.pop();
+
+      // 音響演出
+      if (levelsConsumed >= 2) {
+        SoundFX.breakout();
+      } else {
+        SoundFX.order();
+      }
+
+      // 解説アラート更新
+      const alertBox = document.getElementById("ob-learning-alert");
+      if (alertBox) {
+        if (levelsConsumed >= 3) {
+          alertBox.innerHTML = `💥 <strong>板が一気に${levelsConsumed}本突き破られました！</strong> 成行注文が指値を食い尽くし、価格が${side === 'BUY' ? '急騰' : '急落'}！これがブレイクアウトの瞬間です！`;
+        } else {
+          alertBox.innerHTML = `📢 <strong>${side === 'BUY' ? '買い' : '売り'}成行 ${executedTotal}株 約定！</strong> 直近価格は <strong>${lastExecPrice}円</strong> に更新され、ローソク足に反映されました！`;
+        }
+      }
+
+      renderOrderBookUI();
+    }
+
+    function renderOrderBookUI() {
+      // 板テーブル描画
+      const table = document.getElementById("orderbook-table-container");
+      if (table) {
+        const maxQty = 1500;
+        let html = '';
+
+        // 売り板（高い順に並べる）
+        const sortedAsks = [...orderBookState.asks].sort((a, b) => b.price - a.price);
+        sortedAsks.forEach(a => {
+          const barW = Math.min((a.qty / maxQty) * 100, 100);
+          html += `
+            <div class="flex items-center justify-between px-2 py-0.5 rounded bg-sky-950/20 relative overflow-hidden">
+              <div class="absolute left-0 top-0 bottom-0 bg-sky-500/20 transition-all duration-300" style="width: ${barW}%;"></div>
+              <span class="z-10 font-bold text-sky-400">${a.qty > 0 ? a.qty.toLocaleString() + ' 株' : '売切'}</span>
+              <span class="z-10 font-black text-white ${a.isWall ? 'text-amber-300' : ''}">${a.price} 円 ${a.isWall ? '🧱壁' : ''}</span>
+              <span class="z-10 text-slate-600">-</span>
+            </div>
+          `;
+        });
+
+        // 現在値バー
+        html += `
+          <div class="my-1.5 py-1 px-3 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-between text-amber-300 font-black">
+            <span>現在約定値</span>
+            <span class="text-sm font-bold">${orderBookState.lastPrice} 円</span>
+            <span class="text-[10px] text-amber-400">リアルタイム</span>
+          </div>
+        `;
+
+        // 買い板（高い順）
+        const sortedBids = [...orderBookState.bids].sort((a, b) => b.price - a.price);
+        sortedBids.forEach(b => {
+          const barW = Math.min((b.qty / maxQty) * 100, 100);
+          html += `
+            <div class="flex items-center justify-between px-2 py-0.5 rounded bg-rose-950/20 relative overflow-hidden">
+              <div class="absolute right-0 top-0 bottom-0 bg-rose-500/20 transition-all duration-300" style="width: ${barW}%;"></div>
+              <span class="z-10 text-slate-600">-</span>
+              <span class="z-10 font-black text-white">${b.price} 円</span>
+              <span class="z-10 font-bold text-rose-400">${b.qty > 0 ? b.qty.toLocaleString() + ' 株' : '買切'}</span>
+            </div>
+          `;
+        });
+
+        table.innerHTML = html;
+      }
+
+      // 歩み値ログ描画
+      const tapeContainer = document.getElementById("ob-tape-container");
+      if (tapeContainer) {
+        tapeContainer.innerHTML = orderBookState.tape.map(t => `
+          <div class="flex items-center justify-between py-0.5 border-b border-slate-900/60">
+            <span class="text-slate-500">${t.time}</span>
+            <span class="font-bold ${t.side === 'BUY' ? 'text-rose-400' : 'text-sky-400'}">${t.price} 円</span>
+            <span class="text-slate-300">${t.qty} 株</span>
+            <span class="px-1.5 py-0.2 rounded text-[9px] font-black ${t.side === 'BUY' ? 'bg-rose-500/20 text-rose-300' : 'bg-sky-500/20 text-sky-300'}">${t.side}</span>
+          </div>
+        `).join('');
+      }
+
+      // 連動ローソク足SVG描画
+      const candleContainer = document.getElementById("ob-candle-svg-container");
+      const c = orderBookState.currentCandle;
+      const isBull = c.c >= c.o;
+      const badge = document.getElementById("ob-candle-type");
+      if (badge) {
+        badge.className = `px-2 py-0.5 rounded ${isBull ? 'bg-rose-500/20 text-rose-300' : 'bg-sky-500/20 text-sky-300'} font-bold text-[11px]`;
+        badge.innerText = isBull ? `陽線 (+${c.c - c.o}円)` : `陰線 (${c.c - c.o}円)`;
+      }
+
+      if (candleContainer) {
+        const svgW = 140;
+        const svgH = 200;
+        const minP = 994;
+        const maxP = 1008;
+        const toY = (p) => svgH - 20 - ((p - minP) / (maxP - minP)) * (svgH - 40);
+
+        const yO = toY(c.o);
+        const yH = toY(c.h);
+        const yL = toY(c.l);
+        const yC = toY(c.c);
+        const topY = Math.min(yO, yC);
+        const bodyH = Math.max(Math.abs(yO - yC), 4);
+        const color = isBull ? "#ff4d4d" : "#38bdf8";
+
+        candleContainer.innerHTML = `
+          <svg viewBox="0 0 ${svgW} ${svgH}" class="w-32 h-48 overflow-visible">
+            <line x1="10" y1="${toY(1005)}" x2="130" y2="${toY(1005)}" stroke="#ef4444" stroke-dasharray="2"/>
+            <text x="12" y="${toY(1005) - 3}" fill="#ef4444" font-size="8" font-mono>天井 1,005</text>
+            <line x1="10" y1="${toY(1000)}" x2="130" y2="${toY(1000)}" stroke="#64748b" stroke-dasharray="2"/>
+            <text x="12" y="${toY(1000) - 3}" fill="#64748b" font-size="8" font-mono>始値 1,000</text>
+            
+            <!-- ヒゲ -->
+            <line x1="${svgW/2}" y1="${yH}" x2="${svgW/2}" y2="${yL}" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- 実体 -->
+            <rect x="${svgW/2 - 20}" y="${topY}" width="40" height="${bodyH}" rx="2" fill="${color}" stroke="${color}" stroke-width="1.5" class="transition-all duration-150"/>
+            <!-- 現在値ラベル -->
+            <circle cx="${svgW/2}" cy="${yC}" r="4" fill="#ffffff" stroke="${color}" stroke-width="2"/>
+            <text x="${svgW/2 + 25}" y="${yC + 4}" fill="#ffffff" font-size="10" font-weight="bold" font-mono>${c.c}円</text>
+          </svg>
+        `;
+      }
+    }
+
+    /* ===================================================
+       9. 未来が見えない！トレード実践道場 (Dojo)
+    =================================================== */
+    const dojoScenarios = [
+      {
+        id: "breakout-triangle",
+        title: "Mission 1：2,000円の壁を破れ！（三角保ち合い）",
+        difficulty: "★☆☆ 入門",
+        stockName: "探検テック (4001)",
+        initialCash: 300000,
+        resistance: 2000,
+        support: 1880,
+        initialStep: 9,
+        candles: [
+          { day: 1,  o: 1910, h: 2000, l: 1890, c: 1930, vol: 140, ma25: 1880 },
+          { day: 2,  o: 1930, h: 1970, l: 1900, c: 1915, vol: 110, ma25: 1885 },
+          { day: 3,  o: 1915, h: 1990, l: 1910, c: 1980, vol: 130, ma25: 1890 },
+          { day: 4,  o: 1980, h: 2000, l: 1930, c: 1940, vol: 120, ma25: 1895 },
+          { day: 5,  o: 1940, h: 1960, l: 1925, c: 1955, vol: 90,  ma25: 1900 },
+          { day: 6,  o: 1955, h: 1995, l: 1940, c: 1990, vol: 115, ma25: 1910 },
+          { day: 7,  o: 1990, h: 2000, l: 1950, c: 1960, vol: 95,  ma25: 1920 },
+          { day: 8,  o: 1960, h: 1980, l: 1955, c: 1975, vol: 85,  ma25: 1930 },
+          { day: 9,  o: 1975, h: 1995, l: 1965, c: 1985, vol: 90,  ma25: 1940 },
+          { day: 10, o: 1985, h: 1998, l: 1970, c: 1990, vol: 100, ma25: 1950,
+            hint: "天井2,000円に張り付いて煮詰まり極限！安値も1,890円→1,970円へ切り上がり！" },
+          // --- ここから未来足 ---
+          { day: 11, o: 1995, h: 2060, l: 1990, c: 2050, vol: 380, ma25: 1960,
+            action: "BUY", hint: "💥 出来高3.8倍を伴う2,000円ブレイク大陽線！絶好の買い場！" },
+          { day: 12, o: 2050, h: 2110, l: 2040, c: 2100, vol: 310, ma25: 1975,
+            action: "HOLD", hint: "追撃買いが入って続伸！焦って利食いせずトレンドに乗ろう。" },
+          { day: 13, o: 2100, h: 2140, l: 2080, c: 2125, vol: 270, ma25: 1990,
+            action: "HOLD", hint: "利確目標2,120円に到達！ルール通り利確するか、SLを引き上げよう。" },
+          { day: 14, o: 2125, h: 2135, l: 2060, c: 2070, vol: 240, ma25: 2005,
+            action: "EXIT", hint: "利確売りに押されて陰線！勝ち逃げが鉄則！" },
+          { day: 15, o: 2070, h: 2080, l: 2030, c: 2040, vol: 180, ma25: 2015,
+            hint: "調整局面入り。ブレイク後は深追い厳禁。" }
+        ]
+      },
+      {
+        id: "moving-average-bounce",
+        title: "Mission 2：25日線の奇襲を狙え！（押し目買い）",
+        difficulty: "★★☆ 中級",
+        stockName: "重工ドライブ (7011)",
+        initialCash: 300000,
+        initialStep: 9,
+        candles: [
+          { day: 1,  o: 2500, h: 2580, l: 2490, c: 2570, vol: 200, ma25: 2450 },
+          { day: 2,  o: 2570, h: 2650, l: 2560, c: 2630, vol: 260, ma25: 2465 },
+          { day: 3,  o: 2630, h: 2720, l: 2620, c: 2700, vol: 340, ma25: 2485 },
+          { day: 4,  o: 2700, h: 2710, l: 2640, c: 2650, vol: 210, ma25: 2505 },
+          { day: 5,  o: 2650, h: 2660, l: 2590, c: 2600, vol: 170, ma25: 2520 },
+          { day: 6,  o: 2600, h: 2610, l: 2550, c: 2560, vol: 150, ma25: 2530 },
+          { day: 7,  o: 2560, h: 2570, l: 2530, c: 2540, vol: 130, ma25: 2540 },
+          { day: 8,  o: 2540, h: 2555, l: 2535, c: 2545, vol: 110, ma25: 2545 },
+          { day: 9,  o: 2545, h: 2550, l: 2530, c: 2535, vol: 95,  ma25: 2545 },
+          { day: 10, o: 2535, h: 2540, l: 2510, c: 2530, vol: 105, ma25: 2545,
+            hint: "上昇トレンドの25日移動平均線にタッチ！下げ止まるかどうかの正念場！" },
+          // --- ここから未来足 ---
+          { day: 11, o: 2530, h: 2590, l: 2520, c: 2580, vol: 280, ma25: 2550,
+            action: "BUY", hint: "🔨 25日線で反発して下ヒゲ陽線が出現！グランビルの押し目買いシグナル！" },
+          { day: 12, o: 2580, h: 2640, l: 2570, c: 2630, vol: 250, ma25: 2560,
+            action: "HOLD", hint: "反発の波に乗って順調に上昇中！" },
+          { day: 13, o: 2630, h: 2700, l: 2620, c: 2690, vol: 300, ma25: 2575,
+            action: "EXIT", hint: "前回の高値2,700円に迫る！安全第一で利確検討。" }
+        ]
+      },
+      {
+        id: "head-and-shoulders-defense",
+        title: "Mission 3：三尊天井の罠（命がけの損切り試練）",
+        difficulty: "★★★ 上級",
+        stockName: "ハイパー造船 (7003)",
+        initialCash: 300000,
+        initialStep: 9,
+        candles: [
+          { day: 1,  o: 1400, h: 1480, l: 1390, c: 1460, vol: 210, ma25: 1380 },
+          { day: 2,  o: 1460, h: 1550, l: 1450, c: 1530, vol: 310, ma25: 1400 },
+          { day: 3,  o: 1530, h: 1540, l: 1460, c: 1470, vol: 190, ma25: 1415 },
+          { day: 4,  o: 1470, h: 1600, l: 1470, c: 1590, vol: 450, ma25: 1435 },
+          { day: 5,  o: 1590, h: 1620, l: 1520, c: 1530, vol: 350, ma25: 1450 },
+          { day: 6,  o: 1530, h: 1540, l: 1460, c: 1470, vol: 220, ma25: 1460 },
+          { day: 7,  o: 1470, h: 1530, l: 1460, c: 1520, vol: 200, ma25: 1470 },
+          { day: 8,  o: 1520, h: 1530, l: 1480, c: 1490, vol: 160, ma25: 1475 },
+          { day: 9,  o: 1490, h: 1500, l: 1460, c: 1470, vol: 150, ma25: 1480 },
+          { day: 10, o: 1470, h: 1480, l: 1450, c: 1460, vol: 180, ma25: 1480,
+            hint: "左右の肩と中央の頭…ネックライン1,460円にタッチ。下抜けると三尊完成で暴落の危機！" },
+          // --- ここから未来足 ---
+          { day: 11, o: 1460, h: 1470, l: 1390, c: 1400, vol: 520, ma25: 1470,
+            action: "PASS", hint: "😱 ネックラインを割り込む大陰線！絶対に買ってはダメ！持っていたら即損切り！" },
+          { day: 12, o: 1400, h: 1410, l: 1320, c: 1330, vol: 410, ma25: 1450,
+            hint: "追証パニック売りで連日の暴落！見送り大成功！" }
+        ]
+      }
+    ];
+
+    let currentDojoScenario = 0;
+    let dojoState = {
+      stepIndex: 9,
+      cash: 300000,
+      position: null, // { entryPrice, shares, stopLoss, takeProfit, entryDay }
+      trades: [],
+      score: 100,
+      isFinished: false
+    };
+
+    function initDojo() {
+      const tabs = document.getElementById("dojo-scenario-tabs");
+      if (!tabs) return;
+      tabs.innerHTML = dojoScenarios.map((s, i) => `
+        <button onclick="switchDojoMission(${i})" id="dojo-mission-tab-${i}" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${i === 0 ? 'bg-rose-500 text-white shadow-md' : 'bg-slate-800 text-slate-400 hover:text-white'}">
+          <span>${s.title.split('：')[0]}</span>
+          <span class="text-[10px] text-amber-300">${s.difficulty}</span>
+        </button>
+      `).join('');
+      switchDojoMission(0);
+    }
+
+    function switchDojoMission(idx) {
+      currentDojoScenario = idx;
+      const sc = dojoScenarios[idx];
+      dojoState = {
+        stepIndex: sc.initialStep,
+        cash: sc.initialCash,
+        position: null,
+        trades: [],
+        score: 100,
+        isFinished: false
+      };
+
+      dojoScenarios.forEach((_, i) => {
+        const btn = document.getElementById(`dojo-mission-tab-${i}`);
+        if (btn) {
+          btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${i === idx ? 'bg-rose-500 text-white shadow-md' : 'bg-slate-800 text-slate-400 hover:text-white'}`;
+        }
+      });
+
+      document.getElementById("dojo-stock-title").innerHTML = `<i data-lucide="trending-up" class="w-4 h-4 text-rose-400"></i> ${sc.stockName}`;
+      document.getElementById("dojo-finish-card").classList.add("hidden");
+
+      // SL/TP初期値設定
+      const currentCandle = sc.candles[sc.initialStep];
+      const defaultSL = Math.round(currentCandle.c * 0.97);
+      const defaultTP = Math.round(currentCandle.c * 1.06);
+      document.getElementById("dojo-input-sl").value = defaultSL;
+      document.getElementById("dojo-input-tp").value = defaultTP;
+
+      updateDojoUI();
+      lucide.createIcons();
+    }
+
+    function dojoBuyEntry() {
+      if (dojoState.position || dojoState.isFinished) return;
+      const sc = dojoScenarios[currentDojoScenario];
+      const c = sc.candles[dojoState.stepIndex];
+      const sl = parseFloat(document.getElementById("dojo-input-sl").value) || (c.c - 30);
+      const tp = parseFloat(document.getElementById("dojo-input-tp").value) || (c.c + 60);
+
+      if (sl >= c.c) {
+        alert("損切りライン (SL) は買値より低い価格を設定してください！");
+        SoundFX.warning();
+        return;
+      }
+
+      const shares = 100;
+      dojoState.position = {
+        entryPrice: c.c,
+        shares: shares,
+        stopLoss: sl,
+        takeProfit: tp,
+        entryDay: c.day
+      };
+
+      SoundFX.order();
+      document.getElementById("dojo-event-log").innerHTML = `🎯 <strong>${c.c}円 で 100株 買いエントリー完了！</strong> 損切りライン: <span class="text-rose-400 font-bold">${sl}円</span> / 利確目標: <span class="text-amber-300 font-bold">${tp}円</span>`;
+      updateDojoUI();
+    }
+
+    function dojoExitPosition(reason) {
+      if (!dojoState.position) return;
+      const sc = dojoScenarios[currentDojoScenario];
+      const c = sc.candles[dojoState.stepIndex];
+      const p = dojoState.position;
+      const exitPrice = c.c;
+      const pnl = (exitPrice - p.entryPrice) * p.shares;
+
+      dojoState.cash += pnl;
+      dojoState.trades.push({
+        entryDay: p.entryDay,
+        exitDay: c.day,
+        entryPrice: p.entryPrice,
+        exitPrice: exitPrice,
+        pnl: pnl,
+        reason: reason
+      });
+      dojoState.position = null;
+
+      if (pnl > 0) {
+        SoundFX.profit();
+        dojoState.score += 20;
+        document.getElementById("dojo-event-log").innerHTML = `🎉 <strong>ナイス利確！+${pnl.toLocaleString()}円 利益確定！</strong> ルールを守って勝利をつかみました！`;
+      } else {
+        SoundFX.stoploss();
+        dojoState.score += 10; // ルール通り損切りできたら規律加点！
+        document.getElementById("dojo-event-log").innerHTML = `🛡️ <strong>規律ある損切り成功！${pnl.toLocaleString()}円 で撤退！</strong> プロの最大の武器は「素早い損切り」です！ナイス判断！`;
+      }
+
+      updateDojoUI();
+    }
+
+    function advanceDojoBar() {
+      if (dojoState.isFinished) return;
+      const sc = dojoScenarios[currentDojoScenario];
+      
+      if (dojoState.stepIndex >= sc.candles.length - 1) {
+        finishDojoScenario();
+        return;
+      }
+
+      dojoState.stepIndex++;
+      const nextBar = sc.candles[dojoState.stepIndex];
+      SoundFX.tick();
+
+      // ポジション保有中の自動決済チェック
+      if (dojoState.position) {
+        const p = dojoState.position;
+        // 損切り判定
+        if (nextBar.l <= p.stopLoss) {
+          const exitPrice = p.stopLoss;
+          const pnl = (exitPrice - p.entryPrice) * p.shares;
+          dojoState.cash += pnl;
+          dojoState.trades.push({
+            entryDay: p.entryDay,
+            exitDay: nextBar.day,
+            entryPrice: p.entryPrice,
+            exitPrice: exitPrice,
+            pnl: pnl,
+            reason: "AUTO_SL"
+          });
+          dojoState.position = null;
+          SoundFX.stoploss();
+          dojoState.score += 15; // 自動SL発動は規律加点
+          document.getElementById("dojo-event-log").innerHTML = `🛑 <strong>設定した損切りライン (${p.stopLoss}円) で自動ロスカット！</strong> 損失は -${Math.abs(pnl).toLocaleString()}円 に限定されました。大火傷を完全回避！`;
+        }
+        // 利確判定
+        else if (nextBar.h >= p.takeProfit) {
+          const exitPrice = p.takeProfit;
+          const pnl = (exitPrice - p.entryPrice) * p.shares;
+          dojoState.cash += pnl;
+          dojoState.trades.push({
+            entryDay: p.entryDay,
+            exitDay: nextBar.day,
+            entryPrice: p.entryPrice,
+            exitPrice: exitPrice,
+            pnl: pnl,
+            reason: "AUTO_TP"
+          });
+          dojoState.position = null;
+          SoundFX.profit();
+          dojoState.score += 25;
+          document.getElementById("dojo-event-log").innerHTML = `🏆 <strong>目標値 (${p.takeProfit}円) 到達！自動利確発動！+${pnl.toLocaleString()}円！</strong> 完璧なトレードシナリオ完遂！`;
+        }
+      } else {
+        // ノーポジ時
+        if (nextBar.hint) {
+          document.getElementById("dojo-event-log").innerHTML = `📢 <strong>Day ${nextBar.day}：</strong> ${nextBar.hint}`;
+        }
+      }
+
+      if (dojoState.stepIndex >= sc.candles.length - 1) {
+        finishDojoScenario();
+      }
+
+      updateDojoUI();
+    }
+
+    function updateDojoUI() {
+      const sc = dojoScenarios[currentDojoScenario];
+      const c = sc.candles[dojoState.stepIndex];
+
+      // バッジ類
+      document.getElementById("dojo-day-badge").innerText = `Day ${c.day} / ${sc.candles.length}`;
+      document.getElementById("dojo-current-price").innerText = `${c.c.toLocaleString()} 円`;
+
+      const totalPnl = dojoState.cash - sc.initialCash;
+      const pnlBadge = document.getElementById("dojo-pnl-badge");
+      pnlBadge.innerText = `${totalPnl >= 0 ? '+' : ''}${totalPnl.toLocaleString()} 円`;
+      pnlBadge.className = `font-bold font-mono ${totalPnl > 0 ? 'text-emerald-400' : totalPnl < 0 ? 'text-rose-400' : 'text-slate-300'}`;
+      document.getElementById("dojo-cash-badge").innerText = `${dojoState.cash.toLocaleString()} 円`;
+
+      // リスクリワード計算
+      const slInput = parseFloat(document.getElementById("dojo-input-sl").value) || (c.c - 30);
+      const tpInput = parseFloat(document.getElementById("dojo-input-tp").value) || (c.c + 60);
+      const risk = Math.max(c.c - slInput, 1);
+      const reward = Math.max(tpInput - c.c, 0);
+      const rrRatio = (reward / risk).toFixed(1);
+      document.getElementById("dojo-rr-ratio").innerText = `1 : ${rrRatio}`;
+
+      // 司令室パネル切り替え
+      const noposControls = document.getElementById("dojo-nopos-controls");
+      const posControls = document.getElementById("dojo-pos-controls");
+      const posBadge = document.getElementById("dojo-pos-badge");
+
+      if (dojoState.position) {
+        noposControls.classList.add("hidden");
+        posControls.classList.remove("hidden");
+        posBadge.className = "px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[11px] font-bold";
+        posBadge.innerText = "100株 保有中";
+
+        const p = dojoState.position;
+        document.getElementById("dojo-holding-shares").innerText = `${p.shares} 株`;
+        document.getElementById("dojo-holding-entry").innerText = `${p.entryPrice.toLocaleString()} 円`;
+
+        const unrealized = (c.c - p.entryPrice) * p.shares;
+        const unrealizedPct = (((c.c - p.entryPrice) / p.entryPrice) * 100).toFixed(1);
+        const unEl = document.getElementById("dojo-unrealized-pnl");
+        unEl.innerText = `${unrealized >= 0 ? '+' : ''}${unrealized.toLocaleString()} 円 (${unrealizedPct}%)`;
+        unEl.className = `font-mono font-black text-base ${unrealized >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
+      } else {
+        noposControls.classList.remove("hidden");
+        posControls.classList.add("hidden");
+        posBadge.className = "px-2 py-0.5 rounded bg-slate-800 text-slate-400 text-[11px] font-bold";
+        posBadge.innerText = "ノーポジ（待機中）";
+      }
+
+      // チャートSVG描画
+      renderDojoChart();
+    }
+
+    function renderDojoChart() {
+      const chartContainer = document.getElementById("dojo-chart-container");
+      if (!chartContainer) return;
+
+      const sc = dojoScenarios[currentDojoScenario];
+      const svgW = 680;
+      const svgH = 300;
+      const chartH = 220;
+      const volH = 50;
+
+      // 価格レンジ算出
+      const allPrices = sc.candles.flatMap(c => [c.h, c.l]);
+      const minP = Math.min(...allPrices) - 20;
+      const maxP = Math.max(...allPrices) + 20;
+      const toY = (p) => chartH - 20 - ((p - minP) / (maxP - minP)) * (chartH - 40);
+
+      const totalBars = sc.candles.length;
+      const stepW = (svgW - 60) / totalBars;
+
+      let candleSvg = "";
+      let maPoints = [];
+
+      sc.candles.forEach((c, i) => {
+        const x = 35 + i * stepW;
+        const isVisible = i <= dojoState.stepIndex;
+
+        if (isVisible) {
+          const yO = toY(c.o);
+          const yH = toY(c.h);
+          const yL = toY(c.l);
+          const yC = toY(c.c);
+          const topY = Math.min(yO, yC);
+          const bodyH = Math.max(Math.abs(yO - yC), 3);
+          const isBull = c.c >= c.o;
+          const color = isBull ? "#ff4d4d" : "#38bdf8";
+
+          // ローソク足
+          candleSvg += `
+            <line x1="${x}" y1="${yH}" x2="${x}" y2="${yL}" stroke="${color}" stroke-width="1.5"/>
+            <rect x="${x - 6}" y="${topY}" width="12" height="${bodyH}" rx="1" fill="${color}"/>
+          `;
+
+          // 出来高バー
+          const maxVol = 550;
+          const vH = (c.vol / maxVol) * volH;
+          candleSvg += `
+            <rect x="${x - 5}" y="${svgH - 10 - vH}" width="10" height="${vH}" fill="${color}" opacity="0.45"/>
+          `;
+
+          // MA25
+          if (c.ma25) {
+            maPoints.push(`${x},${toY(c.ma25)}`);
+          }
+        }
+      });
+
+      // 未来フォグマスク（未到来の足エリアを隠す）
+      const visibleEndX = 35 + dojoState.stepIndex * stepW + stepW / 2;
+      const fogW = svgW - visibleEndX;
+
+      let posLines = "";
+      if (dojoState.position) {
+        const p = dojoState.position;
+        posLines = `
+          <!-- 買値ライン -->
+          <line x1="30" y1="${toY(p.entryPrice)}" x2="${visibleEndX}" y2="${toY(p.entryPrice)}" stroke="#10b981" stroke-width="2"/>
+          <text x="35" y="${toY(p.entryPrice) - 4}" fill="#10b981" font-size="9" font-bold font-mono>買値 ${p.entryPrice}円</text>
+          
+          <!-- SLライン -->
+          <line x1="30" y1="${toY(p.stopLoss)}" x2="${visibleEndX}" y2="${toY(p.stopLoss)}" stroke="#f43f5e" stroke-width="2" stroke-dasharray="4"/>
+          <text x="35" y="${toY(p.stopLoss) - 4}" fill="#f43f5e" font-size="9" font-bold font-mono>🛑 SL ${p.stopLoss}円</text>
+
+          <!-- TPライン -->
+          <line x1="30" y1="${toY(p.takeProfit)}" x2="${visibleEndX}" y2="${toY(p.takeProfit)}" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4"/>
+          <text x="35" y="${toY(p.takeProfit) - 4}" fill="#fbbf24" font-size="9" font-bold font-mono>🏆 TP ${p.takeProfit}円</text>
+        `;
+      }
+
+      chartContainer.innerHTML = `
+        <svg viewBox="0 0 ${svgW} ${svgH}" class="w-full h-auto overflow-hidden">
+          <!-- 背景グリッド -->
+          <line x1="30" y1="${toY(sc.resistance || 2000)}" x2="${svgW - 20}" y2="${toY(sc.resistance || 2000)}" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3"/>
+          <line x1="30" y1="${chartH}" x2="${svgW - 20}" y2="${chartH}" stroke="#334155" stroke-width="1"/>
+          
+          ${posLines}
+
+          <!-- MA25ポリライン -->
+          ${maPoints.length > 1 ? `<polyline points="${maPoints.join(' ')}" fill="none" stroke="#f97316" stroke-width="2" opacity="0.8"/>` : ''}
+
+          <!-- ローソク足＆出来高 -->
+          ${candleSvg}
+
+          <!-- 未来フォグ（霧） -->
+          ${fogW > 10 ? `
+            <g>
+              <rect x="${visibleEndX}" y="10" width="${fogW}" height="${svgH - 20}" fill="#0f172a" opacity="0.92"/>
+              <line x1="${visibleEndX}" y1="10" x2="${visibleEndX}" y2="${svgH - 20}" stroke="#64748b" stroke-width="2" stroke-dasharray="4"/>
+              <text x="${visibleEndX + 20}" y="${chartH / 2}" fill="#94a3b8" font-size="12" font-weight="bold">🔒 未知の未来（明日以降）</text>
+              <text x="${visibleEndX + 20}" y="${chartH / 2 + 18}" fill="#64748b" font-size="10">ボタンを押して1日ずつ進めよう</text>
+            </g>
+          ` : ''}
+        </svg>
+      `;
+    }
+
+    function finishDojoScenario() {
+      dojoState.isFinished = true;
+      const sc = dojoScenarios[currentDojoScenario];
+      const finishCard = document.getElementById("dojo-finish-card");
+      if (!finishCard) return;
+
+      const totalPnl = dojoState.cash - sc.initialCash;
+      let rank = "B";
+      let rankTitle = "冷静な規律チャレンジャー";
+      let rankColor = "text-sky-400 border-sky-500/60";
+
+      if (dojoState.score >= 140 && totalPnl > 0) {
+        rank = "S";
+        rankTitle = "伝説の規律マスター（プロの資質）";
+        rankColor = "text-amber-400 border-amber-500/80";
+        SoundFX.profit();
+      } else if (dojoState.score >= 120 || totalPnl >= 0) {
+        rank = "A";
+        rankTitle = "堅実なディフェンス・トレーダー";
+        rankColor = "text-emerald-400 border-emerald-500/70";
+        SoundFX.profit();
+      } else {
+        rank = "C";
+        rankTitle = "修業中のルーキー";
+        rankColor = "text-slate-400 border-slate-700";
+        SoundFX.warning();
+      }
+
+      finishCard.className = `p-6 sm:p-8 rounded-3xl bg-gradient-to-tr from-slate-950 via-brand-dark to-slate-900 border-2 ${rankColor} shadow-2xl animate-fade-in space-y-6`;
+      finishCard.classList.remove("hidden");
+
+      finishCard.innerHTML = `
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-5">
+          <div>
+            <span class="text-xs font-mono tracking-widest text-amber-400 uppercase">Mission Completed</span>
+            <h3 class="text-xl sm:text-2xl font-black text-white mt-1">${sc.title} 完遂！</h3>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <span class="text-[10px] text-slate-400 block">総合規律ランク</span>
+              <span class="text-3xl font-black ${rankColor.split(' ')[0]} font-mono">${rank} RANK</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-[10px] text-slate-400 block">最終資産</span>
+            <span class="text-sm font-black text-white font-mono">${dojoState.cash.toLocaleString()} 円</span>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-[10px] text-slate-400 block">トータル損益</span>
+            <span class="text-sm font-black ${totalPnl >= 0 ? 'text-emerald-400' : 'text-rose-400'} font-mono">${totalPnl >= 0 ? '+' : ''}${totalPnl.toLocaleString()} 円</span>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-[10px] text-slate-400 block">トレード回数</span>
+            <span class="text-sm font-black text-amber-300 font-mono">${dojoState.trades.length} 回</span>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-[10px] text-slate-400 block">規律スコア</span>
+            <span class="text-sm font-black text-sky-400 font-mono">${dojoState.score} pt</span>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs text-slate-300 leading-relaxed">
+          🎓 <strong>師範からの総評（${rankTitle}）：</strong><br>
+          ${rank === 'S' ? '素晴らしい！損切りを恐れずルール通りに執行し、勝つべくして勝てました。この規律があれば本物の市場でも生き残れます！' : rank === 'A' ? '合格ラインです！目先の勝ち負けよりも「事前に決めたラインを守る」規律が身についています。この調子で研鑽を積みましょう！' : '惜しい！損失を怖がって損切りを先延ばしにしたり、危険な局面で飛びついたりしていませんか？まずは「かすり傷で逃げる勇気」を身につけましょう！'}
+        </div>
+
+        <div class="flex justify-center gap-3 pt-2">
+          <button onclick="switchDojoMission(${currentDojoScenario})" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-black text-xs shadow-md transition flex items-center gap-1.5">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            <span>もう一度挑戦する</span>
+          </button>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+    /* ===================================================
+       10. プロの出撃前チェックリスト & 取引許可証発行
+    =================================================== */
+    const checklistItems = [
+      { id: "c_trend",     label: "週足・日足の大きな風向き（上昇/下落トレンド）を確認した", cat: "環境認識" },
+      { id: "c_levels",    label: "近くにある「サポート（床）」と「レジスタンス（天井）」の位置を把握した", cat: "環境認識" },
+      { id: "c_time",      label: "魔の時間帯（9:00〜9:30の寄り付き飛びつき）や未確定足ではない", cat: "タイミング" },
+      { id: "c_stoploss",  label: "エントリーボタンを押す前に「損切りライン（撤退価格）」を決めた", cat: "防衛規律" },
+      { id: "c_rule2pct",  label: "総資産の2%ルール計算機で「買っていい安全株数」以下に抑えた", cat: "資金管理", isCalcLinked: true },
+      { id: "c_liquidity", label: "板がスカスカではなく、逃げたい時にすぐ売れる出来高がある銘柄だ", cat: "流動性" },
+      { id: "c_mental",    label: "「負けを取り返したい！」という焦りや怒りの感情トレードではない", cat: "メンタル" }
+    ];
+
+    let checklistChecked = {};
+
+    function initChecklist() {
+      const container = document.getElementById("checklist-items-container");
+      if (!container) return;
+
+      container.innerHTML = checklistItems.map((item, idx) => `
+        <div onclick="toggleChecklistItem('${item.id}')" id="check-row-${item.id}" class="p-3 rounded-2xl bg-slate-900 border border-slate-800 hover:border-slate-700 cursor-pointer transition flex items-center justify-between gap-3 group">
+          <div class="flex items-center gap-3">
+            <div id="check-box-${item.id}" class="w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-emerald-400 text-xs font-black transition group-hover:border-emerald-500/50">
+              <!-- チェックマーク -->
+            </div>
+            <div>
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-bold">${item.cat}</span>
+              <p class="text-xs font-bold text-slate-200 mt-0.5">${item.label}</p>
+            </div>
+          </div>
+          <span class="text-slate-600 group-hover:text-slate-400 text-xs">点検</span>
+        </div>
+      `).join('');
+
+      updateClearanceStatus();
+    }
+
+    function toggleChecklistItem(id) {
+      checklistChecked[id] = !checklistChecked[id];
+      SoundFX.tick();
+      updateChecklistUI();
+      updateClearanceStatus();
+    }
+
+    function resetChecklist() {
+      checklistChecked = {};
+      SoundFX.tick();
+      updateChecklistUI();
+      updateClearanceStatus();
+    }
+
+    function updateChecklistUI() {
+      checklistItems.forEach(item => {
+        const isOk = !!checklistChecked[item.id];
+        const row = document.getElementById(`check-row-${item.id}`);
+        const box = document.getElementById(`check-box-${item.id}`);
+        if (row && box) {
+          if (isOk) {
+            row.className = "p-3 rounded-2xl bg-emerald-950/20 border border-emerald-500/40 transition flex items-center justify-between gap-3";
+            box.className = "w-6 h-6 rounded-lg bg-emerald-500 text-slate-950 flex items-center justify-center text-xs font-black shadow-md shadow-emerald-500/20";
+            box.innerText = "✓";
+          } else {
+            row.className = "p-3 rounded-2xl bg-slate-900 border border-slate-800 hover:border-slate-700 cursor-pointer transition flex items-center justify-between gap-3 group";
+            box.className = "w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-emerald-400 text-xs font-black transition group-hover:border-emerald-500/50";
+            box.innerText = "";
+          }
+        }
+      });
+
+      const checkedCount = Object.values(checklistChecked).filter(Boolean).length;
+      const progressText = document.getElementById("checklist-progress-text");
+      if (progressText) {
+        progressText.innerText = `${checkedCount} / ${checklistItems.length} 項目確認済`;
+      }
+    }
+
+    function updateClearanceStatus() {
+      const checkedCount = Object.values(checklistChecked).filter(Boolean).length;
+      const isAllClear = checkedCount === checklistItems.length;
+      const pilotName = document.getElementById("pass-pilot-name").value || "未来の億り人";
+
+      const badgePanel = document.getElementById("clearance-badge-panel");
+      const icon = document.getElementById("clearance-icon");
+      const title = document.getElementById("clearance-title");
+      const desc = document.getElementById("clearance-desc");
+      const serial = document.getElementById("pass-serial-id");
+
+      if (isAllClear) {
+        badgePanel.className = "mt-6 p-5 rounded-2xl bg-gradient-to-tr from-emerald-950/60 via-slate-900 to-amber-950/40 border-2 border-emerald-400 text-center space-y-3 transition-all duration-300 shadow-xl glow-green";
+        icon.className = "w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto text-xl shadow-lg shadow-emerald-500/30";
+        icon.innerText = "✈️";
+        title.className = "text-sm font-black text-emerald-300";
+        title.innerText = "CLEARANCE GRANTED：出撃許可！";
+        desc.className = "text-xs text-slate-200 mt-1 leading-relaxed";
+        desc.innerHTML = `パイロット <strong>${pilotName}</strong> 殿<br>全ての安全基準をクリアしました！冷静沈着にルール通りのトレードを執行してください！`;
+        
+        const now = new Date();
+        const randId = Math.floor(1000 + Math.random() * 9000);
+        serial.innerText = `SERIAL: TSE-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}-${randId}`;
+        SoundFX.profit();
+      } else {
+        badgePanel.className = "mt-6 p-5 rounded-2xl bg-slate-900/90 border border-slate-800 text-center space-y-3 transition-all duration-300";
+        icon.className = "w-12 h-12 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center mx-auto text-xl";
+        icon.innerText = "🔒";
+        title.className = "text-sm font-black text-slate-400";
+        title.innerText = `出撃待機中（あと ${checklistItems.length - checkedCount} 項目未確認）`;
+        desc.className = "text-xs text-slate-400 mt-1 leading-relaxed";
+        desc.innerText = "すべての点検項目を確認すると、正式な取引許可証が発給されます。";
+        serial.innerText = "SERIAL: LOCKED";
+      }
+    }
+
     // 初期化処理呼び出し
     updateCandleSim();
     renderQuiz();
     updateCapitalCalculator();
     renderGlossary();
     switchCaseStudy(0);
+
+    // 新機能初期化
+    initMtfLens();
+    initOrderBookLab();
+    initDojo();
+    initChecklist();
   </script>
 </body>
 </html>
