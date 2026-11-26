@@ -2363,10 +2363,10 @@
         // 結果発表画面
         let rankTitle = "株式ルーキー 🌱";
         let rankDesc = "まずは基本を何回も復習して、ローソク足の形に慣れよう！";
-        if (quizScore === 5) {
+        if (quizScore === quizData.length) {
           rankTitle = "天才チャートマスター 👑";
           rankDesc = "完璧！プロ並みの心理分析力です！中学生にして投資の神童レベル！";
-        } else if (quizScore >= 3) {
+        } else if (quizScore >= 4) {
           rankTitle = "有望なジュニアトレーダー 🚀";
           rankDesc = "素晴らしい！床と天井、損切りの基礎がしっかり身についています！";
         }
@@ -2379,7 +2379,7 @@
             </div>
             <h3 class="text-3xl font-black text-white mb-2">${rankTitle}</h3>
             <p class="text-slate-300 text-sm max-w-md mx-auto mb-6">${rankDesc}</p>
-            <div class="text-4xl font-black text-amber-400 font-mono mb-8">スコア: ${quizScore} / 5 点</div>
+            <div class="text-4xl font-black text-amber-400 font-mono mb-8">スコア: ${quizScore} / ${quizData.length} 点</div>
             <button onclick="restartQuiz()" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-rose-500 to-amber-500 text-white font-black text-sm shadow-lg hover:scale-105 transition transform">
               もう一度挑戦する 🔄
             </button>
@@ -3381,7 +3381,7 @@
                 <span class="px-2.5 py-0.5 rounded-full text-xs font-black border ${data.tagColor}">
                   ${data.tag}
                 </span>
-                <span class="text-xs font-bold text-slate-400">ケース ${index + 1} / 6</span>
+                <span class="text-xs font-bold text-slate-400">ケース ${index + 1} / ${caseStudiesData.length}</span>
               </div>
               <h3 class="text-xl sm:text-3xl font-black text-white tracking-tight">${data.title}</h3>
               <p class="text-slate-300 text-xs sm:text-sm mt-1.5 font-medium">${data.subtitle}</p>
@@ -4513,12 +4513,11 @@
       const posBadge = document.getElementById("dojo-pos-badge");
 
       if (dojoState.position) {
+        const p = dojoState.position;
         noposControls.classList.add("hidden");
         posControls.classList.remove("hidden");
         posBadge.className = "px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[11px] font-bold";
         posBadge.innerText = `${p.shares}株 保有中`;
-
-        const p = dojoState.position;
         document.getElementById("dojo-holding-shares").innerText = `${p.shares} 株`;
         document.getElementById("dojo-holding-entry").innerText = `${p.entryPrice.toLocaleString()} 円`;
 
