@@ -701,6 +701,115 @@
           </div>
         </div>
 
+        <!-- 【上級プロ・機関投資家の視点】価格帯別出来高（ボリュームプロファイル）＆ VWAP 解説カード -->
+        <div class="mt-10 bg-brand-card rounded-3xl p-6 sm:p-8 border border-indigo-500/30 relative overflow-hidden shadow-2xl">
+          <div class="flex flex-col lg:flex-row gap-8 items-center">
+            
+            <div class="lg:w-1/2 space-y-4">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-black border border-indigo-500/30">
+                <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-400"></i> 機関投資家の裏ツール：水平の真実
+              </div>
+              <h3 class="text-xl sm:text-2xl font-black text-white">
+                「縦の出来高」だけ見るな！<br>
+                <span class="text-indigo-400">「横の出来高（価格帯別出来高）」</span>と<span class="text-amber-400">「VWAP」</span>
+              </h3>
+              <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                初心者は「いつ取引されたか（縦軸）」を見ますが、ヘッジファンドや上級者は<strong class="text-white">「どの値段で一番売買されたか（横軸）」</strong>を見ています。大勢が買った値段（POC）は、超強力な<strong class="text-indigo-300">「コンクリートの防壁＆磁石」</strong>になります！
+              </p>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <div class="p-3.5 rounded-xl bg-slate-900/90 border border-indigo-500/30 space-y-1">
+                  <div class="flex items-center gap-2 text-indigo-400 font-bold text-xs">
+                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                    POC（最多取引価格帯）
+                  </div>
+                  <p class="text-slate-400 text-[11px] leading-relaxed">
+                    <strong>「文化祭の超大行列屋台」</strong><br>
+                    過去に一番多くの株が売買された価格帯。ここを抜けると抵抗がなくなり急加速（エアポケット）！
+                  </p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-900/90 border border-amber-500/30 space-y-1">
+                  <div class="flex items-center gap-2 text-amber-400 font-bold text-xs">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                    VWAP（出来高加重平均）
+                  </div>
+                  <p class="text-slate-400 text-[11px] leading-relaxed">
+                    <strong>「クラス全員の割り勘平均点」</strong><br>
+                    当日の参加者全員の平均取得単価。株価がVWAPより上なら買い手優勢、下なら売り手優勢！
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 精密透視図SVG：価格帯別出来高 ＋ ローソク足 ＋ VWAP -->
+            <div class="lg:w-1/2 w-full bg-slate-950 p-4 rounded-2xl border border-slate-800 shadow-inner">
+              <div class="flex justify-between items-center text-xs text-slate-400 mb-2">
+                <span class="font-bold text-slate-200 flex items-center gap-1.5 font-mono text-[11px]">
+                  <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-indigo-400"></i> ボリュームプロファイル透視図
+                </span>
+                <span class="text-[10px] text-indigo-400 font-mono">横青バー＝価格ごとの出来高</span>
+              </div>
+              <div class="w-full flex justify-center">
+                <svg viewBox="0 0 460 220" class="w-full h-auto text-slate-300 select-none">
+                  <!-- 背景グリッド -->
+                  <line x1="120" y1="30" x2="440" y2="30" stroke="#1e293b" stroke-dasharray="3"/>
+                  <line x1="120" y1="80" x2="440" y2="80" stroke="#1e293b" stroke-dasharray="3"/>
+                  <line x1="120" y1="130" x2="440" y2="130" stroke="#1e293b" stroke-dasharray="3"/>
+                  <line x1="120" y1="180" x2="440" y2="180" stroke="#1e293b" stroke-dasharray="3"/>
+
+                  <!-- 横の出来高バー（左側エリア 0〜110px） -->
+                  <rect x="10" y="22" width="45" height="16" rx="3" fill="#3b82f6" fill-opacity="0.3"/>
+                  <rect x="10" y="47" width="30" height="16" rx="3" fill="#3b82f6" fill-opacity="0.3"/>
+                  <rect x="10" y="72" width="105" height="18" rx="3" fill="#6366f1" fill-opacity="0.85"/>
+                  <rect x="10" y="97" width="60" height="16" rx="3" fill="#3b82f6" fill-opacity="0.3"/>
+                  <rect x="10" y="122" width="85" height="16" rx="3" fill="#3b82f6" fill-opacity="0.4"/>
+                  <rect x="10" y="147" width="40" height="16" rx="3" fill="#3b82f6" fill-opacity="0.3"/>
+                  <rect x="10" y="172" width="20" height="16" rx="3" fill="#3b82f6" fill-opacity="0.2"/>
+
+                  <!-- POC水平ライン -->
+                  <line x1="10" y1="81" x2="440" y2="81" stroke="#818cf8" stroke-width="2" stroke-dasharray="5"/>
+                  <text x="125" y="75" fill="#a5b4fc" font-size="10" font-weight="black">★ POC (2,000円：最大の売買塊・超強力サポート)</text>
+
+                  <!-- VWAP曲線（黄色破線） -->
+                  <path d="M 140 140 Q 220 120, 290 95 T 430 65" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="4"/>
+                  <text x="350" y="55" fill="#fbbf24" font-size="10" font-weight="bold">VWAP（大口平均値）</text>
+
+                  <!-- ローソク足群 -->
+                  <!-- Candle 1: 下落 -->
+                  <line x1="150" y1="130" x2="150" y2="170" stroke="#38bdf8" stroke-width="1.5"/>
+                  <rect x="144" y="140" width="12" height="20" fill="#38bdf8" rx="1"/>
+                  <!-- Candle 2: 反発 -->
+                  <line x1="190" y1="110" x2="190" y2="155" stroke="#ff4d4d" stroke-width="1.5"/>
+                  <rect x="184" y="115" width="12" height="30" fill="#ff4d4d" rx="1"/>
+                  <!-- Candle 3: POC突破の大陽線 -->
+                  <line x1="230" y1="65" x2="230" y2="125" stroke="#ff4d4d" stroke-width="2"/>
+                  <rect x="224" y="75" width="12" height="40" fill="#ff4d4d" rx="1"/>
+                  <!-- Candle 4: POCへのリテスト下ヒゲ陰線 -->
+                  <line x1="270" y1="70" x2="270" y2="86" stroke="#38bdf8" stroke-width="2"/>
+                  <rect x="264" y="70" width="12" height="10" fill="#38bdf8" rx="1"/>
+                  <circle cx="270" cy="81" r="5" fill="none" stroke="#38bdf8" stroke-width="2"/>
+                  <text x="282" y="96" fill="#38bdf8" font-size="10" font-weight="bold">POCでピタリと反発！</text>
+                  <!-- Candle 5: 続伸大陽線 -->
+                  <line x1="320" y1="40" x2="320" y2="75" stroke="#ff4d4d" stroke-width="2"/>
+                  <rect x="314" y="45" width="12" height="25" fill="#ff4d4d" rx="1"/>
+                  <!-- Candle 6 -->
+                  <line x1="360" y1="30" x2="360" y2="60" stroke="#ff4d4d" stroke-width="2"/>
+                  <rect x="354" y="35" width="12" height="20" fill="#ff4d4d" rx="1"/>
+
+                  <!-- 境界線 -->
+                  <line x1="118" y1="10" x2="118" y2="200" stroke="#334155" stroke-width="1.5"/>
+                  <text x="15" y="210" fill="#64748b" font-size="9" font-weight="bold">価格帯別出来高</text>
+                  <text x="360" y="210" fill="#64748b" font-size="9" font-weight="bold">通常の株価チャート</text>
+                </svg>
+              </div>
+              <p class="text-[11px] text-slate-400 text-center mt-2">
+                💡 <strong class="text-white">プロの極意：</strong> POCより上で株価が推移し、VWAPより上にある時は「買い手最強のトレンド状態」！
+              </p>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -1192,6 +1301,88 @@
           <!-- JSで解説が表示されます -->
         </div>
 
+        <!-- 【行動経済学】プロスペクト理論 心理トラップ解剖ラボ -->
+        <div class="mt-12 bg-slate-900/90 rounded-3xl p-6 sm:p-10 border border-rose-500/30 relative overflow-hidden shadow-2xl">
+          <div class="max-w-3xl mx-auto text-center">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-xs font-black uppercase mb-3 border border-rose-500/30">
+              <i data-lucide="brain" class="w-3.5 h-3.5"></i> ノーベル経済学賞理論で解明！
+            </span>
+            <h3 class="text-2xl sm:text-3xl font-black text-white">
+              なぜ人は「損切り」ができず、「チキン利食い」するのか？<br>
+              <span class="text-rose-400">あなたの脳に潜む「プロスペクト理論」の心理トラップ</span>
+            </h3>
+            <p class="mt-3 text-slate-300 text-xs sm:text-sm leading-relaxed">
+              学校の秀才やエリートほど株で大敗する理由。それは人間の脳が<strong class="text-rose-400">「利益の喜びより、損の痛みを2.25倍強く感じる」</strong>ように進化してしまったからです！
+            </p>
+          </div>
+
+          <!-- 2択診断シミュレーター -->
+          <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <!-- 質問 1：利益の場面 -->
+            <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm mb-2">
+                  <span>💰 場面1：利益が出ている時</span>
+                </div>
+                <p class="text-xs text-slate-300 mb-4 font-bold">目の前に2つの選択肢があります。あなたならどちらを選びますか？</p>
+                <div class="space-y-2">
+                  <button onclick="diagnoseProspect(1, 'A')" id="btn-p1-a" class="w-full text-left p-3 rounded-xl border border-slate-700 hover:border-emerald-500 bg-slate-900 transition-all text-xs text-white flex justify-between items-center">
+                    <span>【A】確実に <strong>10万円</strong> もらう</span>
+                    <span class="text-[10px] text-slate-400">確実性重視</span>
+                  </button>
+                  <button onclick="diagnoseProspect(1, 'B')" id="btn-p1-b" class="w-full text-left p-3 rounded-xl border border-slate-700 hover:border-emerald-500 bg-slate-900 transition-all text-xs text-white flex justify-between items-center">
+                    <span>【B】50%で <strong>20万円</strong>（50%で0円）</span>
+                    <span class="text-[10px] text-slate-400">ギャンブル</span>
+                  </button>
+                </div>
+              </div>
+              <p id="result-p1" class="text-[11px] text-slate-400 mt-3 pt-2 border-t border-slate-800 min-h-[30px]"></p>
+            </div>
+
+            <!-- 質問 2：損失の場面 -->
+            <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-2 text-rose-400 font-bold text-sm mb-2">
+                  <span>💣 場面2：含み損を抱えた時</span>
+                </div>
+                <p class="text-xs text-slate-300 mb-4 font-bold">あなたは10万円の含み損（損失）が出ています。どうしますか？</p>
+                <div class="space-y-2">
+                  <button onclick="diagnoseProspect(2, 'A')" id="btn-p2-a" class="w-full text-left p-3 rounded-xl border border-slate-700 hover:border-rose-500 bg-slate-900 transition-all text-xs text-white flex justify-between items-center">
+                    <span>【A】確実に <strong>10万円支払って損切り</strong></span>
+                    <span class="text-[10px] text-slate-400">確定損</span>
+                  </button>
+                  <button onclick="diagnoseProspect(2, 'B')" id="btn-p2-b" class="w-full text-left p-3 rounded-xl border border-slate-700 hover:border-rose-500 bg-slate-900 transition-all text-xs text-white flex justify-between items-center">
+                    <span>【B】50%で <strong>チャラ（0円）</strong><br><span class="text-[10px] text-rose-400">（ただし残り50%で損失20万円に倍増）</span></span>
+                    <span class="text-[10px] text-slate-400">神頼み</span>
+                  </button>
+                </div>
+              </div>
+              <p id="result-p2" class="text-[11px] text-slate-400 mt-3 pt-2 border-t border-slate-800 min-h-[30px]"></p>
+            </div>
+          </div>
+
+          <!-- プロの解毒剤：2大自動化システム解説 -->
+          <div id="prospect-conclusion" class="hidden mt-6 p-5 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 max-w-4xl mx-auto animate-fade-in">
+            <div class="flex items-start gap-4">
+              <div class="p-3 rounded-xl bg-emerald-500/20 text-emerald-400 font-black text-xl">🛡️</div>
+              <div class="space-y-2">
+                <h4 class="text-sm font-black text-white">プロが脳の本能を克服する「2大無敗化システム」</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-300">
+                  <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                    <strong class="text-emerald-400 block mb-1">① エントリーと同時にSL（逆指値）を置く</strong>
+                    買う瞬間に損切り注文をシステムに預ける。自分の意思で損切りボタンを押そうとするから手が震える！
+                  </div>
+                  <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                    <strong class="text-amber-400 block mb-1">② 部分利確（50% TP）＋ 建値ストップ</strong>
+                    第1目標で半分売って利益を確定し、同時にSLを買値に引き上げる。これで「100%負けのないトレード」が完成！
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
       </div>
 
     </div>
@@ -1447,7 +1638,7 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-10">
         <span class="inline-block px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-black tracking-wider uppercase mb-2">Interactive Tool 2</span>
-        <h2 class="text-2xl sm:text-4xl font-black text-white">チャート実戦クイズ 🎯<br><span class="text-amber-400">君ならここでどう判断する？（全5問）</span></h2>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">チャート実戦クイズ 🎯<br><span class="text-amber-400">君ならここでどう判断する？（全6問）</span></h2>
         <p class="mt-3 text-slate-400 text-sm sm:text-base">
           図を見て「買い」「売り」「様子見」を直感で選んでみよう！
         </p>
@@ -1458,7 +1649,7 @@
         
         <!-- プログレスバー -->
         <div class="flex items-center justify-between text-xs font-bold text-slate-400 mb-3">
-          <span>進行度: <span id="quiz-progress-text" class="text-white">第1問 / 5問</span></span>
+          <span>進行度: <span id="quiz-progress-text" class="text-white">第1問 / 6問</span></span>
           <span>スコア: <span id="quiz-score-text" class="text-amber-400">0点</span></span>
         </div>
         <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-8">
@@ -1608,13 +1799,25 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
-                  <button onclick="dojoExitPosition('TP')" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-md transition flex items-center justify-center gap-1">
+                  <button onclick="dojoExitPosition('TP')" class="py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-md transition flex items-center justify-center gap-1">
                     <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
-                    <span>利益確定手仕舞</span>
+                    <span>全利益確定手仕舞</span>
                   </button>
-                  <button onclick="dojoExitPosition('SL')" class="py-2.5 px-3 rounded-xl bg-rose-600/80 hover:bg-rose-600 text-white font-black text-xs transition flex items-center justify-center gap-1">
+                  <button onclick="dojoExitPosition('SL')" class="py-2 px-3 rounded-xl bg-rose-600/80 hover:bg-rose-600 text-white font-black text-xs transition flex items-center justify-center gap-1">
                     <i data-lucide="x-circle" class="w-3.5 h-3.5"></i>
                     <span>手動ロスカット</span>
+                  </button>
+                </div>
+
+                <!-- プロの技：部分利確 ＆ 建値ストップ -->
+                <div class="grid grid-cols-2 gap-2 pt-1 border-t border-emerald-500/20">
+                  <button onclick="dojoPartialTP()" class="py-1.5 px-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-bold text-[11px] transition flex items-center justify-center gap-1" title="半分利確して利益をロック！">
+                    <i data-lucide="scissors" class="w-3 h-3 text-amber-400"></i>
+                    <span>50%利確（安全確保）</span>
+                  </button>
+                  <button onclick="dojoMoveToBreakeven()" class="py-1.5 px-2 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-500/40 text-sky-300 font-bold text-[11px] transition flex items-center justify-center gap-1" title="SLを買値に引き上げて無敗化！">
+                    <i data-lucide="shield-check" class="w-3 h-3 text-sky-400"></i>
+                    <span>建値にSL（無敗化）</span>
                   </button>
                 </div>
 
@@ -2128,6 +2331,17 @@
           { text: "A: 「いつか戻るはず…」と祈りながら放置する", isCorrect: false, reason: "大不正解！！塩漬け（放置）は退場への片道切符！1,900円、1,500円と泥沼にハマる一番ダメな行動です。" },
           { text: "B: 悔しいけどルール通り即座に「損切り実行」！", isCorrect: true, reason: "大正解！！これこそが億を稼ぐプロの規律！決めたラインを割ったら即座に逃げる。損切りは次の勝ちを掴むための「入場料」です！" },
           { text: "C: もっと下がったら困るのでパソコンの電源を切る", isCorrect: false, reason: "不正解…！現実逃避しても株価は容赦なく動きます！ルールを徹底しましょう！" }
+        ]
+      },
+      {
+        qNum: 6,
+        title: "第6問：2,000円の強固な天井を突き抜けた！プロはどこで買う？",
+        situation: "過去半年間、一度も破れなかった2,000円のレジスタンス（天井）を大陽線が突き抜けました！周りの個人投資家はお祭り騒ぎで飛びつき買いを入れています。プロのあなたは？",
+        graphicType: "double-bottom",
+        choices: [
+          { text: "A: 乗り遅れるな！今すぐ成行で全力飛びつき買い！", isCorrect: false, reason: "不正解…！これが初心者が一番お金を失う『高値掴み（ブレイクアウト・トラップ）』！大口が利確して一時的に急反落した時に耐えられず損切りさせられます。" },
+          { text: "B: 焦らず待つ！2,000円まで落ちてきて『床に変わった反発（リテスト）』を確認して買う！", isCorrect: true, reason: "大正解！プロは決して飛びつきません。『天井が床に変わった（ロールリバーサル）』を足で踏んで確かめた瞬間こそ、損切り幅が極小でリスクリワード最高の黄金ポイントです！" },
+          { text: "C: 突き抜けたので危険だから即座に空売りする", isCorrect: false, reason: "不正解…！上昇トレンドに真っ向から逆らう逆張り売りは踏み上げられて大火傷します！" }
         ]
       }
     ];
@@ -3052,6 +3266,89 @@
           riskReward: "1 : 1.5 （リバウンドのスピードが圧倒的に速い短期トレード！）"
         },
         proTips: "セリクラ当日の真っ最中に飛び込むのは危険です。必ず『超ロング下ヒゲをつけて引けた翌日』に反発を確認してからエントリーするのがプロの規律です。"
+      },
+      {
+        id: 6,
+        tabName: "⑦ ストップ狩り＆リテスト",
+        tag: "大口の裏手口 ★★★★★",
+        tagColor: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
+        title: "リクイディティ・スウィープ（ストップ狩り）からのリテスト反発",
+        subtitle: "個人の損切り売りを一網打尽にしてからロケット急上昇する機関投資家の鉄板パターン！",
+        modelStock: "急成長グロース株・先物・暗号資産（大口が板の薄い安値を叩いて仕込む時）",
+        youtubeQuote: "「見てください！みんなが損切りラインを置いていた床をわざと一瞬割り込ませてから、凄まじい大陽線で買い上がりましたね！これが『大口の仕込み』です！」",
+        chartSvg: `
+          <svg viewBox="0 0 650 260" class="w-full h-auto text-slate-300">
+            <!-- グリッド背景 -->
+            <line x1="30" y1="50" x2="620" y2="50" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="120" x2="620" y2="120" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="180" x2="620" y2="180" stroke="#1e293b" stroke-dasharray="4"/>
+            <line x1="30" y1="210" x2="620" y2="210" stroke="#334155" stroke-width="1"/>
+            <text x="35" y="223" fill="#64748b" font-size="10" font-weight="bold">出来高（取引量）</text>
+
+            <!-- サポートライン -->
+            <line x1="50" y1="130" x2="600" y2="130" stroke="#38bdf8" stroke-width="2" stroke-dasharray="5"/>
+            <text x="55" y="123" fill="#38bdf8" font-size="11" font-weight="bold">🛡️ サポートライン（過去に何度も反発した床：2,400円）</text>
+
+            <!-- ストップ狩りエリア（個人の損切り密集帯） -->
+            <rect x="220" y="132" width="100" height="45" fill="#f43f5e" fill-opacity="0.15" rx="4"/>
+            <text x="225" y="150" fill="#f43f5e" font-size="10" font-weight="bold">個人の逆指値損切り密集帯</text>
+
+            <!-- 揉み合いローソク足 -->
+            <line x1="100" y1="105" x2="100" y2="130" stroke="#10b981" stroke-width="2"/>
+            <rect x="94" y="110" width="12" height="18" fill="#10b981"/>
+            <line x1="140" y1="100" x2="140" y2="130" stroke="#f43f5e" stroke-width="2"/>
+            <rect x="134" y="105" width="12" height="22" fill="#f43f5e"/>
+            <line x1="180" y1="115" x2="180" y2="132" stroke="#f43f5e" stroke-width="2"/>
+            <rect x="174" y="120" width="12" height="11" fill="#f43f5e"/>
+
+            <!-- ストップ狩り下ヒゲ怪物足 -->
+            <line x1="250" y1="125" x2="250" y2="175" stroke="#10b981" stroke-width="3"/>
+            <rect x="242" y="122" width="16" height="15" fill="#10b981" rx="1"/>
+            <text x="265" y="170" fill="#f43f5e" font-size="10" font-weight="black">💥 ストップ狩り（流動性回収！）</text>
+
+            <!-- リテスト足 -->
+            <line x1="330" y1="120" x2="330" y2="133" stroke="#10b981" stroke-width="2"/>
+            <rect x="324" y="122" width="12" height="9" fill="#10b981"/>
+            <circle cx="330" cy="130" r="7" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+            <text x="345" y="122" fill="#fbbf24" font-size="11" font-weight="black">🎯 リテスト成功！絶好のエントリー！</text>
+
+            <!-- 爆上げロケット -->
+            <line x1="410" y1="80" x2="410" y2="125" stroke="#10b981" stroke-width="2.5"/>
+            <rect x="403" y="85" width="14" height="35" fill="#10b981"/>
+            <line x1="470" y1="45" x2="470" y2="90" stroke="#10b981" stroke-width="2.5"/>
+            <rect x="463" y="50" width="14" height="35" fill="#10b981"/>
+
+            <!-- 出来高バー -->
+            <rect x="94" y="235" width="12" height="15" fill="#334155"/>
+            <rect x="134" y="230" width="12" height="20" fill="#334155"/>
+            <rect x="174" y="238" width="12" height="12" fill="#334155"/>
+            <rect x="242" y="212" width="16" height="38" fill="#f43f5e"/>
+            <rect x="324" y="232" width="12" height="18" fill="#334155"/>
+            <rect x="403" y="215" width="14" height="35" fill="#10b981"/>
+            <rect x="463" y="218" width="14" height="32" fill="#10b981"/>
+          </svg>
+        `,
+        logics: [
+          {
+            title: "① なぜ床を一瞬割るのか？（クジラの魚追い込み漁）",
+            desc: "機関投資家が数十万株を買うには、大量の『売り注文』が必要。個人が『ここを割ったら損切り』と逆指値を置いている床の下をわざと叩き、売り注文を強制発動させて全部買い集めます。"
+          },
+          {
+            title: "② なぜ直後に爆上げするのか？（売り手の一掃）",
+            desc: "床の下で売りたい人間が全員損切りさせられ、市場から売り圧力が完全に消滅（流動性回収）。大口の買い玉だけが残るため、株価は障害物ゼロで急騰します。"
+          },
+          {
+            title: "③ なぜリテストで入るのか？（ロールリバーサルの確認）",
+            desc: "床を割った直後に逆張りするのは危険。奪還した2,400円の床に再び落ちてきて『床として反発した（リテスト成功）』のを確認してから入ることで勝率が跳ね上がります。"
+          }
+        ],
+        tradePlan: {
+          entry: "2,400円の床へのリテスト反発確認時（2,430円前後）",
+          stopLoss: "ストップ狩りの最安値の少し下（2,340円）",
+          takeProfit: "直近高値・レジスタンス（2,650円）",
+          riskReward: "1 : 2.4 （極めて有利）"
+        },
+        proTips: "教科書通りの『サポート割れで即空売り』をする初心者は大口の格好の餌食になります。サポート割れ直後に異常な出来高を伴う下ヒゲが出たら、空売りではなく『リテスト反発待ちの買い』を狙うのが上級プロの思考です。"
       }
     ];
 
@@ -3960,6 +4257,45 @@
           { day: 12, o: 1400, h: 1410, l: 1320, c: 1330, vol: 410, ma25: 1450,
             hint: "追証パニック売りで連日の暴落！見送り大成功！" }
         ]
+      },
+      {
+        id: "liquidity-sweep-retest",
+        title: "Mission 4：機関投資家のストップ狩りを逆手に取れ！（達人）",
+        difficulty: "★★★★ 達人",
+        stockName: "サイバーネクスト (5005)",
+        initialCash: 300000,
+        resistance: 2650,
+        support: 2400,
+        initialStep: 9,
+        candles: [
+          { day: 1,  o: 2420, h: 2480, l: 2400, c: 2450, vol: 150, ma25: 2430 },
+          { day: 2,  o: 2450, h: 2500, l: 2420, c: 2480, vol: 160, ma25: 2432 },
+          { day: 3,  o: 2480, h: 2490, l: 2410, c: 2420, vol: 140, ma25: 2433 },
+          { day: 4,  o: 2420, h: 2460, l: 2400, c: 2440, vol: 130, ma25: 2434 },
+          { day: 5,  o: 2440, h: 2520, l: 2430, c: 2510, vol: 180, ma25: 2436 },
+          { day: 6,  o: 2510, h: 2530, l: 2450, c: 2460, vol: 170, ma25: 2438 },
+          { day: 7,  o: 2460, h: 2470, l: 2405, c: 2410, vol: 150, ma25: 2439 },
+          { day: 8,  o: 2410, h: 2450, l: 2400, c: 2430, vol: 140, ma25: 2440 },
+          { day: 9,  o: 2430, h: 2440, l: 2390, c: 2395, vol: 190, ma25: 2440,
+            hint: "⚠️ 警戒！過去3回守られた2,400円の床をわずかに下回って引けた。個人の損切り逆指値が密集しているゾーン！" },
+          // --- ここから未来足 ---
+          { day: 10, o: 2390, h: 2400, l: 2350, c: 2360, vol: 320, ma25: 2438,
+            hint: "⚡ 2,400円を割り込みパニック売り発生！しかし大口が下で全て吸収している…？まだ飛びつくな！" },
+          { day: 11, o: 2360, h: 2430, l: 2345, c: 2425, vol: 620, ma25: 2437,
+            hint: "🔥 出来高6.2倍の怪物下ヒゲ陽線（ストップ狩り完了）！大口が損切り玉を回収して2,400円を奪還！リテストを待て！" },
+          { day: 12, o: 2425, h: 2440, l: 2400, c: 2435, vol: 280, ma25: 2438,
+            action: "BUY", hint: "🎯 2,400円の床へのリテスト（試し）が成功し反発！ここがプロの絶好のエントリー！（SL 2,380円 / TP 2,650円）" },
+          { day: 13, o: 2435, h: 2510, l: 2430, c: 2500, vol: 390, ma25: 2442,
+            action: "HOLD", hint: "大陽線で上放れ！ストップ狩りで売り手が一掃されたため、株価が軽々と上昇中！" },
+          { day: 14, o: 2500, h: 2560, l: 2490, c: 2550, vol: 340, ma25: 2448,
+            action: "HOLD", hint: "含み益拡大！小天井2,550円到達。ここで「50%利確」し、SLを「買値（建値）」に引き上げるのがプロの技！" },
+          { day: 15, o: 2550, h: 2580, l: 2520, c: 2570, vol: 310, ma25: 2455,
+            action: "HOLD", hint: "軽い押し目を作りながらも25日線が下から急速に追いついてきた。トレンド継続。" },
+          { day: 16, o: 2570, h: 2650, l: 2560, c: 2640, vol: 480, ma25: 2465,
+            action: "HOLD", hint: "レジスタンス2,650円に肉薄！目標値に到達目前！" },
+          { day: 17, o: 2640, h: 2680, l: 2620, c: 2660, vol: 520, ma25: 2478,
+            action: "SELL", hint: "🎉 2,650円目標達成＆上ヒゲ出現！ストップ狩りからのリテスト反発大成功！全利確しよう！" }
+        ]
       }
     ];
 
@@ -4498,6 +4834,82 @@
     updateCapitalCalculator();
     renderGlossary();
     switchCaseStudy(0);
+
+    // 50% 部分利確機能
+    function dojoPartialTP() {
+      if (!dojoState.position || dojoState.position.shares < 100) {
+        alert("保有ポジションがある時のみ半分利確できます。");
+        return;
+      }
+      const sc = dojoScenarios[currentDojoScenario];
+      const c = sc.candles[dojoState.stepIndex];
+      const p = dojoState.position;
+      const sellShares = Math.floor(p.shares / 2);
+      const realizedPartPnl = (c.c - p.entryPrice) * sellShares;
+
+      p.shares -= sellShares;
+      dojoState.cash += (c.c * sellShares);
+      dojoState.score += 15;
+
+      SoundFX.profit();
+      document.getElementById("dojo-event-log").innerHTML = `💰 <strong>【50%部分利確】</strong> ${sellShares}株を ${c.c}円 で利確（+${realizedPartPnl.toLocaleString()}円 確定）！残りはノーリスクで走らせよう！`;
+      updateDojoUI();
+    }
+
+    // 建値（買値）へSL移動機能
+    function dojoMoveToBreakeven() {
+      if (!dojoState.position) return;
+      const p = dojoState.position;
+      p.stopLoss = p.entryPrice;
+      dojoState.score += 15;
+
+      SoundFX.breakout();
+      document.getElementById("dojo-event-log").innerHTML = `🛡️ <strong>【建値ストップ設定】</strong> 損切りラインを買値（${p.entryPrice}円）へ引き上げました！これでこのトレードは「絶対負けのない勝負（無敗化）」になりました！`;
+      updateDojoUI();
+    }
+
+    // プロスペクト理論 診断ロジック
+    const prospectState = { q1: null, q2: null };
+    function diagnoseProspect(qNum, choice) {
+      if (qNum === 1) {
+        prospectState.q1 = choice;
+        document.getElementById("btn-p1-a").className = choice === 'A'
+          ? "w-full text-left p-3 rounded-xl border border-emerald-500 bg-emerald-950/40 text-xs text-white flex justify-between items-center"
+          : "w-full text-left p-3 rounded-xl border border-slate-700 bg-slate-900 text-xs text-slate-400 flex justify-between items-center";
+        document.getElementById("btn-p1-b").className = choice === 'B'
+          ? "w-full text-left p-3 rounded-xl border border-emerald-500 bg-emerald-950/40 text-xs text-white flex justify-between items-center"
+          : "w-full text-left p-3 rounded-xl border border-slate-700 bg-slate-900 text-xs text-slate-400 flex justify-between items-center";
+        
+        const res = document.getElementById("result-p1");
+        if (choice === 'A') {
+          res.innerHTML = "👉 <strong>【正常な人間心理】</strong> 85%の人がAを選びます！利益が出るとリスクを過剰に怖がってすぐ利食いしてしまう『チキン利食い』の証明です！";
+        } else {
+          res.innerHTML = "👉 <strong>【勝負師の素質】</strong> 利益を最大化するリスクを取れる思考です！ただし欲張りすぎに注意！";
+        }
+        SoundFX.tick();
+      } else if (qNum === 2) {
+        prospectState.q2 = choice;
+        document.getElementById("btn-p2-a").className = choice === 'A'
+          ? "w-full text-left p-3 rounded-xl border border-rose-500 bg-rose-950/40 text-xs text-white flex justify-between items-center"
+          : "w-full text-left p-3 rounded-xl border border-slate-700 bg-slate-900 text-xs text-slate-400 flex justify-between items-center";
+        document.getElementById("btn-p2-b").className = choice === 'B'
+          ? "w-full text-left p-3 rounded-xl border border-rose-500 bg-rose-950/40 text-xs text-white flex justify-between items-center"
+          : "w-full text-left p-3 rounded-xl border border-slate-700 bg-slate-900 text-xs text-slate-400 flex justify-between items-center";
+        
+        const res = document.getElementById("result-p2");
+        if (choice === 'B') {
+          res.innerHTML = "👉 <strong>【塩漬け予備軍】</strong> 80%の人がBを選びます！損失が出ると『戻るかも…』と危険な勝負に突っ込み、最終的に破産する典型的な脳のバグです！";
+        } else {
+          res.innerHTML = "👉 <strong>【プロの素質あり！】</strong> 冷徹に確定損を受け入れられる、極めて稀有なトレーダー脳です！";
+        }
+        SoundFX.tick();
+      }
+
+      if (prospectState.q1 && prospectState.q2) {
+        document.getElementById("prospect-conclusion").classList.remove("hidden");
+        SoundFX.profit();
+      }
+    }
 
     // 新機能初期化
     initMtfLens();
