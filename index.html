@@ -128,19 +128,40 @@
       </nav>
 
       <div class="flex items-center gap-1.5 sm:gap-2">
-        <button id="sound-toggle-btn" onclick="SoundFX.toggleMute()" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-700 bg-slate-800/80 text-amber-300 hover:bg-slate-700 transition text-xs font-bold shrink-0" title="効果音 ON/OFF">
-          <i data-lucide="volume-2" id="sound-icon" class="w-4 h-4 text-amber-400"></i>
-          <span id="sound-text" class="hidden sm:inline">SOUND</span>
+        <!-- 虎の巻（チートシート）ボタン -->
+        <button onclick="openCheatSheetModal()" class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 transition text-xs font-bold shrink-0" title="プロ直伝 相場出撃チートシート">
+          <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
+          <span class="hidden md:inline">虎の巻</span>
         </button>
+
+        <!-- 実績トロフィールームボタン -->
+        <button onclick="openBadgeModal()" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-indigo-500/40 bg-indigo-500/10 text-indigo-300 hover:bg-indigo-500/20 transition text-xs font-bold shrink-0" title="探検隊実績＆進捗状況">
+          <i data-lucide="trophy" class="w-3.5 h-3.5 text-yellow-400"></i>
+          <span class="hidden sm:inline">実績</span>
+          <span id="header-progress-pct" class="text-[10px] font-black px-1.5 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200">0%</span>
+        </button>
+
+        <!-- 効果音トグル -->
+        <button id="sound-toggle-btn" onclick="SoundFX.toggleMute()" class="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl border border-slate-700 bg-slate-800/80 text-amber-300 hover:bg-slate-700 transition text-xs font-bold shrink-0" title="効果音 ON/OFF">
+          <i data-lucide="volume-2" id="sound-icon" class="w-4 h-4 text-amber-400"></i>
+          <span id="sound-text" class="hidden lg:inline">SOUND</span>
+        </button>
+
         <a href="#dojo" class="flex items-center gap-1 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-extrabold text-[11px] sm:text-xs px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl shadow-md transition transform hover:-translate-y-0.5 shrink-0">
           <i data-lucide="swords" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
-          <span>実践道場</span>
+          <span class="hidden sm:inline">実践道場</span>
+          <span class="sm:hidden">道場</span>
         </a>
-        <a href="#simulator" class="hidden sm:flex items-center gap-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-extrabold text-xs px-2.5 py-1.5 rounded-xl transition shrink-0">
-          <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
-          <span>ツール</span>
-        </a>
+
+        <!-- モバイル用ハンバーガーメニューボタン -->
+        <button onclick="toggleMobileDrawer(true)" class="xl:hidden p-2 rounded-xl border border-slate-700 bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 transition shrink-0" title="目次メニューを開く">
+          <i data-lucide="menu" class="w-4 h-4"></i>
+        </button>
       </div>
+    </div>
+      <!-- スクロール読書進捗バー -->
+    <div class="w-full bg-slate-900/60 h-1">
+      <div id="scroll-progress-bar" class="h-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-150 ease-out" style="width: 0%;"></div>
     </div>
   </header>
 
@@ -2364,6 +2385,7 @@
         let rankTitle = "株式ルーキー 🌱";
         let rankDesc = "まずは基本を何回も復習して、ローソク足の形に慣れよう！";
         if (quizScore === quizData.length) {
+          if (typeof unlockBadge === "function") unlockBadge("quiz_master");
           rankTitle = "天才チャートマスター 👑";
           rankDesc = "完璧！プロ並みの心理分析力です！中学生にして投資の神童レベル！";
         } else if (quizScore >= 4) {
@@ -3714,6 +3736,7 @@
     }
 
     function toggleMtfPlay() {
+      if (typeof unlockBadge === "function") unlockBadge("mtf_explorer");
       if (mtfPlayInterval) {
         clearInterval(mtfPlayInterval);
         mtfPlayInterval = null;
@@ -4000,6 +4023,7 @@
     }
 
     function sendMarketOrder(side, orderQty) {
+      if (typeof unlockBadge === "function") unlockBadge("orderbook_trader");
       let remaining = orderQty;
       let executedTotal = 0;
       let lastExecPrice = orderBookState.lastPrice;
@@ -4672,6 +4696,11 @@
 
       finishCard.className = `p-6 sm:p-8 rounded-3xl bg-gradient-to-tr from-slate-950 via-brand-dark to-slate-900 border-2 ${rankColor} shadow-2xl animate-fade-in space-y-6`;
       finishCard.classList.remove("hidden");
+      if (typeof unlockBadge === "function") {
+        if (currentDojoScenario === 3 || dojoState.score >= 50) {
+          unlockBadge("dojo_master");
+        }
+      }
 
       finishCard.innerHTML = `
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-5">
@@ -4809,6 +4838,7 @@
       const serial = document.getElementById("pass-serial-id");
 
       if (isAllClear) {
+        if (typeof unlockBadge === "function") unlockBadge("checklist_pass");
         badgePanel.className = "mt-6 p-5 rounded-2xl bg-gradient-to-tr from-emerald-950/60 via-slate-900 to-amber-950/40 border-2 border-emerald-400 text-center space-y-3 transition-all duration-300 shadow-xl glow-green";
         icon.className = "w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto text-xl shadow-lg shadow-emerald-500/30";
         icon.innerText = "✈️";
@@ -4912,6 +4942,7 @@
 
       if (prospectState.q1 && prospectState.q2) {
         document.getElementById("prospect-conclusion").classList.remove("hidden");
+        if (typeof unlockBadge === "function") unlockBadge("mindset_master");
         SoundFX.profit();
       }
     }
@@ -4921,6 +4952,764 @@
     initOrderBookLab();
     initDojo();
     initChecklist();
+  
+    /* ==========================================================================
+       探検隊マスターシステム：進捗永続化、チートシート、実績バッジ、モバイルUX
+       ========================================================================== */
+
+    // 15大セクション定義
+    const APP_SECTIONS = [
+      { id: "step1", num: "01", title: "ローソク足の基本解剖", desc: "実体とヒゲの4本値・買いと売りの力関係", icon: "candle" },
+      { id: "step2", num: "02", title: "最強パターン6選", desc: "ピンバー・包み足・はらみ足の反転シグナル", icon: "zap" },
+      { id: "step3", num: "03", title: "床と天井（サポレジ）", desc: "水平線・レジサポ転換・ロールリバーサル", icon: "layers" },
+      { id: "step4", num: "04", title: "出来高＆VWAP解剖", desc: "機関投資家の本気度・価格帯別出来高の壁", icon: "bar-chart-2" },
+      { id: "step5", num: "05", title: "魔の時間帯タイムマップ", desc: "東証9:00〜15:30の罠と本流トレンド", icon: "clock" },
+      { id: "mtf-lens", num: "EX1", title: "MTFマルチタイム解剖", desc: "日足と5分足のズームイン透視鏡", icon: "search" },
+      { id: "step6", num: "06", title: "実践ケーススタディ", desc: "YouTube直伝 7大局面のチャート解剖", icon: "tv" },
+      { id: "step7", num: "07", title: "資金管理＆心理ラボ", desc: "2%ルール・プロスペクト理論・期待値実験", icon: "shield" },
+      { id: "orderbook-lab", num: "EX2", title: "板読み×歩み値ラボ", desc: "厚い買い板・見せ板・大口の奇襲解読", icon: "book-open" },
+      { id: "simulator", num: "T1", title: "ローソク足クリエイター", desc: "Canvasで四本値を自在に描画シミュレート", icon: "sliders" },
+      { id: "quiz", num: "T2", title: "実戦チャートクイズ", desc: "全6問のプロ厳選SVGチャートテスト", icon: "help-circle" },
+      { id: "dojo", num: "T3", title: "トレード実践道場", desc: "全4ミッション・部分利確・建値ストップ実戦", icon: "swords" },
+      { id: "calc", num: "T4", title: "2%ルール資金計算機", desc: "許容損失額と適正株数の即時算出ツール", icon: "calculator" },
+      { id: "checklist", num: "T5", title: "出撃前チェックリスト", desc: "10項目点検＆リアルタイム取引許可証発行", icon: "clipboard-check" },
+      { id: "glossary", num: "T6", title: "超速・用語辞典", desc: "相場用語を中学生でもわかる言葉で解説", icon: "file-text" }
+    ];
+
+    // 8大実績（アチーブメント）定義
+    const BADGE_DEFINITIONS = [
+      { id: "first_step", title: "🌱 初めの一歩", desc: "いずれか1つの章をマスター完了する", icon: "🌱", condition: "1章完了" },
+      { id: "mtf_explorer", title: "🔍 透視鏡マスター", desc: "MTFレンズで上位足と下位足の同期アニメを再生する", icon: "🔍", condition: "MTF再生" },
+      { id: "orderbook_trader", title: "📖 板読みの目覚め", desc: "板読み×歩み値ラボで買い注文を約定させる", icon: "📖", condition: "板注文約定" },
+      { id: "mindset_master", title: "🧠 心理の克服者", desc: "プロスペクト理論の2大診断をすべて完了する", icon: "🧠", condition: "心理診断完了" },
+      { id: "quiz_master", title: "🧩 チャート博士", desc: "実戦チャートクイズ全6問で満点（6/6）を獲得する", icon: "🧩", condition: "クイズ満点" },
+      { id: "dojo_master", title: "🥋 道場免許皆伝", desc: "トレード実践道場のMissionを完遂し高ランクを獲得する", icon: "🥋", condition: "道場制覇" },
+      { id: "checklist_pass", title: "✈️ 専業トレーダー", desc: "出撃前チェックリスト全10項目をクリアし許可証を発行", icon: "✈️", condition: "許可証発行" },
+      { id: "all_master", title: "👑 探検隊グランドマスター", desc: "全15章すべてを読了・マスター達成する", icon: "👑", condition: "全15章制覇" }
+    ];
+
+    // ユーザー進捗データ（localStorage永続化）
+    const STORAGE_KEY = "candlestick_progress_v2";
+    let userProgress = {
+      completedSections: {},
+      unlockedBadges: {}
+    };
+
+    function loadUserProgress() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && typeof parsed === "object") {
+            userProgress = {
+              completedSections: parsed.completedSections || {},
+              unlockedBadges: parsed.unlockedBadges || {}
+            };
+          }
+        }
+      } catch (e) {
+        console.warn("localStorage load failed:", e);
+      }
+    }
+
+    function saveUserProgress() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+      } catch (e) {
+        console.warn("localStorage save failed:", e);
+      }
+    }
+
+    // セクション完了トグル
+    function toggleSectionComplete(secId) {
+      userProgress.completedSections[secId] = !userProgress.completedSections[secId];
+      if (!userProgress.completedSections[secId]) {
+        delete userProgress.completedSections[secId];
+        SoundFX.tick();
+      } else {
+        SoundFX.profit();
+      }
+      saveUserProgress();
+      updateProgressUI();
+
+      // バッジ判定
+      const completedCount = Object.keys(userProgress.completedSections).length;
+      if (completedCount >= 1) {
+        unlockBadge("first_step");
+      }
+      if (completedCount >= APP_SECTIONS.length) {
+        unlockBadge("all_master");
+      }
+    }
+
+    // 進捗率とランクの計算・UI反映
+    function updateProgressUI() {
+      const completedCount = Object.keys(userProgress.completedSections).length;
+      const totalCount = APP_SECTIONS.length;
+      const pct = Math.round((completedCount / totalCount) * 100);
+
+      // ランク計算
+      let rank = "🌱 見習い探検生";
+      let rankColor = "text-amber-400";
+      if (pct >= 100) { rank = "🐉 伝説の相場師"; rankColor = "text-yellow-300"; }
+      else if (pct >= 75) { rank = "⚔️ 熟練トレーダー"; rankColor = "text-rose-400"; }
+      else if (pct >= 50) { rank = "🧭 一人前探検士"; rankColor = "text-sky-400"; }
+      else if (pct >= 25) { rank = "📜 駆け出し相場隊員"; rankColor = "text-emerald-400"; }
+
+      // ヘッダー進捗
+      const headerPct = document.getElementById("header-progress-pct");
+      if (headerPct) headerPct.innerText = `${pct}%`;
+
+      // ドロワー進捗
+      const drawerPct = document.getElementById("drawer-progress-pct");
+      const drawerFill = document.getElementById("drawer-progress-fill");
+      const drawerRank = document.getElementById("drawer-rank-text");
+      if (drawerPct) drawerPct.innerText = `${pct}% (${completedCount}/${totalCount}章)`;
+      if (drawerFill) drawerFill.style.width = `${pct}%`;
+      if (drawerRank) {
+        drawerRank.innerText = rank;
+        drawerRank.className = `text-[10px] ${rankColor} font-extrabold`;
+      }
+
+      // トロフィールーム進捗
+      const badgePct = document.getElementById("badge-modal-progress-pct");
+      const badgeFill = document.getElementById("badge-modal-progress-fill");
+      const badgeRank = document.getElementById("badge-modal-rank-badge");
+      if (badgePct) badgePct.innerText = `${pct}% (${completedCount}/${totalCount}章)`;
+      if (badgeFill) badgeFill.style.width = `${pct}%`;
+      if (badgeRank) badgeRank.innerText = rank;
+
+      // セクション内ボタンの表示更新
+      APP_SECTIONS.forEach(sec => {
+        const btn = document.getElementById(`master-btn-${sec.id}`);
+        if (btn) {
+          const isDone = !!userProgress.completedSections[sec.id];
+          if (isDone) {
+            btn.className = "master-check-btn px-4 py-2 rounded-xl bg-emerald-500/20 border-2 border-emerald-500 text-emerald-300 text-xs font-black flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition transform scale-100 hover:scale-105";
+            btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 fill-emerald-400/20"></i><span>マスター完了！</span>`;
+          } else {
+            btn.className = "master-check-btn px-4 py-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 text-xs font-bold flex items-center gap-2 transition hover:bg-slate-800";
+            btn.innerHTML = `<i data-lucide="circle" class="w-4 h-4 text-slate-500"></i><span>この章をマスターした</span>`;
+          }
+        }
+      });
+
+      // ドロワー内リスト更新
+      renderDrawerNav();
+      lucide.createIcons();
+    }
+
+    // 各セクション末尾へのマスター完了ボタン自動注入
+    function injectSectionCompleteButtons() {
+      APP_SECTIONS.forEach(sec => {
+        const el = document.getElementById(sec.id);
+        if (!el) return;
+        if (document.getElementById(`master-btn-wrap-${sec.id}`)) return;
+
+        const wrap = document.createElement("div");
+        wrap.id = `master-btn-wrap-${sec.id}`;
+        wrap.className = "mt-8 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4";
+        wrap.innerHTML = `
+          <div class="flex items-center gap-2 text-xs text-slate-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>【${sec.num}：${sec.title}】の学習を終えたらボタンを押して進捗を記録しよう</span>
+          </div>
+          <button id="master-btn-${sec.id}" onclick="toggleSectionComplete('${sec.id}')" class="master-check-btn">
+            <!-- 動的更新 -->
+          </button>
+        `;
+
+        // セクション内の最下部コンテナ（max-w-7xlなど）に挿入
+        const container = el.querySelector(".max-w-7xl") || el.querySelector(".max-w-6xl") || el.querySelector(".max-w-5xl") || el;
+        container.appendChild(wrap);
+      });
+    }
+
+    // ドロワーナビの描画
+    function renderDrawerNav() {
+      const container = document.getElementById("drawer-nav-list");
+      if (!container) return;
+
+      container.innerHTML = APP_SECTIONS.map(sec => {
+        const isDone = !!userProgress.completedSections[sec.id];
+        return `
+          <a href="#${sec.id}" onclick="toggleMobileDrawer(false)" class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-800/70 border border-transparent hover:border-slate-700/60 transition group ${isDone ? 'bg-slate-800/30' : ''}">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-[10px] font-mono font-bold text-slate-400 group-hover:text-amber-400">
+                ${sec.num}
+              </span>
+              <div class="truncate">
+                <div class="font-bold text-slate-200 group-hover:text-white truncate">${sec.title}</div>
+                <div class="text-[10px] text-slate-500 truncate">${sec.desc}</div>
+              </div>
+            </div>
+            <div class="shrink-0 ml-2">
+              ${isDone 
+                ? '<span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-black">済</span>' 
+                : '<span class="text-slate-600 text-[10px]">未読</span>'}
+            </div>
+          </a>
+        `;
+      }).join("");
+    }
+
+    // 実績バッジの解除
+    function unlockBadge(badgeId) {
+      if (userProgress.unlockedBadges[badgeId]) return;
+      const bDef = BADGE_DEFINITIONS.find(b => b.id === badgeId);
+      if (!bDef) return;
+
+      userProgress.unlockedBadges[badgeId] = { unlockedAt: new Date().toISOString() };
+      saveUserProgress();
+
+      // トースト通知＆ファンファーレ効果音
+      showBadgeToast(bDef);
+      SoundFX.levelup();
+
+      // ボトムバーのバッジドット表示
+      const dot = document.getElementById("bottom-bar-badge-dot");
+      if (dot) dot.classList.remove("hidden");
+
+      renderBadges();
+    }
+
+    // トースト通知表示
+    let toastTimeout = null;
+    function showBadgeToast(badge) {
+      const toast = document.getElementById("badge-toast");
+      if (!toast) return;
+
+      document.getElementById("badge-toast-icon").innerText = badge.icon;
+      document.getElementById("badge-toast-title").innerText = badge.title;
+      document.getElementById("badge-toast-desc").innerText = badge.desc;
+
+      toast.classList.remove("translate-x-full", "opacity-0", "pointer-events-none");
+      toast.classList.add("translate-x-0", "opacity-100");
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add("translate-x-full", "opacity-0", "pointer-events-none");
+        toast.classList.remove("translate-x-0", "opacity-100");
+      }, 5000);
+    }
+
+    // 実績モーダルグリッドの描画
+    function renderBadges() {
+      const grid = document.getElementById("badge-grid");
+      if (!grid) return;
+
+      const unlockedKeys = Object.keys(userProgress.unlockedBadges);
+      const countEl = document.getElementById("badge-unlocked-count");
+      if (countEl) countEl.innerText = `${unlockedKeys.length} / ${BADGE_DEFINITIONS.length} 個`;
+
+      grid.innerHTML = BADGE_DEFINITIONS.map(b => {
+        const isUnlocked = !!userProgress.unlockedBadges[b.id];
+        return `
+          <div class="p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between ${isUnlocked 
+            ? 'bg-gradient-to-b from-indigo-950/40 via-slate-900 to-slate-900 border-indigo-500/50 shadow-lg shadow-indigo-500/10' 
+            : 'bg-slate-950/60 border-slate-800/80 opacity-60'}">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl ${isUnlocked 
+                  ? 'bg-amber-500/20 border border-amber-400 shadow-md shadow-amber-500/20' 
+                  : 'bg-slate-800/80 border border-slate-700 grayscale'}">
+                  ${b.icon}
+                </div>
+                ${isUnlocked 
+                  ? '<span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">解除済</span>' 
+                  : '<span class="text-[10px] font-mono text-slate-500">🔒 LOCKED</span>'}
+              </div>
+              <h4 class="font-black text-sm text-white mb-1">${b.title}</h4>
+              <p class="text-[11px] text-slate-400 leading-relaxed mb-3">${b.desc}</p>
+            </div>
+            <div class="pt-2 border-t border-slate-800/60 text-[10px] flex items-center justify-between text-slate-500">
+              <span>獲得条件:</span>
+              <span class="font-bold text-slate-400">${b.condition}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // 進捗リセット
+    function resetUserProgress() {
+      if (confirm("学習進捗と解除した実績をすべて初期化しますか？")) {
+        userProgress = { completedSections: {}, unlockedBadges: {} };
+        saveUserProgress();
+        updateProgressUI();
+        renderBadges();
+        SoundFX.warning();
+      }
+    }
+
+    // モバイルドロワー開閉
+    function toggleMobileDrawer(show) {
+      const drawer = document.getElementById("mobile-drawer");
+      if (!drawer) return;
+      if (show) {
+        drawer.classList.remove("translate-x-full");
+        document.body.style.overflow = "hidden";
+        SoundFX.tick();
+      } else {
+        drawer.classList.add("translate-x-full");
+        document.body.style.overflow = "";
+      }
+    }
+
+    // 虎の巻モーダル開閉
+    function openCheatSheetModal() {
+      const modal = document.getElementById("cheatsheet-modal");
+      if (!modal) return;
+      modal.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+      SoundFX.profit();
+      lucide.createIcons();
+    }
+    function closeCheatSheetModal() {
+      const modal = document.getElementById("cheatsheet-modal");
+      if (!modal) return;
+      modal.classList.add("hidden");
+      document.body.style.overflow = "";
+      SoundFX.tick();
+    }
+
+    // 虎の巻要約コピー
+    function copyCheatSheetSummary() {
+      const text = `【プロ直伝 相場出撃虎の巻】\n\n` +
+        `■ 買いの3大必須条件：\n1. サポレジ・VWAPの上にある\n2. 出来高急増を伴う陽線\n3. 損切り位置（RR 1:2以上）の事前決定\n\n` +
+        `■ 即逃げ3大鉄則：\n1. 直近安値割れで1秒損切り\n2. 天井上ヒゲピンバーで即手仕舞い\n3. 当初シナリオ崩れで即撤退\n\n` +
+        `■ 東証時間帯：\n09:00〜09:30 魔の乱高下\n09:30〜11:00 本流トレンド（ゴールデン帯）\n11:30〜13:30 出来高砂漠\n14:30〜15:30 引け仕舞い＆リバランス`;
+      
+      navigator.clipboard.writeText(text).then(() => {
+        const btnText = document.getElementById("cheatsheet-copy-btn-text");
+        if (btnText) {
+          const old = btnText.innerText;
+          btnText.innerText = "コピー完了！";
+          setTimeout(() => { btnText.innerText = old; }, 2000);
+        }
+        SoundFX.breakout();
+      }).catch(err => {
+        console.warn("Clipboard copy failed:", err);
+      });
+    }
+
+    // 実績モーダル開閉
+    function openBadgeModal() {
+      const modal = document.getElementById("badge-modal");
+      if (!modal) return;
+      renderBadges();
+      modal.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+      SoundFX.tick();
+
+      // ボトムバーのドット消去
+      const dot = document.getElementById("bottom-bar-badge-dot");
+      if (dot) dot.classList.add("hidden");
+
+      lucide.createIcons();
+    }
+    function closeBadgeModal() {
+      const modal = document.getElementById("badge-modal");
+      if (!modal) return;
+      modal.classList.add("hidden");
+      document.body.style.overflow = "";
+      SoundFX.tick();
+    }
+
+    // Topへ戻る
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      SoundFX.tick();
+    }
+
+    // スクロール監視リスナー（進捗バー＆Topボタン）
+    window.addEventListener("scroll", () => {
+      const scrollY = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? Math.min(100, Math.max(0, (scrollY / docHeight) * 100)) : 0;
+
+      const progressBar = document.getElementById("scroll-progress-bar");
+      if (progressBar) progressBar.style.width = `${pct}%`;
+
+      const topBtn = document.getElementById("back-to-top-btn");
+      if (topBtn) {
+        if (scrollY > 300) {
+          topBtn.classList.remove("opacity-0", "pointer-events-none", "translate-y-3");
+          topBtn.classList.add("opacity-100", "translate-y-0");
+        } else {
+          topBtn.classList.add("opacity-0", "pointer-events-none", "translate-y-3");
+          topBtn.classList.remove("opacity-100", "translate-y-0");
+        }
+      }
+    }, { passive: true });
+
+    // Escキーでモーダルクローズ
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeCheatSheetModal();
+        closeBadgeModal();
+        toggleMobileDrawer(false);
+      }
+    });
+
+    // 初期化実行
+    document.addEventListener("DOMContentLoaded", () => {
+      loadUserProgress();
+      injectSectionCompleteButtons();
+      updateProgressUI();
+      renderBadges();
+    });
+
+    // すでにロード済みの環境用の保険実行
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      loadUserProgress();
+      injectSectionCompleteButtons();
+      updateProgressUI();
+      renderBadges();
+    }
+
   </script>
+
+  <!-- ==========================================
+       スマホ専用：固定ボトムクイックバー
+  ========================================== -->
+  <div class="fixed bottom-0 left-0 right-0 z-40 xl:hidden bg-slate-900/95 backdrop-blur-lg border-t border-slate-800 px-3 py-2 shadow-2xl flex items-center justify-around safe-area-bottom">
+    <button onclick="toggleMobileDrawer(true)" class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white transition py-1">
+      <i data-lucide="list" class="w-4 h-4"></i>
+      <span class="text-[10px] font-bold">目次</span>
+    </button>
+    <button onclick="openCheatSheetModal()" class="flex flex-col items-center gap-0.5 text-amber-400 hover:text-amber-300 transition py-1">
+      <i data-lucide="zap" class="w-4 h-4 fill-amber-400"></i>
+      <span class="text-[10px] font-black">虎の巻</span>
+    </button>
+    <a href="#orderbook-lab" class="flex flex-col items-center gap-0.5 text-cyan-400 hover:text-cyan-300 transition py-1">
+      <i data-lucide="layers" class="w-4 h-4"></i>
+      <span class="text-[10px] font-bold">板読み</span>
+    </a>
+    <a href="#dojo" class="flex flex-col items-center gap-0.5 text-rose-400 hover:text-rose-300 transition py-1">
+      <i data-lucide="swords" class="w-4 h-4"></i>
+      <span class="text-[10px] font-bold">道場</span>
+    </a>
+    <button onclick="openBadgeModal()" class="flex flex-col items-center gap-0.5 text-indigo-400 hover:text-indigo-300 transition py-1 relative">
+      <i data-lucide="trophy" class="w-4 h-4"></i>
+      <span class="text-[10px] font-bold">実績</span>
+      <span id="bottom-bar-badge-dot" class="absolute top-0 right-1 w-2 h-2 rounded-full bg-rose-500 hidden"></span>
+    </button>
+  </div>
+
+  <!-- ==========================================
+       モバイル用スライドイン目次ドロワー
+  ========================================== -->
+  <div id="mobile-drawer" class="fixed inset-0 z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+    <!-- 背景オーバーレイ -->
+    <div onclick="toggleMobileDrawer(false)" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+    
+    <!-- ドロワー本体 -->
+    <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-slate-900 border-l border-slate-800 shadow-2xl flex flex-col">
+      <!-- ドロワーヘッダー -->
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-rose-500 to-amber-400 flex items-center justify-center text-white font-bold text-xs">
+            <i data-lucide="compass" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-slate-300">探検隊マップ＆目次</div>
+            <div id="drawer-rank-text" class="text-[10px] text-amber-400 font-extrabold">🌱 見習い探検生</div>
+          </div>
+        </div>
+        <button onclick="toggleMobileDrawer(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- 進捗率サマリー -->
+      <div class="px-4 py-3 bg-slate-900/80 border-b border-slate-800/80">
+        <div class="flex justify-between items-center text-xs mb-1.5">
+          <span class="text-slate-400 font-bold">学習達成度</span>
+          <span id="drawer-progress-pct" class="font-black text-emerald-400">0% (0/15章)</span>
+        </div>
+        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+          <div id="drawer-progress-fill" class="h-full bg-gradient-to-r from-rose-500 to-emerald-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- ナビゲーションリンク一覧 -->
+      <div id="drawer-nav-list" class="flex-1 overflow-y-auto p-3 space-y-1 text-xs">
+        <!-- JSで全15セクションを動的描画 -->
+      </div>
+
+      <!-- ドロワーフッター -->
+      <div class="p-3 border-t border-slate-800 bg-slate-950/80 flex items-center gap-2">
+        <button onclick="openCheatSheetModal(); toggleMobileDrawer(false);" class="flex-1 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold flex items-center justify-center gap-1.5 hover:bg-amber-500/30 transition text-xs">
+          <i data-lucide="zap" class="w-3.5 h-3.5 fill-amber-400"></i>
+          <span>虎の巻チートシート</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       Back to Top（トップへ戻る）ボタン
+  ========================================== -->
+  <button id="back-to-top-btn" onclick="scrollToTop()" class="fixed bottom-16 xl:bottom-8 right-4 xl:right-8 z-40 p-3 rounded-2xl bg-slate-800/90 hover:bg-rose-500 border border-slate-700 hover:border-rose-400 text-slate-300 hover:text-white shadow-2xl backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300 transform translate-y-3 group" title="一番上へ戻る">
+    <i data-lucide="arrow-up" class="w-5 h-5 group-hover:-translate-y-0.5 transition-transform"></i>
+  </button>
+
+  <!-- ==========================================
+       プロ直伝！相場出撃チートシート（虎の巻モーダル）
+  ========================================== -->
+  <div id="cheatsheet-modal" class="fixed inset-0 z-50 hidden">
+    <div onclick="closeCheatSheetModal()" class="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
+    <div class="absolute inset-4 sm:inset-10 lg:inset-y-12 lg:inset-x-auto lg:w-4xl lg:left-1/2 lg:-translate-x-1/2 bg-slate-900 border border-amber-500/40 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <!-- モーダルヘッダー -->
+      <div class="px-6 py-4 bg-gradient-to-r from-amber-950/60 via-slate-900 to-slate-950 border-b border-amber-500/30 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
+            <i data-lucide="zap" class="w-6 h-6 fill-amber-400"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-amber-300 flex items-center gap-2">
+              プロ直伝 相場出撃チートシート（虎の巻）
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-200 border border-amber-500/40 font-bold">現場即応</span>
+            </h3>
+            <p class="text-xs text-slate-400">注文ボタンを押す直前・相場局面で迷った瞬間に確認する最重要チェックリスト</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="copyCheatSheetSummary()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold flex items-center gap-1.5 transition">
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            <span id="cheatsheet-copy-btn-text">要約コピー</span>
+          </button>
+          <button onclick="closeCheatSheetModal()" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- モーダル本文（スクロール可能） -->
+      <div class="flex-1 overflow-y-auto p-6 space-y-6 text-xs text-slate-300">
+        
+        <!-- グリッド1: 買いの3大鉄則 & 損切り即逃げ3大基準 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 space-y-2.5">
+            <div class="flex items-center gap-2 text-emerald-400 font-black text-sm">
+              <i data-lucide="check-circle" class="w-4 h-4"></i>
+              <span>買いエントリー 3大必須条件</span>
+            </div>
+            <ul class="space-y-2 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-400 font-bold">①</span>
+                <span><strong>サポレジ・VWAPの上にあるか？</strong>（上値の重い頭打ち状態での買いは厳禁）</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-400 font-bold">②</span>
+                <span><strong>出来高が伴って陽線が出たか？</strong>（出来高のない上げは機関の罠・だまし）</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-400 font-bold">③</span>
+                <span><strong>損切り位置が明確に決まっているか？</strong>（直近安値の1〜2tick下など、RR比 1:2以上）</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-rose-950/30 border border-rose-500/30 space-y-2.5">
+            <div class="flex items-center gap-2 text-rose-400 font-black text-sm">
+              <i data-lucide="alert-octagon" class="w-4 h-4"></i>
+              <span>即逃げ・損切り 3大鉄則</span>
+            </div>
+            <ul class="space-y-2 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="text-rose-400 font-bold">①</span>
+                <span><strong>直近安値・節目を割ったら1秒で切る</strong>（お祈り投資・ナンピンは絶対破産の元）</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-rose-400 font-bold">②</span>
+                <span><strong>上ヒゲピンバー＋出来高急増で即撤退</strong>（機関が個人に玉を売り抜けたサイン）</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-rose-400 font-bold">③</span>
+                <span><strong>予定したシナリオが崩れたら即撤退</strong>（『決算跨ぎ』など当初の前提が変わったら切る）</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- グリッド2: 東証タイムテーブル早見表 -->
+        <div class="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="font-black text-sm text-amber-300 flex items-center gap-2">
+              <i data-lucide="clock" class="w-4 h-4"></i>
+              <span>魔の時間帯タイムテーブル（東証プライム・グロース標準）</span>
+            </div>
+            <span class="text-[10px] text-slate-500 font-mono">9:00 - 15:30</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-[11px]">
+            <div class="p-2.5 rounded-xl bg-rose-950/20 border border-rose-500/30">
+              <div class="font-extrabold text-rose-400">09:00 - 09:30</div>
+              <div class="text-[10px] text-slate-400 font-bold">魔の乱高下タイム</div>
+              <div class="mt-1 text-slate-300 text-[10px]">寄り付きボラティリティ最大。初心者は9:15以降の方向感確定を待つのが吉。</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-sky-950/20 border border-sky-500/30">
+              <div class="font-extrabold text-sky-400">09:30 - 11:00</div>
+              <div class="text-[10px] text-slate-400 font-bold">本流トレンド形成</div>
+              <div class="mt-1 text-slate-300 text-[10px]">押し目買い・ブレイクの本命タイム。VWAPとサポレジの反発を狙うゴールデン帯。</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-800/40 border border-slate-700/40">
+              <div class="font-extrabold text-slate-400">11:30 - 13:30</div>
+              <div class="text-[10px] text-slate-500 font-bold">出来高砂漠地帯</div>
+              <div class="mt-1 text-slate-400 text-[10px]">昼休み前後。流動性が急減しだまし・板の急変動が発生。新規建玉は控えめに。</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-amber-950/20 border border-amber-500/30">
+              <div class="font-extrabold text-amber-400">14:30 - 15:30</div>
+              <div class="text-[10px] text-slate-400 font-bold">大引けクロージング</div>
+              <div class="mt-1 text-slate-300 text-[10px]">デイトレの手仕舞いと機関のリバランス。急な乱高下・ストップ狩りに要警戒。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- グリッド3: 6大パターン判定マトリクス -->
+        <div class="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-3">
+          <div class="font-black text-sm text-cyan-300 flex items-center gap-2">
+            <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+            <span>鉄板ローソク足 判定マトリクス</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-[11px]">
+              <thead>
+                <tr class="border-b border-slate-800 text-slate-400 font-bold">
+                  <th class="py-2 px-3">形状・シグナル</th>
+                  <th class="py-2 px-3">出現局面</th>
+                  <th class="py-2 px-3">意味・心理</th>
+                  <th class="py-2 px-3">プロのアクション</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                <tr>
+                  <td class="py-2.5 px-3 font-bold text-rose-400">大陽線（丸坊主）</td>
+                  <td class="py-2.5 px-3">底値圏 / ブレイク</td>
+                  <td class="py-2.5 px-3">買い方が売り方を圧倒</td>
+                  <td class="py-2.5 px-3 text-emerald-400 font-bold">順張り追随エントリー</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-3 font-bold text-emerald-400">下ヒゲピンバー（カラカサ）</td>
+                  <td class="py-2.5 px-3">下落トレンド底</td>
+                  <td class="py-2.5 px-3">安値での猛烈な買い戻し</td>
+                  <td class="py-2.5 px-3 text-emerald-400 font-bold">ヒゲ下限を背に逆張り買い</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-3 font-bold text-amber-400">包み足（アウトサイドバー）</td>
+                  <td class="py-2.5 px-3">高値・安値の節目</td>
+                  <td class="py-2.5 px-3">勢力の完全逆転</td>
+                  <td class="py-2.5 px-3 text-amber-300 font-bold">包んだ方向へポジション転換</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-3 font-bold text-rose-400">上ヒゲピンバー（トウバ）</td>
+                  <td class="py-2.5 px-3">上昇トレンド天井</td>
+                  <td class="py-2.5 px-3">買い上がりの息切れ・売り浴びせ</td>
+                  <td class="py-2.5 px-3 text-rose-400 font-bold">即利確・売り（ショート）</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-3 font-bold text-slate-400">十字線（寄り引け同値）</td>
+                  <td class="py-2.5 px-3">連続トレンド中</td>
+                  <td class="py-2.5 px-3">買いと売りの完全拮抗・迷い</td>
+                  <td class="py-2.5 px-3 text-yellow-400 font-bold">次のローソク足が出るまで待機</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- モーダルフッター -->
+      <div class="px-6 py-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <span>💡 ショートカット: Escキーでいつでも閉じられます</span>
+        <button onclick="closeCheatSheetModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold transition">
+          閉じる
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       探検隊トロフィールーム（実績バッジモーダル）
+  ========================================== -->
+  <div id="badge-modal" class="fixed inset-0 z-50 hidden">
+    <div onclick="closeBadgeModal()" class="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
+    <div class="absolute inset-4 sm:inset-10 lg:inset-y-12 lg:inset-x-auto lg:w-4xl lg:left-1/2 lg:-translate-x-1/2 bg-slate-900 border border-indigo-500/40 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <!-- モーダルヘッダー -->
+      <div class="px-6 py-4 bg-gradient-to-r from-indigo-950/60 via-slate-900 to-slate-950 border-b border-indigo-500/30 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-yellow-400">
+            <i data-lucide="trophy" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-indigo-300 flex items-center gap-2">
+              探検隊トロフィールーム
+              <span id="badge-modal-rank-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-200 border border-indigo-500/40 font-bold">🌱 見習い</span>
+            </h3>
+            <p class="text-xs text-slate-400">学んだ証と実戦での功績を刻むマスターアチーブメント</p>
+          </div>
+        </div>
+        <button onclick="closeBadgeModal()" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- トロフィー進捗サマリー -->
+      <div class="px-6 py-4 bg-slate-950/50 border-b border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="w-full sm:w-2/3 space-y-1.5">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-400 font-bold">全15章 マスター進捗状況</span>
+            <span id="badge-modal-progress-pct" class="font-black text-indigo-400 text-sm">0% (0/15章)</span>
+          </div>
+          <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+            <div id="badge-modal-progress-fill" class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <div class="text-[11px] text-slate-400">解除済み実績</div>
+          <div id="badge-unlocked-count" class="text-lg font-black text-amber-400">0 / 8 個</div>
+        </div>
+      </div>
+
+      <!-- 実績バッジグリッド（スクロール可能） -->
+      <div class="flex-1 overflow-y-auto p-6">
+        <div id="badge-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- JSで全8バッジを描画 -->
+        </div>
+      </div>
+
+      <!-- モーダルフッター -->
+      <div class="px-6 py-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <button onclick="resetUserProgress()" class="text-slate-500 hover:text-rose-400 text-[11px] transition">
+          進捗をリセット
+        </button>
+        <button onclick="closeBadgeModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold transition">
+          閉じる
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       実績解除ポップアップトースト
+  ========================================== -->
+  <div id="badge-toast" class="fixed top-20 right-4 z-50 transform translate-x-full transition-all duration-500 ease-out opacity-0 pointer-events-none max-w-sm">
+    <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-2 border-amber-400/80 rounded-2xl p-4 shadow-2xl flex items-center gap-3">
+      <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-300 shrink-0 shadow-lg shadow-amber-500/30">
+        <span id="badge-toast-icon" class="text-2xl">🏆</span>
+      </div>
+      <div>
+        <div class="text-[10px] font-extrabold uppercase tracking-wider text-amber-400 flex items-center gap-1">
+          <i data-lucide="sparkles" class="w-3 h-3"></i>
+          <span>実績アンロック！</span>
+        </div>
+        <div id="badge-toast-title" class="text-sm font-black text-white">実績のタイトル</div>
+        <div id="badge-toast-desc" class="text-[11px] text-slate-300 mt-0.5">実績の説明文</div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
